@@ -1,17 +1,12 @@
 package com.github.thaynarasilvapinto.SimuladorBanco.domain;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
 @Entity
 public class Conta implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private double saldo;
     private String dataHora;
@@ -20,7 +15,6 @@ public class Conta implements Serializable {
     public Conta() {
     }
     public Conta(String dataHora){
-        this.id = id;
         saldo = 0.00;
         this.dataHora = dataHora;
     }
@@ -35,6 +29,9 @@ public class Conta implements Serializable {
     public int deposito(Operacao operacao){
         if(operacao.getValorOperacao() > 0){
             saldo +=operacao.getValorOperacao();
+            if (extrato == null) {
+                extrato = new ArrayList<>();
+            }
             this.extrato.add(operacao);
             return 1;
         }
@@ -68,6 +65,9 @@ public class Conta implements Serializable {
         return id;
     }
 
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
 
     public ArrayList<Operacao> getExtrato() {
         return extrato;
@@ -77,16 +77,10 @@ public class Conta implements Serializable {
         this.id = id;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Conta)) return false;
-        Conta conta = (Conta) o;
-        return Objects.equals(id, conta.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public void setExtrato(ArrayList<Operacao> extrato) {
+        if (extrato == null) {
+            extrato = new ArrayList<>();
+        }
+        this.extrato = extrato;
     }
 }

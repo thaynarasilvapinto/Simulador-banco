@@ -1,12 +1,7 @@
 package com.github.thaynarasilvapinto.SimuladorBanco.domain;
 
-import com.github.thaynarasilvapinto.SimuladorBanco.services.ClienteService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.Locale;
@@ -15,8 +10,6 @@ import java.util.Locale;
 public class Operacao {
     private Integer idOrigem;
     private Integer idDestino;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idOpercao;
     private double valorOperacao;
     private String dataOperacao;

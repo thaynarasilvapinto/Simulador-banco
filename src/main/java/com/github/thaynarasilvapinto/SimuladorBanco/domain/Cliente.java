@@ -10,13 +10,10 @@ import java.util.Objects;
 
 @Entity
 public class Cliente implements Serializable{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
     private String cpf;
     private String dataHora;
-    @OneToOne
     private Conta conta;
 
     public Cliente() {
@@ -44,6 +41,34 @@ public class Cliente implements Serializable{
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public void setDataHora(String dataHora) {
+        this.dataHora = dataHora;
+    }
+
+    public void setConta(Conta conta) {
+        this.conta = conta;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public String getDataHora() {
+        return dataHora;
     }
 
     @Override

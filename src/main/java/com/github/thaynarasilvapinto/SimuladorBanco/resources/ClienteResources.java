@@ -1,8 +1,7 @@
 package com.github.thaynarasilvapinto.SimuladorBanco.resources;
 
+import com.github.thaynarasilvapinto.SimuladorBanco.domain.Banco;
 import com.github.thaynarasilvapinto.SimuladorBanco.domain.Cliente;
-import com.github.thaynarasilvapinto.SimuladorBanco.services.ClienteService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,8 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/clientes")
 public class ClienteResources{
 
-    @Autowired
-    private ClienteService service;
+    private Banco service;
 
     @RequestMapping(value="/{id}", method=RequestMethod.GET)
     public ResponseEntity<Cliente> find(@PathVariable Integer id) {
