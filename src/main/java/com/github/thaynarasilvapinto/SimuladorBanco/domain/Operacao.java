@@ -1,12 +1,9 @@
 package com.github.thaynarasilvapinto.SimuladorBanco.domain;
 
-
-import javax.persistence.Entity;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-@Entity
 public class Operacao {
     private Integer idOrigem;
     private Integer idDestino;
@@ -38,13 +35,15 @@ public class Operacao {
         return idDestino;
     }
 
-    public Integer getIdOpercao() {
+    public Integer getIdOpercao(int i) {
         return idOpercao;
     }
 
     public double getValorOperacao() {
         return valorOperacao;
     }
+
+
 
     public void setIdOpercao(Integer idOpercao) {
         this.idOpercao = idOpercao;

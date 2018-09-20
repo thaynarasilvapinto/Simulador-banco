@@ -1,17 +1,14 @@
 package com.github.thaynarasilvapinto.SimuladorBanco.domain;
 
-import javax.persistence.Entity;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Objects;
 
-@Entity
 public class Conta implements Serializable {
     private Integer id;
     private double saldo;
     private String dataHora;
     private ArrayList<Operacao> extrato = new ArrayList<Operacao>();
-
+    private int contID = 0;
     public Conta() {
     }
     public Conta(String dataHora){
@@ -21,6 +18,8 @@ public class Conta implements Serializable {
     public int saque(Operacao operacao){
         if(operacao.getValorOperacao() <= this.saldo) {
             saldo -= operacao.getValorOperacao();
+            operacao.getIdOpercao(contID);
+            contID++;
             this.extrato.add(operacao);
             return 1;
         }
@@ -32,6 +31,8 @@ public class Conta implements Serializable {
             if (extrato == null) {
                 extrato = new ArrayList<>();
             }
+            operacao.getIdOpercao(contID);
+            contID++;
             this.extrato.add(operacao);
             return 1;
         }
@@ -48,12 +49,16 @@ public class Conta implements Serializable {
     public void recebimentoTransferencia(Operacao operacao){
         if(operacao.getValorOperacao() > 0){
             saldo += operacao.getValorOperacao();
+            operacao.getIdOpercao(contID);
+            contID++;
             this.extrato.add(operacao);
         }
     }
     public void efetuarTrasferencia(Operacao operacao){
         if(operacao.getValorOperacao() <= this.saldo) {
             saldo -= operacao.getValorOperacao();
+            operacao.getIdOpercao(contID);
+            contID++;
             this.extrato.add(operacao);
         }
     }

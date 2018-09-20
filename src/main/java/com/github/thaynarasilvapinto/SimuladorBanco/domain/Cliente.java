@@ -1,6 +1,5 @@
 package com.github.thaynarasilvapinto.SimuladorBanco.domain;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
@@ -8,7 +7,6 @@ import java.util.Locale;
 import java.util.Objects;
 
 
-@Entity
 public class Cliente implements Serializable{
     private Integer id;
     private String nome;

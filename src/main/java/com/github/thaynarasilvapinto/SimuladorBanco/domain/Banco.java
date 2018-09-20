@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 public class Banco {
     ArrayList<Cliente> clientes = new ArrayList<Cliente>();
-    public Banco() {
+
+    public  Banco(){
     }
     public Banco(ArrayList<Cliente> clientes) {
         this.clientes = clientes;
