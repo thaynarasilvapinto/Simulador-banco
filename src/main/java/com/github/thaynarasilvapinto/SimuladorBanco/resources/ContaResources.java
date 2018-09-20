@@ -48,9 +48,9 @@ public class ContaResources{
         Conta obj = service.findConta(id);
         Operacao deposito = new Operacao(id,operacao.getIdDestino(), operacao.getValorOperacao(), TipoOperacao.DEPOSITO);
         if(obj.deposito(deposito) == 1){
-            return ResponseEntity.ok("A opercação realizada com sucesso");
+            return ResponseEntity.ok("A operacação realizada com sucesso");
         }
-        return ResponseEntity.ok("A opercação não foi realizada, verifique seu saldo");
+        return ResponseEntity.ok("A operacação não foi realizada");
     }
 
     @RequestMapping(value = "/conta/{id}/saque",method = RequestMethod.POST)

@@ -27,4 +27,5 @@ public class Banco {
     public void setClientes(ArrayList<Cliente> clientes) {
         this.clientes = clientes;
     }
+
 }
