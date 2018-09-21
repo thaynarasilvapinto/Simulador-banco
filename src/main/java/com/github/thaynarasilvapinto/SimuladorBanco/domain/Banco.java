@@ -11,9 +11,9 @@ public class Banco {
         this.clientes = clientes;
     }
     public void add(Cliente cliente){
-        clientes.add(cliente);
-        cliente.setId(clientes.size());
-        cliente.getConta().setId(clientes.size());
+            cliente.setId(clientes.size());
+            cliente.getConta().setId(clientes.size());
+            clientes.add(cliente);
     }
     public Cliente find(Integer id){
         return clientes.get(id);

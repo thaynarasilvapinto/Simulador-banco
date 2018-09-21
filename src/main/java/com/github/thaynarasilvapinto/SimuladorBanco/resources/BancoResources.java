@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 @RestController
 @RequestMapping(value = "/banco")
-public class ContaResources{
+public class BancoResources {
 
     private Banco service = new Banco();
 
@@ -68,8 +68,7 @@ public class ContaResources{
     public  ResponseEntity<String> transaferencia(@PathVariable Integer id,@RequestBody Operacao operacao){
 
         Operacao transferencia = new Operacao(operacao.getIdOrigem(),
-                operacao.getIdDestino(),
-                operacao.getValorOperacao(),
+                id, operacao.getValorOperacao(),
                 TipoOperacao.TRANSFERENCIA);
         Conta obj = service.findConta(id);
         if(obj.Transferencia(service.findConta(operacao.getIdDestino()),transferencia) == 1){

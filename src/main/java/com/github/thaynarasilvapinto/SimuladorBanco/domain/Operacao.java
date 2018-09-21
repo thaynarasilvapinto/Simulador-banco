@@ -10,7 +10,7 @@ public class Operacao {
     private Integer idOpercao;
     private double valorOperacao;
     private String dataOperacao;
-    private TipoOperacao tipoOpercao;
+    private TipoOperacao tipoOperacao;
 
     public Operacao() {
     }
@@ -19,7 +19,7 @@ public class Operacao {
         this.idOrigem = idOrigem;
         this.idDestino = idDestino;
         this.valorOperacao = valorTransacao;
-        this.tipoOpercao = tipoOperacao;
+        this.tipoOperacao = tipoOperacao;
 
         Locale locale = new Locale("pt","BR");
         GregorianCalendar calendario = new GregorianCalendar();
@@ -43,7 +43,37 @@ public class Operacao {
         return valorOperacao;
     }
 
+    public void setIdOrigem(Integer idOrigem) {
+        this.idOrigem = idOrigem;
+    }
 
+    public void setIdDestino(Integer idDestino) {
+        this.idDestino = idDestino;
+    }
+
+    public Integer getIdOpercao() {
+        return idOpercao;
+    }
+
+    public void setValorOperacao(double valorOperacao) {
+        this.valorOperacao = valorOperacao;
+    }
+
+    public String getDataOperacao() {
+        return dataOperacao;
+    }
+
+    public void setDataOperacao(String dataOperacao) {
+        this.dataOperacao = dataOperacao;
+    }
+
+    public TipoOperacao getTipoOperacao() {
+        return tipoOperacao;
+    }
+
+    public void setTipoOperacao(TipoOperacao tipoOperacao) {
+        this.tipoOperacao = tipoOperacao;
+    }
 
     public void setIdOpercao(Integer idOpercao) {
         this.idOpercao = idOpercao;

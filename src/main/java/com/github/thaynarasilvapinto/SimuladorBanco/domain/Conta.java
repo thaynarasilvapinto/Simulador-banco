@@ -18,7 +18,7 @@ public class Conta implements Serializable {
     public int saque(Operacao operacao){
         if(operacao.getValorOperacao() <= this.saldo) {
             saldo -= operacao.getValorOperacao();
-            operacao.getIdOpercao(contID);
+            operacao.setIdOpercao(contID);
             contID++;
             this.extrato.add(operacao);
             return 1;
@@ -28,10 +28,7 @@ public class Conta implements Serializable {
     public int deposito(Operacao operacao){
         if(operacao.getValorOperacao() > 0){
             saldo +=operacao.getValorOperacao();
-            if (extrato == null) {
-                extrato = new ArrayList<>();
-            }
-            operacao.getIdOpercao(contID);
+            operacao.setIdOpercao(contID);
             contID++;
             this.extrato.add(operacao);
             return 1;
@@ -49,7 +46,7 @@ public class Conta implements Serializable {
     public void recebimentoTransferencia(Operacao operacao){
         if(operacao.getValorOperacao() > 0){
             saldo += operacao.getValorOperacao();
-            operacao.getIdOpercao(contID);
+            operacao.setIdOpercao(contID);
             contID++;
             this.extrato.add(operacao);
         }
@@ -57,8 +54,6 @@ public class Conta implements Serializable {
     public void efetuarTrasferencia(Operacao operacao){
         if(operacao.getValorOperacao() <= this.saldo) {
             saldo -= operacao.getValorOperacao();
-            operacao.getIdOpercao(contID);
-            contID++;
             this.extrato.add(operacao);
         }
     }
