@@ -50,6 +50,24 @@ public class BancoTest {
         assertEquals(joao.getConta(),banco.findConta(0));
         assertEquals(maria.getConta(),banco.findConta(1));
     }
+    @Test
+    public void naoDeveAddClientesComCPFigual(){
+        Banco banco = new Banco();
+        Cliente joao = new Cliente("João Pedro da Silva", "151.425.426-75");
+        Cliente maria = new Cliente("Maria Abadia de Oliveira", "151.425.426-75");
+        banco.add(joao);
+        banco.add(maria);
+        assertEquals(1,banco.getClientes().size());
+    }
+    @Test
+    public void deveAddClientesComCPFsDiferentes(){
+        Banco banco = new Banco();
+        Cliente joao = new Cliente("João Pedro da Silva", "151.425.426-75");
+        Cliente maria = new Cliente("Maria Abadia de Oliveira", "462.821.146-91");
+        banco.add(joao);
+        banco.add(maria);
+        assertEquals(2,banco.getClientes().size());
+    }
 
 
 }

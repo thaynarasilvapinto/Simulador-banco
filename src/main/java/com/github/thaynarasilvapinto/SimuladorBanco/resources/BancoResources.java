@@ -46,7 +46,7 @@ public class BancoResources {
     @RequestMapping(value="/conta/{id}/deposito",method = RequestMethod.POST)
     public ResponseEntity<String>  deposito(@PathVariable Integer id,@RequestBody Operacao operacao){
         Conta obj = service.findConta(id);
-        Operacao deposito = new Operacao(id,operacao.getIdDestino(), operacao.getValorOperacao(), TipoOperacao.DEPOSITO);
+        Operacao deposito = new Operacao(id,id, operacao.getValorOperacao(), TipoOperacao.DEPOSITO);
         if(obj.deposito(deposito) == 1){
             return ResponseEntity.ok("A operacação realizada com sucesso");
         }
@@ -67,8 +67,8 @@ public class BancoResources {
     @RequestMapping(value = "/conta/{id}/transferencia",method = RequestMethod.POST)
     public  ResponseEntity<String> transaferencia(@PathVariable Integer id,@RequestBody Operacao operacao){
 
-        Operacao transferencia = new Operacao(operacao.getIdOrigem(),
-                id, operacao.getValorOperacao(),
+        Operacao transferencia = new Operacao(id,
+                operacao.getIdDestino(), operacao.getValorOperacao(),
                 TipoOperacao.TRANSFERENCIA);
         Conta obj = service.findConta(id);
         if(obj.Transferencia(service.findConta(operacao.getIdDestino()),transferencia) == 1){

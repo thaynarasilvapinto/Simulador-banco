@@ -7,7 +7,7 @@ import java.util.Locale;
 public class Operacao {
     private Integer idOrigem;
     private Integer idDestino;
-    private Integer idOpercao;
+    private Integer idOperacao;
     private double valorOperacao;
     private String dataOperacao;
     private TipoOperacao tipoOperacao;
@@ -35,9 +35,6 @@ public class Operacao {
         return idDestino;
     }
 
-    public Integer getIdOpercao(int i) {
-        return idOpercao;
-    }
 
     public double getValorOperacao() {
         return valorOperacao;
@@ -51,8 +48,8 @@ public class Operacao {
         this.idDestino = idDestino;
     }
 
-    public Integer getIdOpercao() {
-        return idOpercao;
+    public Integer getIdOperacao() {
+        return idOperacao;
     }
 
     public void setValorOperacao(double valorOperacao) {
@@ -75,7 +72,7 @@ public class Operacao {
         this.tipoOperacao = tipoOperacao;
     }
 
-    public void setIdOpercao(Integer idOpercao) {
-        this.idOpercao = idOpercao;
+    public void setIdOperacao(Integer idOperacao) {
+        this.idOperacao = idOperacao;
     }
 }

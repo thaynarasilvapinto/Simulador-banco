@@ -18,7 +18,7 @@ public class Conta implements Serializable {
     public int saque(Operacao operacao){
         if(operacao.getValorOperacao() <= this.saldo) {
             saldo -= operacao.getValorOperacao();
-            operacao.setIdOpercao(contID);
+            operacao.setIdOperacao(contID);
             contID++;
             this.extrato.add(operacao);
             return 1;
@@ -28,7 +28,7 @@ public class Conta implements Serializable {
     public int deposito(Operacao operacao){
         if(operacao.getValorOperacao() > 0){
             saldo +=operacao.getValorOperacao();
-            operacao.setIdOpercao(contID);
+            operacao.setIdOperacao(contID);
             contID++;
             this.extrato.add(operacao);
             return 1;
@@ -46,15 +46,19 @@ public class Conta implements Serializable {
     public void recebimentoTransferencia(Operacao operacao){
         if(operacao.getValorOperacao() > 0){
             saldo += operacao.getValorOperacao();
-            operacao.setIdOpercao(contID);
+            Operacao op = new Operacao(operacao.getIdOrigem(),operacao.getIdDestino(),operacao.getValorOperacao(),TipoOperacao.RECEBIMENTO_TRANSFERENCIA);
+            op.setIdOperacao(contID);
             contID++;
-            this.extrato.add(operacao);
+            this.extrato.add(op);
         }
     }
     public void efetuarTrasferencia(Operacao operacao){
         if(operacao.getValorOperacao() <= this.saldo) {
             saldo -= operacao.getValorOperacao();
-            this.extrato.add(operacao);
+            Operacao op = new Operacao(operacao.getIdOrigem(),operacao.getIdDestino(),operacao.getValorOperacao(),TipoOperacao.TRANSFERENCIA);
+            op.setIdOperacao(contID);
+            contID++;
+            this.extrato.add(op);
         }
     }
     public double getSaldo() {
@@ -67,6 +71,22 @@ public class Conta implements Serializable {
 
     public void setSaldo(double saldo) {
         this.saldo = saldo;
+    }
+
+    public String getDataHora() {
+        return dataHora;
+    }
+
+    public void setDataHora(String dataHora) {
+        this.dataHora = dataHora;
+    }
+
+    public int getContID() {
+        return contID;
+    }
+
+    public void setContID(int contID) {
+        this.contID = contID;
     }
 
     public ArrayList<Operacao> getExtrato() {
