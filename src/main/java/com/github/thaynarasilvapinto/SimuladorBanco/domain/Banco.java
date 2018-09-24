@@ -10,12 +10,14 @@ public class Banco {
     public Banco(ArrayList<Cliente> clientes) {
         this.clientes = clientes;
     }
-    public void add(Cliente cliente){
+    public int add(Cliente cliente){
         if(verificaCPF(cliente)){
             cliente.setId(clientes.size());
             cliente.getConta().setId(clientes.size());
             clientes.add(cliente);
+            return 1;
         }
+        return 0;
     }
     public Cliente find(Integer id){
         return clientes.get(id);
@@ -31,7 +33,7 @@ public class Banco {
     }
     public boolean verificaCPF(Cliente cliente){
         for(int i=0;i<clientes.size();i++){
-            if(clientes.get(i).getCpf() == cliente.getCpf()){
+            if(clientes.get(i).getCpf().equals(cliente.getCpf())){
                 return false;
             }
         }

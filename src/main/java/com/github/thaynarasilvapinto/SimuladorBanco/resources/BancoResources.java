@@ -20,8 +20,9 @@ public class BancoResources {
     @RequestMapping(value="/cliente/criar-cliente", method = RequestMethod.POST)
     public ResponseEntity<String> criarCliente(@RequestBody Cliente cliente){
         Cliente cliente1 = new Cliente(cliente.getNome(),cliente.getCpf());
-        service.add(cliente1);
-        return ResponseEntity.ok("Cliente inserido");
+        if(service.add(cliente1) == 1)
+            return ResponseEntity.ok("Cliente inserido");
+        return ResponseEntity.ok("Cliente n inserido");
     }
 
     @RequestMapping(value="/conta/{id}", method=RequestMethod.GET)
