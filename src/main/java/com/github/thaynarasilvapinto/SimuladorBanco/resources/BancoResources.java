@@ -56,7 +56,7 @@ public class BancoResources {
         if(opDeposito != null){
             return ResponseEntity.ok().body(opDeposito);
         }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
     }
 
     @RequestMapping(value = "/conta/{id}/saque",method = RequestMethod.POST)
@@ -69,7 +69,7 @@ public class BancoResources {
         if(opSaque != null){
             return ResponseEntity.ok().body(opSaque);
         }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
     }
 
     @RequestMapping(value = "/conta/{id}/transferencia",method = RequestMethod.POST)
@@ -82,6 +82,6 @@ public class BancoResources {
         if(opTransferencia != null){
             return ResponseEntity.ok().body(opTransferencia);
         }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
     }
 }
