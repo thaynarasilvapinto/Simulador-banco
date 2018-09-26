@@ -1,26 +1,16 @@
 package com.github.thaynarasilvapinto.SimuladorBanco.domain;
 
-import com.github.thaynarasilvapinto.SimuladorBanco.services.ClienteService;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-@Entity
 public class Operacao {
     private Integer idOrigem;
     private Integer idDestino;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idOpercao;
+    private Integer idOperacao;
     private double valorOperacao;
     private String dataOperacao;
-    private TipoOperacao tipoOpercao;
+    private TipoOperacao tipoOperacao;
 
     public Operacao() {
     }
@@ -29,7 +19,7 @@ public class Operacao {
         this.idOrigem = idOrigem;
         this.idDestino = idDestino;
         this.valorOperacao = valorTransacao;
-        this.tipoOpercao = tipoOperacao;
+        this.tipoOperacao = tipoOperacao;
 
         Locale locale = new Locale("pt","BR");
         GregorianCalendar calendario = new GregorianCalendar();
@@ -45,15 +35,44 @@ public class Operacao {
         return idDestino;
     }
 
-    public Integer getIdOpercao() {
-        return idOpercao;
-    }
 
     public double getValorOperacao() {
         return valorOperacao;
     }
 
-    public void setIdOpercao(Integer idOpercao) {
-        this.idOpercao = idOpercao;
+    public void setIdOrigem(Integer idOrigem) {
+        this.idOrigem = idOrigem;
+    }
+
+    public void setIdDestino(Integer idDestino) {
+        this.idDestino = idDestino;
+    }
+
+    public Integer getIdOperacao() {
+        return idOperacao;
+    }
+
+    public void setValorOperacao(double valorOperacao) {
+        this.valorOperacao = valorOperacao;
+    }
+
+    public String getDataOperacao() {
+        return dataOperacao;
+    }
+
+    public void setDataOperacao(String dataOperacao) {
+        this.dataOperacao = dataOperacao;
+    }
+
+    public TipoOperacao getTipoOperacao() {
+        return tipoOperacao;
+    }
+
+    public void setTipoOperacao(TipoOperacao tipoOperacao) {
+        this.tipoOperacao = tipoOperacao;
+    }
+
+    public void setIdOperacao(Integer idOperacao) {
+        this.idOperacao = idOperacao;
     }
 }

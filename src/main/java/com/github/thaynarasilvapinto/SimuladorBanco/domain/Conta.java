@@ -1,32 +1,25 @@
 package com.github.thaynarasilvapinto.SimuladorBanco.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Objects;
 
-@Entity
 public class Conta implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private double saldo;
     private String dataHora;
     private ArrayList<Operacao> extrato = new ArrayList<Operacao>();
-
+    private int contID = 0;
     public Conta() {
     }
     public Conta(String dataHora){
-        this.id = id;
         saldo = 0.00;
         this.dataHora = dataHora;
     }
     public int saque(Operacao operacao){
         if(operacao.getValorOperacao() <= this.saldo) {
             saldo -= operacao.getValorOperacao();
+            operacao.setIdOperacao(contID);
+            contID++;
             this.extrato.add(operacao);
             return 1;
         }
@@ -35,6 +28,8 @@ public class Conta implements Serializable {
     public int deposito(Operacao operacao){
         if(operacao.getValorOperacao() > 0){
             saldo +=operacao.getValorOperacao();
+            operacao.setIdOperacao(contID);
+            contID++;
             this.extrato.add(operacao);
             return 1;
         }
@@ -51,13 +46,19 @@ public class Conta implements Serializable {
     public void recebimentoTransferencia(Operacao operacao){
         if(operacao.getValorOperacao() > 0){
             saldo += operacao.getValorOperacao();
-            this.extrato.add(operacao);
+            Operacao op = new Operacao(operacao.getIdOrigem(),operacao.getIdDestino(),operacao.getValorOperacao(),TipoOperacao.RECEBIMENTO_TRANSFERENCIA);
+            op.setIdOperacao(contID);
+            contID++;
+            this.extrato.add(op);
         }
     }
     public void efetuarTrasferencia(Operacao operacao){
         if(operacao.getValorOperacao() <= this.saldo) {
             saldo -= operacao.getValorOperacao();
-            this.extrato.add(operacao);
+            Operacao op = new Operacao(operacao.getIdOrigem(),operacao.getIdDestino(),operacao.getValorOperacao(),TipoOperacao.TRANSFERENCIA);
+            op.setIdOperacao(contID);
+            contID++;
+            this.extrato.add(op);
         }
     }
     public double getSaldo() {
@@ -68,6 +69,25 @@ public class Conta implements Serializable {
         return id;
     }
 
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
+
+    public String getDataHora() {
+        return dataHora;
+    }
+
+    public void setDataHora(String dataHora) {
+        this.dataHora = dataHora;
+    }
+
+    public int getContID() {
+        return contID;
+    }
+
+    public void setContID(int contID) {
+        this.contID = contID;
+    }
 
     public ArrayList<Operacao> getExtrato() {
         return extrato;
@@ -77,16 +97,10 @@ public class Conta implements Serializable {
         this.id = id;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Conta)) return false;
-        Conta conta = (Conta) o;
-        return Objects.equals(id, conta.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public void setExtrato(ArrayList<Operacao> extrato) {
+        if (extrato == null) {
+            extrato = new ArrayList<>();
+        }
+        this.extrato = extrato;
     }
 }
