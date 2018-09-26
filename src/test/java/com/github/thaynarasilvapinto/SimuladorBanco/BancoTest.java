@@ -68,5 +68,4 @@ public class BancoTest {
         banco.add(maria);
         assertEquals(2,banco.getClientes().size());
     }
-
 }

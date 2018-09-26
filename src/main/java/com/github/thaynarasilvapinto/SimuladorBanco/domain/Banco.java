@@ -10,14 +10,14 @@ public class Banco {
     public Banco(ArrayList<Cliente> clientes) {
         this.clientes = clientes;
     }
-    public int add(Cliente cliente){
+    public Cliente add(Cliente cliente){
         if(verificaCPF(cliente)){
             cliente.setId(clientes.size());
             cliente.getConta().setId(clientes.size());
             clientes.add(cliente);
-            return 1;
+            return cliente;
         }
-        return 0;
+        return null;
     }
     public Cliente find(Integer id){
         return clientes.get(id);
