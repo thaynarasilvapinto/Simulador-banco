@@ -6,7 +6,6 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.Objects;
 
-
 public class Cliente implements Serializable{
     private Integer id;
     private String nome;

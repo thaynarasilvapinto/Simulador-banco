@@ -9,6 +9,7 @@ public class Conta implements Serializable {
     private String dataHora;
     private ArrayList<Operacao> extrato = new ArrayList<Operacao>();
     private int contID = 0;
+
     public Conta() {
     }
     public Conta(String dataHora){
