@@ -15,33 +15,33 @@ public class Conta implements Serializable {
         saldo = 0.00;
         this.dataHora = dataHora;
     }
-    public int saque(Operacao operacao){
+    public Operacao saque(Operacao operacao){
         if(operacao.getValorOperacao() <= this.saldo) {
             saldo -= operacao.getValorOperacao();
             operacao.setIdOperacao(contID);
             contID++;
             this.extrato.add(operacao);
-            return 1;
+            return operacao;
         }
-        return 0;
+        return null;
     }
-    public int deposito(Operacao operacao){
+    public Operacao deposito(Operacao operacao){
         if(operacao.getValorOperacao() > 0){
             saldo +=operacao.getValorOperacao();
             operacao.setIdOperacao(contID);
             contID++;
             this.extrato.add(operacao);
-            return 1;
+            return operacao;
         }
-        return 0;
+        return null;
     }
-    public int Transferencia(Conta clienteDestino, Operacao operacao){
+    public Operacao Transferencia(Conta clienteDestino, Operacao operacao){
         if(operacao.getValorOperacao() <= this.saldo){
-            efetuarTrasferencia(operacao);
+            Operacao op = efetuarTrasferencia(operacao);
             clienteDestino.recebimentoTransferencia(operacao);
-            return 1;
+            return op;
         }
-        return 0;
+        return null;
     }
     public void recebimentoTransferencia(Operacao operacao){
         if(operacao.getValorOperacao() > 0){
@@ -52,14 +52,16 @@ public class Conta implements Serializable {
             this.extrato.add(op);
         }
     }
-    public void efetuarTrasferencia(Operacao operacao){
+    public Operacao efetuarTrasferencia(Operacao operacao){
         if(operacao.getValorOperacao() <= this.saldo) {
             saldo -= operacao.getValorOperacao();
             Operacao op = new Operacao(operacao.getIdOrigem(),operacao.getIdDestino(),operacao.getValorOperacao(),TipoOperacao.TRANSFERENCIA);
             op.setIdOperacao(contID);
             contID++;
             this.extrato.add(op);
+            return op;
         }
+        return null;
     }
     public double getSaldo() {
         return saldo;
