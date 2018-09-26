@@ -1,19 +1,25 @@
 package com.github.thaynarasilvapinto.SimuladorBanco.domain;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.Objects;
 
+@Entity
 public class Cliente implements Serializable{
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
     private String nome;
     private String cpf;
     private String dataHora;
+    @OneToOne
+    @JoinColumn(name="conta_id")
     private Conta conta;
 
-    public Cliente() {
+    protected Cliente() {
     }
 
     public Cliente(String nome, String cpf) {

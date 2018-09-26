@@ -1,20 +1,30 @@
 package com.github.thaynarasilvapinto.SimuladorBanco.domain;
 
+import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.Objects;
 
+@Entity
 public class Operacao {
-    private Integer idOrigem;
-    private Integer idDestino;
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer idOperacao;
+    private Integer idOrigem;//TODO:Voltar aqui e retirar o campo
+    private Integer idDestino;
     private double valorOperacao;
     private String dataOperacao;
     private TipoOperacao tipoOperacao;
+    @ManyToOne
+    @JoinColumn(name="conta_id_origem")
+    private Conta contaOrigem;
+    @ManyToOne
+    @JoinColumn(name="conta_id_destino")
+    private Conta contaDestino;
 
-    public Operacao() {
+    protected Operacao() {
     }
-
     public Operacao(Integer idOrigem, Integer idDestino, double valorTransacao, TipoOperacao tipoOperacao) {
         this.idOrigem = idOrigem;
         this.idDestino = idDestino;
@@ -74,5 +84,18 @@ public class Operacao {
 
     public void setIdOperacao(Integer idOperacao) {
         this.idOperacao = idOperacao;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Operacao)) return false;
+        Operacao operacao = (Operacao) o;
+        return Objects.equals(getIdOperacao(), operacao.getIdOperacao());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getIdOperacao());
     }
 }
