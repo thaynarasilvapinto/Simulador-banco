@@ -1,16 +1,25 @@
 package com.github.thaynarasilvapinto.SimuladorBanco.domain;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
+@Entity
 public class Conta implements Serializable {
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
     private double saldo;
     private String dataHora;
-    private ArrayList<Operacao> extrato = new ArrayList<Operacao>();
+    @OneToMany(mappedBy = "conta",cascade = CascadeType.ALL)
+    private List<Operacao> extrato = new ArrayList<Operacao>();
     private int contID = 0;
+    @OneToOne(mappedBy = "conta")
+    private Cliente cliente;
 
-    public Conta() {
+    protected Conta() {
     }
     public Conta(String dataHora){
         saldo = 0.00;
@@ -92,7 +101,7 @@ public class Conta implements Serializable {
         this.contID = contID;
     }
 
-    public ArrayList<Operacao> getExtrato() {
+    public List<Operacao> getExtrato() {
         return extrato;
     }
 
@@ -100,10 +109,23 @@ public class Conta implements Serializable {
         this.id = id;
     }
 
-    public void setExtrato(ArrayList<Operacao> extrato) {
+    public void setExtrato(List<Operacao> extrato) {
         if (extrato == null) {
             extrato = new ArrayList<>();
         }
         this.extrato = extrato;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Conta)) return false;
+        Conta conta = (Conta) o;
+        return Objects.equals(getId(), conta.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }
