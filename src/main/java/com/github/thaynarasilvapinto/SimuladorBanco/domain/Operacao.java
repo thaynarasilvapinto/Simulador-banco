@@ -7,19 +7,20 @@ import java.util.Locale;
 import java.util.Objects;
 
 @Entity
+@Table(name = "operacao")
 public class Operacao {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer idOperacao;
     private Integer idOrigem;//TODO:Voltar aqui e retirar o campo
-    private Integer idDestino;
+    private Integer idDestino;//TODO:Também retirar esse campo
     private double valorOperacao;
     private String dataOperacao;
     private TipoOperacao tipoOperacao;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="conta_id_origem")
     private Conta contaOrigem;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="conta_id_destino")
     private Conta contaDestino;
 
