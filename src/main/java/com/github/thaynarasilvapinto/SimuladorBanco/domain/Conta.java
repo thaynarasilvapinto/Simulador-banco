@@ -7,15 +7,16 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "conta")
 public class Conta implements Serializable {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
     private double saldo;
     private String dataHora;
-    @OneToMany(mappedBy = "conta",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "contaOrigem",cascade = CascadeType.ALL)
     private List<Operacao> extrato = new ArrayList<Operacao>();
-    private int contID = 0;
+    private int contID = 0; //TODO:Essa variavel foi feita para implementar um id do cliente, porém ela sera retirada
     @OneToOne(mappedBy = "conta")
     private Cliente cliente;
 

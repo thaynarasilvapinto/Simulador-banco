@@ -8,9 +8,10 @@ import java.util.Locale;
 import java.util.Objects;
 
 @Entity
+@Table(name = "cliente")
 public class Cliente implements Serializable{
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
     private String nome;
     private String cpf;
