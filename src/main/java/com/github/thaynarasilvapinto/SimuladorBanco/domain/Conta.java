@@ -1,10 +1,11 @@
 package com.github.thaynarasilvapinto.SimuladorBanco.domain;
 
+import jdk.nashorn.internal.runtime.regexp.joni.constants.OPCode;
+
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Entity
 @Table(name = "conta")
@@ -15,22 +16,24 @@ public class Conta implements Serializable {
     private double saldo;
     private String dataHora;
     @OneToMany(mappedBy = "contaOrigem",cascade = CascadeType.ALL)
-    private List<Operacao> extrato = new ArrayList<Operacao>();
+    private List<Operacao> extrato;
     private int contID = 0; //TODO:Essa variavel foi feita para implementar um id do cliente, porém ela sera retirada
     @OneToOne(mappedBy = "conta")
     private Cliente cliente;
 
     protected Conta() {
     }
-    public Conta(String dataHora){
-        saldo = 0.00;
-        this.dataHora = dataHora;
+    public Conta(double saldo){
+        this.saldo = saldo;
+        Locale locale = new Locale("pt","BR");
+        GregorianCalendar calendario = new GregorianCalendar();
+        SimpleDateFormat formatador = new SimpleDateFormat("dd'/'MM'/'yyyy' - 'HH':'mm",locale);
+        dataHora = formatador.format(calendario.getTime());
+        this.extrato = new ArrayList<Operacao>();
     }
     public Operacao saque(Operacao operacao){
         if(operacao.getValorOperacao() <= this.saldo) {
             saldo -= operacao.getValorOperacao();
-            operacao.setIdOperacao(contID);
-            contID++;
             this.extrato.add(operacao);
             return operacao;
         }
@@ -39,8 +42,6 @@ public class Conta implements Serializable {
     public Operacao deposito(Operacao operacao){
         if(operacao.getValorOperacao() > 0){
             saldo +=operacao.getValorOperacao();
-            operacao.setIdOperacao(contID);
-            contID++;
             this.extrato.add(operacao);
             return operacao;
         }
@@ -54,26 +55,33 @@ public class Conta implements Serializable {
         }
         return null;
     }
-    public void recebimentoTransferencia(Operacao operacao){
+    public Operacao recebimentoTransferencia(Operacao operacao){
         if(operacao.getValorOperacao() > 0){
             saldo += operacao.getValorOperacao();
-            Operacao op = new Operacao(operacao.getIdOrigem(),operacao.getIdDestino(),operacao.getValorOperacao(),TipoOperacao.RECEBIMENTO_TRANSFERENCIA);
-            op.setIdOperacao(contID);
-            contID++;
-            this.extrato.add(op);
+           // Operacao op = new Operacao(operacao.getIdOrigem(),operacao.getIdDestino(),operacao.getValorOperacao(),TipoOperacao.RECEBIMENTO_TRANSFERENCIA);
+            this.extrato.add(operacao);
+            return  operacao;
         }
+        return null;
     }
     public Operacao efetuarTrasferencia(Operacao operacao){
         if(operacao.getValorOperacao() <= this.saldo) {
             saldo -= operacao.getValorOperacao();
-            Operacao op = new Operacao(operacao.getIdOrigem(),operacao.getIdDestino(),operacao.getValorOperacao(),TipoOperacao.TRANSFERENCIA);
-            op.setIdOperacao(contID);
-            contID++;
-            this.extrato.add(op);
-            return op;
+           /// Operacao op = new Operacao(operacao.getIdOrigem(),operacao.getIdDestino(),operacao.getValorOperacao(),TipoOperacao.TRANSFERENCIA);
+            this.extrato.add(operacao);
+            return operacao;
         }
         return null;
     }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
     public double getSaldo() {
         return saldo;
     }

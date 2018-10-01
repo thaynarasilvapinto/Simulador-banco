@@ -1,6 +1,7 @@
 package com.github.thaynarasilvapinto.SimuladorBanco;
 
 import com.github.thaynarasilvapinto.SimuladorBanco.domain.Cliente;
+import com.github.thaynarasilvapinto.SimuladorBanco.domain.Conta;
 import com.github.thaynarasilvapinto.SimuladorBanco.domain.Operacao;
 import com.github.thaynarasilvapinto.SimuladorBanco.domain.TipoOperacao;
 import org.junit.Before;
@@ -14,6 +15,8 @@ public class ContaTest {
 
     private Cliente joao;
     private Cliente maria;
+    private Conta joaoConta;
+    private Conta mariaConta;
 
     private Operacao operacaoDepositoJoao;
     private Operacao operacaoSaqueJoao;
@@ -21,8 +24,10 @@ public class ContaTest {
 
     @Before
     public void criaUmAmbiente() {
-        this.joao = new Cliente("João Pedro da Silva", "151.425.426-75");
-        this.maria = new Cliente("Maria Abadia de Oliveira", "177.082.896-67");
+        mariaConta = new Conta(0.00);
+        joaoConta = new Conta(0.00);
+        this.joao = new Cliente("João Pedro da Silva", "151.425.426-75",joaoConta);
+        this.maria = new Cliente("Maria Abadia de Oliveira", "177.082.896-67",mariaConta);
         this.operacaoDepositoJoao = new Operacao(0,0,200.00, TipoOperacao.DEPOSITO);
         this.operacaoSaqueJoao = new Operacao(0,0,100.00, TipoOperacao.SAQUE);
         this.operacaoTransferencia = new Operacao(0,1,100,TipoOperacao.TRANSFERENCIA);
