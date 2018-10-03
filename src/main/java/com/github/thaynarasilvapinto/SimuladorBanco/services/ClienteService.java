@@ -16,7 +16,7 @@ public class ClienteService {
         Optional<Cliente> obj = repo.findById(id);
         return obj.orElse(null);
     }
-    public Cliente insert(Cliente obj) {
+    public Cliente insert(Cliente obj){
         obj.setId(null);
         return repo.save(obj);
     }
@@ -27,5 +27,8 @@ public class ClienteService {
     public void delete(Integer id) {
         find(id);
         repo.deleteById(id);
+    }
+    public void deleteALL(){
+        repo.deleteAll();
     }
 }

@@ -1,12 +1,11 @@
 package com.github.thaynarasilvapinto.SimuladorBanco.controller;
 
-import com.github.thaynarasilvapinto.SimuladorBanco.domain.Cliente;
 import com.github.thaynarasilvapinto.SimuladorBanco.domain.Conta;
 import com.github.thaynarasilvapinto.SimuladorBanco.domain.Operacao;
 import com.github.thaynarasilvapinto.SimuladorBanco.domain.TipoOperacao;
-import com.github.thaynarasilvapinto.SimuladorBanco.services.ClienteService;
 import com.github.thaynarasilvapinto.SimuladorBanco.services.ContaService;
 import com.github.thaynarasilvapinto.SimuladorBanco.services.OperacaoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,33 +14,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/")
-public class SimuladorController {
-
-    private ClienteService serviceCliente = new ClienteService();
+public class ContaController {
+    @Autowired
     private ContaService serviceConta = new ContaService();
+    @Autowired
     private OperacaoService serviceOperacao = new OperacaoService();
-
-    @RequestMapping(value = "/cliente/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Cliente> mostrarCliente(@PathVariable Integer id) {
-        //TODO:Precisa-se fazer uma operção para validar se os clientes estão no banco
-        Cliente obj = serviceCliente.find(id);
-        return ResponseEntity.ok().body(obj);
-    }
-
-    @RequestMapping(value = "/criar-cliente", method = RequestMethod.POST)
-    public ResponseEntity<Cliente> criarCliente(@RequestBody Cliente c) {
-
-        Conta conta = new Conta(0.00);
-        serviceConta.insert(conta);
-
-        Cliente cliente = new Cliente(c.getNome(), c.getCpf(),conta);
-        serviceCliente.insert(cliente);
-
-        return ResponseEntity.ok().body(cliente);
-        //if (service.insert(cliente1) != null)
-            //return ResponseEntity.ok().body(cliente1);
-        //return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
-    }
     @RequestMapping(value = "/conta/{id}", method = RequestMethod.GET)
     public ResponseEntity<Conta> find(@PathVariable Integer id) {
         //TODO:Precisa-se fazer uma operção para validar se os clientes estão no banco
@@ -61,12 +38,11 @@ public class SimuladorController {
         Conta obj = serviceConta.find(id);
         return ResponseEntity.ok().body(obj.getExtrato());
     }
-    ////////////////////////////////////Ate aqui tudo ok, pelo menos aparentemente
     @RequestMapping(value = "/conta/{id}/saque", method = RequestMethod.POST)
     public ResponseEntity<Operacao> saque(@PathVariable Integer id, @RequestBody Operacao operacao) {
         Conta conta = serviceConta.find(id);
         //TODO:Precisa-se fazer uma operção para validar se os clientes estão no banco
-       Operacao saque = new Operacao(conta, conta, operacao.getValorOperacao(), TipoOperacao.SAQUE);
+        Operacao saque = new Operacao(conta, conta, operacao.getValorOperacao(), TipoOperacao.SAQUE);
         serviceOperacao.insert(saque);
 
         saque = conta.saque(saque);
@@ -116,5 +92,4 @@ public class SimuladorController {
         }
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
     }
-
 }

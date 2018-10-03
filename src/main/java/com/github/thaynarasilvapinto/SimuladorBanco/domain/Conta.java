@@ -1,6 +1,5 @@
 package com.github.thaynarasilvapinto.SimuladorBanco.domain;
-
-import jdk.nashorn.internal.runtime.regexp.joni.constants.OPCode;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,14 +16,15 @@ public class Conta implements Serializable {
     private String dataHora;
     @OneToMany(mappedBy = "contaOrigem",cascade = CascadeType.ALL)
     private List<Operacao> extrato;
-    private int contID = 0; //TODO:Essa variavel foi feita para implementar um id do cliente, porém ela sera retirada
     @OneToOne(mappedBy = "conta")
+    @JsonIgnore
     private Cliente cliente;
 
     protected Conta() {
     }
-    public Conta(double saldo){
+    public Conta(double saldo,Cliente cliente){
         this.saldo = saldo;
+        this.cliente = cliente;
         Locale locale = new Locale("pt","BR");
         GregorianCalendar calendario = new GregorianCalendar();
         SimpleDateFormat formatador = new SimpleDateFormat("dd'/'MM'/'yyyy' - 'HH':'mm",locale);
@@ -100,14 +100,6 @@ public class Conta implements Serializable {
 
     public void setDataHora(String dataHora) {
         this.dataHora = dataHora;
-    }
-
-    public int getContID() {
-        return contID;
-    }
-
-    public void setContID(int contID) {
-        this.contID = contID;
     }
 
     public List<Operacao> getExtrato() {

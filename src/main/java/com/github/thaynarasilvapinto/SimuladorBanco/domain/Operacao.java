@@ -12,8 +12,6 @@ public class Operacao {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer idOperacao;
-    //private Integer idOrigem;//TODO:Voltar aqui e retirar o campo
-    //private Integer idDestino;//TODO:Também retirar esse campo
     private double valorOperacao;
     private String dataOperacao;
     private TipoOperacao tipoOperacao;
