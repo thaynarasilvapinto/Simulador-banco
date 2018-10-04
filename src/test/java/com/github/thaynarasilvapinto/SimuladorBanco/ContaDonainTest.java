@@ -10,9 +10,8 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 
-public class ContaTest {
-
-
+public class ContaDonainTest {
+    
     private Cliente joao;
     private Cliente maria;
     private Conta joaoConta;
@@ -44,12 +43,10 @@ public class ContaTest {
     @Test
     public void deveRealizarDeposito(){
         Operacao statusDaOperacao = joao.getConta().deposito(operacaoDepositoJoao);
-        Integer idEsperado = 0;
 
         double saldoEsperado = 200.00;
         double saldoAtual = joao.getConta().getSaldo();
 
-        assertEquals(idEsperado,statusDaOperacao.getIdOperacao());
         assertEquals(saldoEsperado,saldoAtual,0.00001);
     }
     @Test

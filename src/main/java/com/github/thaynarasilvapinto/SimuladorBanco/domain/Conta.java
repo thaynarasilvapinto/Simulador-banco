@@ -39,6 +39,7 @@ public class Conta implements Serializable {
         }
         return null;
     }
+
     public Operacao deposito(Operacao operacao){
         if(operacao.getValorOperacao() > 0){
             saldo +=operacao.getValorOperacao();

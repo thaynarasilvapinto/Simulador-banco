@@ -31,6 +31,8 @@ public class ClienteController {
     @RequestMapping(value = "/criar-cliente", method = RequestMethod.POST)
     public ResponseEntity<Cliente> criarCliente(@RequestBody Cliente c) {
 
+        //TODO:Aqui deverá existir verificações para saber se o cliente pode ser inserido
+
         Cliente cliente = new Cliente(c.getNome(), c.getCpf(), null);
         Cliente clienteInserido = serviceCliente.insert(cliente);
         if (clienteInserido != null) {

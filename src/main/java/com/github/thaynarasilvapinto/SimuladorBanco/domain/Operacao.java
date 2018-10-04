@@ -1,6 +1,7 @@
 package com.github.thaynarasilvapinto.SimuladorBanco.domain;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.Locale;
@@ -8,7 +9,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "operacao")
-public class Operacao {
+public class Operacao implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer idOperacao;
