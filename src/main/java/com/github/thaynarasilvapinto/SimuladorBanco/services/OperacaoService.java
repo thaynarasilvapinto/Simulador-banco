@@ -29,4 +29,7 @@ public class OperacaoService {
         find(id);
         repo.deleteById(id);
     }
+    public void deleteALL(){
+        repo.deleteAll();
+    }
 }

@@ -23,16 +23,14 @@ public class Cliente implements Serializable{
     protected Cliente() {
     }
 
-    public Cliente(String nome, String cpf) {
+    public Cliente(String nome, String cpf, Conta conta) {
+        this.conta = conta;
         this.nome = nome;
         this.cpf = cpf;
-
         Locale locale = new Locale("pt","BR");
         GregorianCalendar calendario = new GregorianCalendar();
         SimpleDateFormat formatador = new SimpleDateFormat("dd'/'MM'/'yyyy' - 'HH':'mm",locale);
         dataHora = formatador.format(calendario.getTime());
-        this.conta = new Conta(dataHora);
-
     }
 
     public Integer getId() {

@@ -1,6 +1,7 @@
 package com.github.thaynarasilvapinto.SimuladorBanco;
 
 import com.github.thaynarasilvapinto.SimuladorBanco.domain.Cliente;
+import com.github.thaynarasilvapinto.SimuladorBanco.domain.Conta;
 import com.github.thaynarasilvapinto.SimuladorBanco.domain.Operacao;
 import com.github.thaynarasilvapinto.SimuladorBanco.domain.TipoOperacao;
 import org.junit.Before;
@@ -9,11 +10,12 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 
-public class ContaTest {
-
-
+public class ContaDonainTest {
+    
     private Cliente joao;
     private Cliente maria;
+    private Conta joaoConta;
+    private Conta mariaConta;
 
     private Operacao operacaoDepositoJoao;
     private Operacao operacaoSaqueJoao;
@@ -21,11 +23,13 @@ public class ContaTest {
 
     @Before
     public void criaUmAmbiente() {
-        this.joao = new Cliente("João Pedro da Silva", "151.425.426-75");
-        this.maria = new Cliente("Maria Abadia de Oliveira", "177.082.896-67");
-        this.operacaoDepositoJoao = new Operacao(0,0,200.00, TipoOperacao.DEPOSITO);
-        this.operacaoSaqueJoao = new Operacao(0,0,100.00, TipoOperacao.SAQUE);
-        this.operacaoTransferencia = new Operacao(0,1,100,TipoOperacao.TRANSFERENCIA);
+        this.joao = new Cliente("João Pedro da Silva", "151.425.426-75",joaoConta);
+        this.maria = new Cliente("Maria Abadia de Oliveira", "177.082.896-67",mariaConta);
+        mariaConta = new Conta(0.00,maria);
+        joaoConta = new Conta(0.00,joao);
+        this.operacaoDepositoJoao = new Operacao(joaoConta,joaoConta,200.00, TipoOperacao.DEPOSITO);
+        this.operacaoSaqueJoao = new Operacao(joaoConta,joaoConta,100.00, TipoOperacao.SAQUE);
+        this.operacaoTransferencia = new Operacao(joaoConta,mariaConta,100,TipoOperacao.TRANSFERENCIA);
     }
 
 
@@ -39,12 +43,10 @@ public class ContaTest {
     @Test
     public void deveRealizarDeposito(){
         Operacao statusDaOperacao = joao.getConta().deposito(operacaoDepositoJoao);
-        Integer idEsperado = 0;
 
         double saldoEsperado = 200.00;
         double saldoAtual = joao.getConta().getSaldo();
 
-        assertEquals(idEsperado,statusDaOperacao.getIdOperacao());
         assertEquals(saldoEsperado,saldoAtual,0.00001);
     }
     @Test
@@ -93,7 +95,7 @@ public class ContaTest {
     }
     @Test
     public void naoDeveRealizarTransacaoDeValorMaisAltoDoQueOSaldo(){
-        Operacao transferencia = new Operacao(0,1,300,TipoOperacao.TRANSFERENCIA);
+        Operacao transferencia = new Operacao(joaoConta,mariaConta,300,TipoOperacao.TRANSFERENCIA);
         double saldoEsperadoJoao = 200;
         double saldoEsperadoMaria = 0;
         double saldoAtualJoao;

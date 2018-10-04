@@ -1,31 +1,49 @@
 package com.github.thaynarasilvapinto.SimuladorBanco.controller;
 
 import com.github.thaynarasilvapinto.SimuladorBanco.domain.Cliente;
+import com.github.thaynarasilvapinto.SimuladorBanco.domain.Conta;
 import com.github.thaynarasilvapinto.SimuladorBanco.services.ClienteService;
+import com.github.thaynarasilvapinto.SimuladorBanco.services.ContaService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
+
 @RestController
-@RequestMapping(value = "/cliente")
+@RequestMapping(value = "/")
 public class ClienteController {
+    @Autowired
+    private ClienteService serviceCliente = new ClienteService();
+    @Autowired
+    private ContaService serviceConta = new ContaService();
 
-    private ClienteService service = new ClienteService();
-
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/cliente/{id}", method = RequestMethod.GET)
     public ResponseEntity<Cliente> mostrarCliente(@PathVariable Integer id) {
-        Cliente obj = service.find(id);
-        return ResponseEntity.ok().body(obj);
-    }
-
-    @RequestMapping(value = "/criar-cliente", method = RequestMethod.POST)
-    public ResponseEntity<Cliente> criarCliente(@RequestBody Cliente cliente) {
-
-        Cliente cliente1 = new Cliente(cliente.getNome(), cliente.getCpf());
-        service.insert(cliente1);
-        //if (service.insert(cliente1) != null)
-            //return ResponseEntity.ok().body(cliente1);
+        Cliente cliente = serviceCliente.find(id);
+        if (cliente != null) {
+            return ResponseEntity.ok().body(cliente);
+        }
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
     }
 
+    @RequestMapping(value = "/criar-cliente", method = RequestMethod.POST)
+    public ResponseEntity<Cliente> criarCliente(@RequestBody Cliente c) {
+
+        //TODO:Aqui deverá existir verificações para saber se o cliente pode ser inserido
+
+        Cliente cliente = new Cliente(c.getNome(), c.getCpf(), null);
+        Cliente clienteInserido = serviceCliente.insert(cliente);
+        if (clienteInserido != null) {
+            Conta conta = new Conta(0.00, clienteInserido);
+            Conta contaInserida = serviceConta.insert(conta);
+            if (contaInserida != null) {
+                clienteInserido.setConta(contaInserida);
+                serviceCliente.update(clienteInserido);
+                return ResponseEntity.ok().body(clienteInserido);
+            }
+        }
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
+    }
 }

@@ -1,6 +1,7 @@
 package com.github.thaynarasilvapinto.SimuladorBanco.domain;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.Locale;
@@ -8,12 +9,10 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "operacao")
-public class Operacao {
+public class Operacao implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer idOperacao;
-    private Integer idOrigem;//TODO:Voltar aqui e retirar o campo
-    private Integer idDestino;//TODO:Também retirar esse campo
     private double valorOperacao;
     private String dataOperacao;
     private TipoOperacao tipoOperacao;
@@ -24,11 +23,11 @@ public class Operacao {
     @JoinColumn(name="conta_id_destino")
     private Conta contaDestino;
 
-    protected Operacao() {
+    public Operacao() {
     }
-    public Operacao(Integer idOrigem, Integer idDestino, double valorTransacao, TipoOperacao tipoOperacao) {
-        this.idOrigem = idOrigem;
-        this.idDestino = idDestino;
+    public Operacao(Conta contaDestino, Conta contaOrigem, double valorTransacao, TipoOperacao tipoOperacao) {
+        this.contaDestino = contaDestino;
+        this.contaOrigem = contaOrigem;
         this.valorOperacao = valorTransacao;
         this.tipoOperacao = tipoOperacao;
 
@@ -38,25 +37,25 @@ public class Operacao {
         dataOperacao = formatador.format(calendario.getTime());
     }
 
-    public Integer getIdOrigem() {
-        return idOrigem;
+
+    public Conta getContaOrigem() {
+        return contaOrigem;
     }
 
-    public Integer getIdDestino() {
-        return idDestino;
+    public void setContaOrigem(Conta contaOrigem) {
+        this.contaOrigem = contaOrigem;
     }
 
+    public Conta getContaDestino() {
+        return contaDestino;
+    }
+
+    public void setContaDestino(Conta contaDestino) {
+        this.contaDestino = contaDestino;
+    }
 
     public double getValorOperacao() {
         return valorOperacao;
-    }
-
-    public void setIdOrigem(Integer idOrigem) {
-        this.idOrigem = idOrigem;
-    }
-
-    public void setIdDestino(Integer idDestino) {
-        this.idDestino = idDestino;
     }
 
     public Integer getIdOperacao() {
