@@ -1,10 +1,13 @@
 package com.github.thaynarasilvapinto.SimuladorBanco.services;
 
+import com.github.thaynarasilvapinto.SimuladorBanco.domain.Conta;
 import com.github.thaynarasilvapinto.SimuladorBanco.domain.Operacao;
 import com.github.thaynarasilvapinto.SimuladorBanco.repositories.OperacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -32,4 +35,9 @@ public class OperacaoService {
     public void deleteALL(){
         repo.deleteAll();
     }
+
+    public List<Operacao> findAllContaOrigem(Conta conta){
+        return repo.findAllByContaOrigem(conta);
+    }
+
 }

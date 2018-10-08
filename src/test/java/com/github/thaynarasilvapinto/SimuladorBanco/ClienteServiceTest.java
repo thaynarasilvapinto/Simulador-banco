@@ -1,46 +1,58 @@
 package com.github.thaynarasilvapinto.SimuladorBanco;
 
 import com.github.thaynarasilvapinto.SimuladorBanco.domain.Cliente;
-import com.github.thaynarasilvapinto.SimuladorBanco.repositories.ClienteRepository;
+import com.github.thaynarasilvapinto.SimuladorBanco.domain.Conta;
 import com.github.thaynarasilvapinto.SimuladorBanco.services.ClienteService;
+import com.github.thaynarasilvapinto.SimuladorBanco.services.ContaService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Optional;
-
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.when;
 
+@SpringBootTest
 @RunWith(SpringRunner.class)
 public class ClienteServiceTest {
 
-    @InjectMocks
+    @Autowired
     private ClienteService clienteService;
-
+    @Autowired
+    private ContaService contaService;
+    private Cliente joao;
+    private Conta joaoConta;
 
     @Before
-    public void criaUmAmbiente() {
-        clienteService = new ClienteService();
+    public void setup() {
+        createClient();
     }
-
-    @Mock
-    private ClienteRepository repo;
-
+    private Cliente createClient() {
+        joaoConta = new Conta(0.00);
+        this.joao = new Cliente("Cliente Test Cliente", "151.425.426-75", null);
+        clienteService.insert(joao);
+        contaService.insert(joaoConta);
+        joao.setConta(joaoConta);
+        clienteService.update(joao);
+        return new Cliente();
+    }
     @Test
-    public void naoDeveBuscarClienteDoBanco(){
+    public void salvar() {
+        Cliente clienteBuscado = clienteService.find(joao.getId());
+        assertEquals(joao.getId(),clienteBuscado.getId());
+    }
+    @Test
+    public void buscar() {
+        Cliente clienteBuscado = clienteService.find(joao.getId());
+        assertEquals(joao.getId(),clienteBuscado.getId());
+    }
+    @Test
+    public void update() {
 
-        when(repo.findById(anyInt())).thenReturn(Optional.ofNullable(null));
-
-        Cliente cliente = clienteService.find(10);
-
-        assertNull(cliente);
-
+        joao.setNome("Client Test Update");
+        clienteService.update(joao);
+        Cliente clienteBuscado = clienteService.find(joao.getId());
+        assertEquals(joao.getNome(),clienteBuscado.getNome());
     }
 }
