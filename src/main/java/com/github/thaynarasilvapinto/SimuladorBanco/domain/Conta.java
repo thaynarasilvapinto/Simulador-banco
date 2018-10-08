@@ -2,6 +2,7 @@ package com.github.thaynarasilvapinto.SimuladorBanco.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -12,29 +13,22 @@ public class Conta implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
+    @Min(0)
     private double saldo;
     private String dataHora;
-    @OneToMany(mappedBy = "contaOrigem",cascade = CascadeType.ALL)
-    private List<Operacao> extrato;
-    @OneToOne(mappedBy = "conta")
-    @JsonIgnore
-    private Cliente cliente;
 
     protected Conta() {
     }
-    public Conta(double saldo,Cliente cliente){
+    public Conta(double saldo){
         this.saldo = saldo;
-        this.cliente = cliente;
         Locale locale = new Locale("pt","BR");
         GregorianCalendar calendario = new GregorianCalendar();
         SimpleDateFormat formatador = new SimpleDateFormat("dd'/'MM'/'yyyy' - 'HH':'mm",locale);
         dataHora = formatador.format(calendario.getTime());
-        this.extrato = new ArrayList<Operacao>();
     }
     public Operacao saque(Operacao operacao){
-        if(operacao.getValorOperacao() <= this.saldo) {
+        if(operacao.getValorOperacao() <= this.saldo && operacao.getValorOperacao() > 0) {
             saldo -= operacao.getValorOperacao();
-            this.extrato.add(operacao);
             return operacao;
         }
         return null;
@@ -43,13 +37,12 @@ public class Conta implements Serializable {
     public Operacao deposito(Operacao operacao){
         if(operacao.getValorOperacao() > 0){
             saldo +=operacao.getValorOperacao();
-            this.extrato.add(operacao);
             return operacao;
         }
         return null;
     }
     public Operacao Transferencia(Conta clienteDestino, Operacao operacao){
-        if(operacao.getValorOperacao() <= this.saldo){
+        if(operacao.getValorOperacao() <= this.saldo && operacao.getValorOperacao() > 0){
             Operacao op = efetuarTrasferencia(operacao);
             clienteDestino.recebimentoTransferencia(operacao);
             return op;
@@ -59,8 +52,6 @@ public class Conta implements Serializable {
     public Operacao recebimentoTransferencia(Operacao operacao){
         if(operacao.getValorOperacao() > 0){
             saldo += operacao.getValorOperacao();
-           // Operacao op = new Operacao(operacao.getIdOrigem(),operacao.getIdDestino(),operacao.getValorOperacao(),TipoOperacao.RECEBIMENTO_TRANSFERENCIA);
-            this.extrato.add(operacao);
             return  operacao;
         }
         return null;
@@ -68,19 +59,9 @@ public class Conta implements Serializable {
     public Operacao efetuarTrasferencia(Operacao operacao){
         if(operacao.getValorOperacao() <= this.saldo) {
             saldo -= operacao.getValorOperacao();
-           /// Operacao op = new Operacao(operacao.getIdOrigem(),operacao.getIdDestino(),operacao.getValorOperacao(),TipoOperacao.TRANSFERENCIA);
-            this.extrato.add(operacao);
             return operacao;
         }
         return null;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
     }
 
     public double getSaldo() {
@@ -98,26 +79,12 @@ public class Conta implements Serializable {
     public String getDataHora() {
         return dataHora;
     }
-
     public void setDataHora(String dataHora) {
         this.dataHora = dataHora;
     }
-
-    public List<Operacao> getExtrato() {
-        return extrato;
-    }
-
     public void setId(Integer id) {
         this.id = id;
     }
-
-    public void setExtrato(List<Operacao> extrato) {
-        if (extrato == null) {
-            extrato = new ArrayList<>();
-        }
-        this.extrato = extrato;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

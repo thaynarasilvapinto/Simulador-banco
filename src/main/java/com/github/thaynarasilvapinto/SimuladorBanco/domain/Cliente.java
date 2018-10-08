@@ -20,7 +20,7 @@ public class Cliente implements Serializable{
     @JoinColumn(name="conta_id")
     private Conta conta;
 
-    protected Cliente() {
+    public Cliente() {
     }
 
     public Cliente(String nome, String cpf, Conta conta) {

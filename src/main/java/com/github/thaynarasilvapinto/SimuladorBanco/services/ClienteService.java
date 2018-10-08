@@ -31,4 +31,7 @@ public class ClienteService {
     public void deleteALL(){
         repo.deleteAll();
     }
+    public Cliente findCPF(String CPF){
+        return repo.findByCpfEquals(CPF);
+    }
 }
