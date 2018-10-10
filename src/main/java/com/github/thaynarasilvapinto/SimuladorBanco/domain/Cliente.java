@@ -1,6 +1,7 @@
 package com.github.thaynarasilvapinto.SimuladorBanco.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
@@ -13,7 +14,9 @@ public class Cliente implements Serializable{
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
+    @NotNull
     private String nome;
+    @NotNull
     private String cpf;
     private String dataHora;
     @OneToOne

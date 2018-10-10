@@ -4,6 +4,7 @@ import com.github.thaynarasilvapinto.SimuladorBanco.domain.Cliente;
 import com.github.thaynarasilvapinto.SimuladorBanco.domain.Conta;
 import com.github.thaynarasilvapinto.SimuladorBanco.services.ClienteService;
 import com.github.thaynarasilvapinto.SimuladorBanco.services.ContaService;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,12 +31,17 @@ public class ClienteServiceTest {
     }
     private Cliente createClient() {
         joaoConta = new Conta(0.00);
-        this.joao = new Cliente("Cliente Test Cliente", "151.425.426-75", null);
+        this.joao = new Cliente("Cliente Test Cliente", "15142542675", null);
         clienteService.insert(joao);
         contaService.insert(joaoConta);
         joao.setConta(joaoConta);
         clienteService.update(joao);
         return new Cliente();
+    }
+    @After
+    public void delete() {
+        clienteService.delete(joao.getId());
+        contaService.delete(joaoConta.getId());
     }
     @Test
     public void salvar() {
