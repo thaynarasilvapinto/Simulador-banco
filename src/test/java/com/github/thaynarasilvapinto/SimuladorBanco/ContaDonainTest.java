@@ -11,7 +11,7 @@ import static org.junit.Assert.assertEquals;
 
 
 public class ContaDonainTest {
-    
+
     private Cliente joao;
     private Cliente maria;
     private Conta joaoConta;
@@ -22,70 +22,71 @@ public class ContaDonainTest {
     private Operacao operacaoTransferencia;
 
     @Before
-    public void criaUmAmbiente() {
+    public void setup() {
         mariaConta = new Conta(0.00);
         joaoConta = new Conta(0.00);
-        this.joao = new Cliente("João Pedro da Silva", "151.425.426-75",joaoConta);
-        this.maria = new Cliente("Maria Abadia de Oliveira", "177.082.896-67",mariaConta);
+        this.joao = new Cliente("João Pedro da Silva", "15142542675", joaoConta);
+        this.maria = new Cliente("Maria Abadia de Oliveira", "17708289667", mariaConta);
 
 
-        this.operacaoDepositoJoao = new Operacao(joaoConta,joaoConta,200.00, TipoOperacao.DEPOSITO);
-        this.operacaoSaqueJoao = new Operacao(joaoConta,joaoConta,100.00, TipoOperacao.SAQUE);
-        this.operacaoTransferencia = new Operacao(joaoConta,mariaConta,100,TipoOperacao.TRANSFERENCIA);
+        this.operacaoDepositoJoao = new Operacao(joaoConta, joaoConta, 200.00, TipoOperacao.DEPOSITO);
+        this.operacaoSaqueJoao = new Operacao(joaoConta, joaoConta, 100.00, TipoOperacao.SAQUE);
+        this.operacaoTransferencia = new Operacao(joaoConta, mariaConta, 100, TipoOperacao.TRANSFERENCIA);
     }
 
-
     @Test
-    public void deveRealizarDeposito(){
+    public void deveRealizarDeposito() {
         Operacao statusDaOperacao = joao.getConta().deposito(operacaoDepositoJoao);
 
         double saldoEsperado = 200.00;
         double saldoAtual = joao.getConta().getSaldo();
 
-       // System.out.println("Saldo atual: " + saldoAtual + "\nSaldo Esperado: " + saldoEsperado);
-
-        assertEquals(saldoEsperado,saldoAtual,0.00001);
+        assertEquals(saldoEsperado, saldoAtual, 0.00001);
     }
+
     @Test
-    public void deveRealizarSaque(){
+    public void deveRealizarSaque() {
         double saldoEsperado = 100.00;
         double saldoAtual;
 
-        Operacao statusDaOpercaoDeposito =  joao.getConta().deposito(operacaoDepositoJoao);
+        Operacao statusDaOpercaoDeposito = joao.getConta().deposito(operacaoDepositoJoao);
         Operacao statusDaOperacaoSaque = joao.getConta().saque(operacaoSaqueJoao);
 
         saldoAtual = joao.getConta().getSaldo();
 
-        assertEquals(saldoEsperado,saldoAtual,0.00001);
+        assertEquals(saldoEsperado, saldoAtual, 0.00001);
     }
+
     @Test
-    public void naoDeveRealizarSaqueComSaldo0EValorMaiorQueOSaldo(){
+    public void naoDeveRealizarSaqueComSaldo0EValorMaiorQueOSaldo() {
         double saldoEsperado = 0.0;
         double saldoAtual;
         Operacao statusDaOperacaoSaque = joao.getConta().saque(operacaoSaqueJoao);
         Operacao statusEsperadoDaOpercaoSaque = null;
 
         saldoAtual = joao.getConta().getSaldo();
-        assertEquals(statusDaOperacaoSaque,statusEsperadoDaOpercaoSaque);
-        assertEquals(saldoEsperado,saldoAtual,0.00001);
+        assertEquals(statusDaOperacaoSaque, statusEsperadoDaOpercaoSaque);
+        assertEquals(saldoEsperado, saldoAtual, 0.00001);
     }
+
     @Test
-    public void deveRealizarTransferencia(){
+    public void deveRealizarTransferencia() {
         double saldoEsperadoJoao = 100;
         double saldoEsperadoMaria = 100;
         double saldoAtualJoao;
         double saldoAtualMaria;
         Operacao statusDoDeposito = joao.getConta().deposito(operacaoDepositoJoao);
-        Operacao statusDaTransferencia = joao.getConta().Transferencia(maria.getConta(),operacaoTransferencia);
+        Operacao statusDaTransferencia = joao.getConta().Transferencia(maria.getConta(), operacaoTransferencia);
         saldoAtualJoao = joao.getConta().getSaldo();
         saldoAtualMaria = maria.getConta().getSaldo();
 
-        assertEquals(saldoEsperadoJoao,saldoAtualJoao,0.00001);
-        assertEquals(saldoEsperadoMaria,saldoAtualMaria,0.00001);
+        assertEquals(saldoEsperadoJoao, saldoAtualJoao, 0.00001);
+        assertEquals(saldoEsperadoMaria, saldoAtualMaria, 0.00001);
     }
+
     @Test
-    public void naoDeveRealizarTransacaoDeValorMaisAltoDoQueOSaldo(){
-        Operacao transferencia = new Operacao(joaoConta,mariaConta,300,TipoOperacao.TRANSFERENCIA);
+    public void naoDeveRealizarTransacaoDeValorMaisAltoDoQueOSaldo() {
+        Operacao transferencia = new Operacao(joaoConta, mariaConta, 300, TipoOperacao.TRANSFERENCIA);
 
         double saldoEsperadoJoao = 200;
         double saldoEsperadoMaria = 0;
@@ -93,12 +94,12 @@ public class ContaDonainTest {
         double saldoAtualMaria;
 
         Operacao statusDoDeposito = joao.getConta().deposito(operacaoDepositoJoao);
-        Operacao statusDaTransferencia = joao.getConta().Transferencia(maria.getConta(),transferencia);
+        Operacao statusDaTransferencia = joao.getConta().Transferencia(maria.getConta(), transferencia);
 
         saldoAtualJoao = joao.getConta().getSaldo();
         saldoAtualMaria = maria.getConta().getSaldo();
 
-        assertEquals(saldoEsperadoJoao,saldoAtualJoao,0.00001);
-        assertEquals(saldoEsperadoMaria,saldoAtualMaria,0.00001);
+        assertEquals(saldoEsperadoJoao, saldoAtualJoao, 0.00001);
+        assertEquals(saldoEsperadoMaria, saldoAtualMaria, 0.00001);
     }
 }

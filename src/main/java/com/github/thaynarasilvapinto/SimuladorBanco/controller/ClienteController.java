@@ -21,7 +21,7 @@ public class ClienteController {
     @Autowired
     private ContaService serviceConta;
 
-    @RequestMapping(value = "/cliente/{id}", method = RequestMethod.GET)
+    @GetMapping("/cliente/{id}")
     public ResponseEntity<ClienteResponse> mostrarCliente(@PathVariable Integer id) {
         Cliente cliente = serviceCliente.find(id);
         if (cliente != null) {

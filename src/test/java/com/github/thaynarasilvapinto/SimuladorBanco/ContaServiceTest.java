@@ -8,6 +8,7 @@ import com.github.thaynarasilvapinto.SimuladorBanco.domain.TipoOperacao;
 import com.github.thaynarasilvapinto.SimuladorBanco.services.ClienteService;
 import com.github.thaynarasilvapinto.SimuladorBanco.services.ContaService;
 import com.github.thaynarasilvapinto.SimuladorBanco.services.OperacaoService;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,12 +40,22 @@ public class ContaServiceTest {
 
     private Cliente createClient() {
         joaoConta = new Conta(0.00);
-        this.joao = new Cliente("Cliente Test Conta", "151.425.426-75", null);
+        this.joao = new Cliente("Cliente Test Conta", "15142542675", null);
         clienteService.insert(joao);
         contaService.insert(joaoConta);
         joao.setConta(joaoConta);
         clienteService.update(joao);
         return new Cliente();
+    }
+
+    @After
+    public void delete() {
+        clienteService.delete(joao.getId());
+        List<Operacao> extrato = operacaoService.findAllContaOrigem(joaoConta);
+        for (int i = 0; i < extrato.size(); i++) {
+            operacaoService.delete(extrato.get(i).getIdOperacao());
+        }
+        contaService.delete(joaoConta.getId());
     }
 
     @Test
@@ -64,22 +75,20 @@ public class ContaServiceTest {
         joaoConta.setSaldo(100);
         contaService.update(joaoConta);
         Conta contaBuscada = contaService.find(joaoConta.getId());
-        assertEquals(joaoConta.getSaldo(), contaBuscada.getSaldo(),0.00001);
+        assertEquals(joaoConta.getSaldo(), contaBuscada.getSaldo(), 0.00001);
     }
 
     @Test
     public void deveBuscarSaldoDoCliente() {
-        createClient();
         Conta contaBuscado = contaService.find(joaoConta.getId());
-        assertEquals(joaoConta.getSaldo(),contaBuscado.getSaldo(),0.00001);
+        assertEquals(joaoConta.getSaldo(), contaBuscado.getSaldo(), 0.00001);
 
     }
 
     @Test
     public void deveBuscarOExtratoDeUmCliente() {
-        createClient();
 
-        Operacao operacaoDepositoJoao = new Operacao(joaoConta, joaoConta, 100.00, TipoOperacao.SAQUE);
+        Operacao operacaoDepositoJoao = new Operacao(joaoConta, joaoConta, 100.00, TipoOperacao.DEPOSITO);
         Operacao operacaoSaqueJoao = new Operacao(joaoConta, joaoConta, 100.00, TipoOperacao.SAQUE);
 
         Operacao statusDaOpercaoDeposito = joao.getConta().deposito(operacaoDepositoJoao);
