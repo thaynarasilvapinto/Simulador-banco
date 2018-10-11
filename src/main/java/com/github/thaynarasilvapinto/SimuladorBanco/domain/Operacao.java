@@ -3,6 +3,7 @@ package com.github.thaynarasilvapinto.SimuladorBanco.domain;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.Objects;
@@ -85,6 +86,7 @@ public class Operacao implements Serializable {
     public void setIdOperacao(Integer idOperacao) {
         this.idOperacao = idOperacao;
     }
+
 
     @Override
     public boolean equals(Object o) {

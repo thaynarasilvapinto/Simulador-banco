@@ -1,5 +1,6 @@
 package com.github.thaynarasilvapinto.SimuladorBanco.controller;
 
+import com.github.thaynarasilvapinto.SimuladorBanco.controller.request.ClienteCriarRequest;
 import com.github.thaynarasilvapinto.SimuladorBanco.controller.response.ClienteResponse;
 import com.github.thaynarasilvapinto.SimuladorBanco.domain.Cliente;
 import com.github.thaynarasilvapinto.SimuladorBanco.domain.Conta;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 
 
 @RestController
@@ -30,11 +32,11 @@ public class ClienteController {
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
     }
 
-    @RequestMapping(value = "/criar-cliente", method = RequestMethod.POST)
-    public ResponseEntity<ClienteResponse> criarCliente(@RequestBody Cliente c) {
+    @PostMapping(value = "/criar-cliente")
+    public ResponseEntity<ClienteResponse> criarCliente(@Valid @RequestBody ClienteCriarRequest clienteCriarRequest) {
 
-        if(serviceCliente.findCPF(c.getCpf()) == null && new ValidaCPF().validaCPF(c.getCpf()) == true) {
-            Cliente cliente = new Cliente(c.getNome(), c.getCpf(), null);
+        if(serviceCliente.findCPF(clienteCriarRequest.getCpf()) == null && new ValidaCPF().validaCPF(clienteCriarRequest.getCpf()) == true){
+            Cliente cliente = new Cliente(clienteCriarRequest.getNome(), clienteCriarRequest.getCpf(), null);
             Cliente clienteInserido = serviceCliente.insert(cliente);
             if (clienteInserido != null) {
                 Conta conta = new Conta(0.00);
