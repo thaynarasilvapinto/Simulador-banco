@@ -36,41 +36,31 @@ public class OperacaoServiceTest {
     @Before
     public void setup() {
         createClient();
-        this.operacaoDepositoJoao = new Operacao(joaoConta, joaoConta, 200.00, TipoOperacao.DEPOSITO);
+        this.operacaoDepositoJoao = new Operacao(joaoConta,joaoConta,200.00, TipoOperacao.DEPOSITO);
 
-        operacaoService.insert(operacaoDepositoJoao);
+        operacaoDepositoJoao = operacaoService.insert(operacaoDepositoJoao);
 
         joaoConta.deposito(operacaoDepositoJoao);
 
-        contaService.update(joaoConta);
+        joaoConta = contaService.update(joaoConta);
     }
-
     @After
     public void delete() {
         clienteService.delete(joao.getId());
         List<Operacao> extrato = operacaoService.findAllContaOrigem(joaoConta);
-        for (int i = 0; i < extrato.size(); i++) {
+        for(int i=0;i<extrato.size();i++){
             operacaoService.delete(extrato.get(i).getIdOperacao());
         }
         contaService.delete(joaoConta.getId());
     }
-
-    private Cliente createClient() {
+    private void createClient() {
         joaoConta = new Conta(0.00);
-        this.joao = new Cliente("Cliente Test Operacao", "15142542675", null);
-        clienteService.insert(joao);
-        contaService.insert(joaoConta);
+        joao = new Cliente("Cliente Test Operacao", "15142542675", null);
+        joao = clienteService.insert(joao);
+        joaoConta = contaService.insert(joaoConta);
         joao.setConta(joaoConta);
-        clienteService.update(joao);
-        return new Cliente();
+        joao = clienteService.update(joao);
     }
-
-    @Test
-    public void salvar() {
-        Operacao contaOperacao = operacaoService.find(operacaoDepositoJoao.getIdOperacao());
-        assertEquals(operacaoDepositoJoao.getIdOperacao(), contaOperacao.getIdOperacao());
-    }
-
     @Test
     public void buscar() {
         Operacao contaOperacao = operacaoService.find(operacaoDepositoJoao.getIdOperacao());
@@ -82,6 +72,6 @@ public class OperacaoServiceTest {
         operacaoDepositoJoao.setValorOperacao(50);
         operacaoService.update(operacaoDepositoJoao);
         Operacao operacaoBuscada = operacaoService.find(operacaoDepositoJoao.getIdOperacao());
-        assertEquals(operacaoDepositoJoao.getValorOperacao(), operacaoBuscada.getValorOperacao(), 0.00001);
+        assertEquals(operacaoDepositoJoao.getValorOperacao(), operacaoBuscada.getValorOperacao(),0.00001);
     }
 }

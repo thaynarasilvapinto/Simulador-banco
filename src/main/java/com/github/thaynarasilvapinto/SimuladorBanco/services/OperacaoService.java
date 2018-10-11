@@ -2,13 +2,12 @@ package com.github.thaynarasilvapinto.SimuladorBanco.services;
 
 import com.github.thaynarasilvapinto.SimuladorBanco.domain.Conta;
 import com.github.thaynarasilvapinto.SimuladorBanco.domain.Operacao;
+import com.github.thaynarasilvapinto.SimuladorBanco.domain.TipoOperacao;
 import com.github.thaynarasilvapinto.SimuladorBanco.repositories.OperacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class OperacaoService {
@@ -39,5 +38,32 @@ public class OperacaoService {
     public List<Operacao> findAllContaOrigem(Conta conta){
         return repo.findAllByContaOrigem(conta);
     }
+    public List<Operacao> findAllContaDestino(Conta conta){
+        return repo.findAllByContaDestino(conta);
+    }
+    public List<Operacao> findAllTipoOperacao(TipoOperacao tipoOperacao){
+        return repo.findAllByTipoOperacao(tipoOperacao);
+    }
+
+    public List<Operacao> extrato(Conta conta){
+        List<Operacao> extrato = repo.findAllByContaOrigem(conta);
+        List<Operacao> listaDeDestino = repo.findAllByContaDestino(conta);
+        TipoOperacao operacao = null;
+
+        for(int i=0; i<extrato.size(); i++){
+            if(extrato.get(i).getTipoOperacao() == operacao.RECEBIMENTO_TRANSFERENCIA){
+                extrato.remove(listaDeDestino.get(i));
+            }
+        }
+        for(int i=0; i<listaDeDestino.size(); i++){
+            if(listaDeDestino.get(i).getTipoOperacao() == operacao.RECEBIMENTO_TRANSFERENCIA){
+                extrato.add(listaDeDestino.get(i));
+            }
+        }
+        //Collections.sort(extrato);
+
+        return extrato;
+    }
+
 
 }

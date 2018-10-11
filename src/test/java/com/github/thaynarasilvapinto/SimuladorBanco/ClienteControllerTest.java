@@ -1,5 +1,6 @@
 package com.github.thaynarasilvapinto.SimuladorBanco;
 
+import com.github.thaynarasilvapinto.SimuladorBanco.controller.request.ClienteCriarRequest;
 import com.github.thaynarasilvapinto.SimuladorBanco.domain.Cliente;
 import com.github.thaynarasilvapinto.SimuladorBanco.domain.Conta;
 import com.github.thaynarasilvapinto.SimuladorBanco.services.ClienteService;
@@ -69,11 +70,8 @@ public class ClienteControllerTest {
     }
     @Test
     public void deveCriarUmCliente() throws Exception {
-        String content =
-                "{\n" +
-                        "    \"nome\": \"João da Silva Test\",\n" +
-                        "    \"cpf\": \"38292735097\"\n" +
-                        "}";
+        ClienteCriarRequest clienteCriarRequest = new ClienteCriarRequest("João da Silva Test","38292735097");
+        String content = gson.toJson(clienteCriarRequest);
         this.mvc.perform(post("/criar-cliente")
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON_UTF8))

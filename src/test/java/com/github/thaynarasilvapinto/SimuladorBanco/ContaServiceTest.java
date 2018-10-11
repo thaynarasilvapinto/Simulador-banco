@@ -40,11 +40,11 @@ public class ContaServiceTest {
 
     private Cliente createClient() {
         joaoConta = new Conta(0.00);
-        this.joao = new Cliente("Cliente Test Conta", "15142542675", null);
-        clienteService.insert(joao);
-        contaService.insert(joaoConta);
+        joao = new Cliente("Cliente Test Conta", "15142542675", null);
+        joao = clienteService.insert(joao);
+        joaoConta = contaService.insert(joaoConta);
         joao.setConta(joaoConta);
-        clienteService.update(joao);
+        joao = clienteService.update(joao);
         return new Cliente();
     }
 
@@ -57,13 +57,6 @@ public class ContaServiceTest {
         }
         contaService.delete(joaoConta.getId());
     }
-
-    @Test
-    public void salvar() {
-        Conta contaBuscado = contaService.find(joaoConta.getId());
-        assertEquals(joaoConta.getId(), contaBuscado.getId());
-    }
-
     @Test
     public void buscar() {
         Conta contaBuscado = contaService.find(joaoConta.getId());

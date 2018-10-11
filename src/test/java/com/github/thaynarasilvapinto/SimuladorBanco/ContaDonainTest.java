@@ -36,7 +36,7 @@ public class ContaDonainTest {
 
     @Test
     public void deveRealizarDeposito() {
-        Operacao statusDaOperacao = joao.getConta().deposito(operacaoDepositoJoao);
+        joao.getConta().deposito(operacaoDepositoJoao);
 
         double saldoEsperado = 200.00;
         double saldoAtual = joao.getConta().getSaldo();
@@ -49,8 +49,8 @@ public class ContaDonainTest {
         double saldoEsperado = 100.00;
         double saldoAtual;
 
-        Operacao statusDaOpercaoDeposito = joao.getConta().deposito(operacaoDepositoJoao);
-        Operacao statusDaOperacaoSaque = joao.getConta().saque(operacaoSaqueJoao);
+        joao.getConta().deposito(operacaoDepositoJoao);
+        joao.getConta().saque(operacaoSaqueJoao);
 
         saldoAtual = joao.getConta().getSaldo();
 
@@ -75,8 +75,8 @@ public class ContaDonainTest {
         double saldoEsperadoMaria = 100;
         double saldoAtualJoao;
         double saldoAtualMaria;
-        Operacao statusDoDeposito = joao.getConta().deposito(operacaoDepositoJoao);
-        Operacao statusDaTransferencia = joao.getConta().Transferencia(maria.getConta(), operacaoTransferencia);
+        joao.getConta().deposito(operacaoDepositoJoao);
+        joao.getConta().Transferencia(maria.getConta(), operacaoTransferencia);
         saldoAtualJoao = joao.getConta().getSaldo();
         saldoAtualMaria = maria.getConta().getSaldo();
 
@@ -93,8 +93,8 @@ public class ContaDonainTest {
         double saldoAtualJoao;
         double saldoAtualMaria;
 
-        Operacao statusDoDeposito = joao.getConta().deposito(operacaoDepositoJoao);
-        Operacao statusDaTransferencia = joao.getConta().Transferencia(maria.getConta(), transferencia);
+        joao.getConta().deposito(operacaoDepositoJoao);
+        joao.getConta().Transferencia(maria.getConta(), transferencia);
 
         saldoAtualJoao = joao.getConta().getSaldo();
         saldoAtualMaria = maria.getConta().getSaldo();
