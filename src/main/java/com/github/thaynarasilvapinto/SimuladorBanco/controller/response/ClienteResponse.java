@@ -9,6 +9,9 @@ public class ClienteResponse {
     private String dataHora;
     private ContaResponse conta;
 
+    public ClienteResponse() {
+    }
+
     public ClienteResponse(Integer id, String nome, String cpf, String dataHora, ContaResponse conta) {
         this.id = id;
         this.nome = nome;

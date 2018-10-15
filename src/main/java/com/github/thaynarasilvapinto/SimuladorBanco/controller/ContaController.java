@@ -50,7 +50,6 @@ public class ContaController {
             for (int i = 0; i < lista.size(); i++) {
                 extrato.add(new OperacaoResponse(lista.get(i)));
             }
-            //TODO:Existe um jeito de fazer sem usar um for, usando map
             return ResponseEntity.ok().body(extrato);
         }
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
