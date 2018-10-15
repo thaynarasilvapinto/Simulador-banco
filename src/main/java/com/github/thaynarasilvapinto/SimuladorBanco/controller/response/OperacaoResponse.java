@@ -1,6 +1,7 @@
 package com.github.thaynarasilvapinto.SimuladorBanco.controller.response;
 
 import com.github.thaynarasilvapinto.SimuladorBanco.domain.Operacao;
+import com.github.thaynarasilvapinto.SimuladorBanco.domain.TipoOperacao;
 
 public class OperacaoResponse {
     private Integer idOperacao;
@@ -9,6 +10,9 @@ public class OperacaoResponse {
     private String tipoOperacao;
     private ContaResponse contaOrigem;
     private ContaResponse contaDestino;
+
+    public OperacaoResponse() {
+    }
 
     public OperacaoResponse(Integer idOperacao, double valorOperacao, String dataOperacao, String tipoOperacao, ContaResponse contaOrigem, ContaResponse contaDestino) {
         this.idOperacao = idOperacao;

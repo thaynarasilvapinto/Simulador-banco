@@ -12,6 +12,9 @@ public class ContaResponse {
     private List<OperacaoResponse> extrato;
     private ClienteResponse cliente;
 
+    public ContaResponse() {
+    }
+
     public ContaResponse(Integer id, double saldo, String dataHora, List<OperacaoResponse> extrato, ClienteResponse cliente) {
         this.id = id;
         this.saldo = saldo;

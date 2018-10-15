@@ -126,13 +126,10 @@ public class OperacaoControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$.idOperacao", notNullValue()))
-                .andDo(mvcResult -> {
-                    OperacaoResponse response
-                            = mapper.readValue(mvcResult.getResponse().getContentAsString(), OperacaoResponse.class);
+                .andDo(mvcResult -> { OperacaoResponse response
+                        = mapper.readValue(mvcResult.getResponse().getContentAsString(), OperacaoResponse.class);
                     assertEquals(500, response.getContaOrigem().getSaldo(), 0.0001);
                 });
-
-
     }
 
     @Test
@@ -180,5 +177,45 @@ public class OperacaoControllerTest {
 
 
     }
+    @Test
+    public void naoDeveRealizarDeposito() throws Exception {
+        OperacaoDepositoRequest operacaoDepositoRequest = new OperacaoDepositoRequest(-500.00);
+        String content = gson.toJson(operacaoDepositoRequest);
+        this.mvc.perform(post("/conta/{id}/deposito", joaoConta.getId())
+                .content(content)
+                .contentType(APPLICATION_JSON_UTF8))
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    public void naoDeveRealizarSaque() throws Exception {
+
+        joaoConta.setSaldo(300);
+        contaService.update(joaoConta);
+
+        OperacaoSaqueRequest operacaoSaqueRequest = new OperacaoSaqueRequest(-200.00);
+        String content = gson.toJson(operacaoSaqueRequest);
+        this.mvc.perform(post("/conta/{id}/saque", joaoConta.getId())
+                .content(content)
+                .contentType(APPLICATION_JSON_UTF8))
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    public void naoDeveRealizarTransferencia() throws Exception {
+        joaoConta.setSaldo(300);
+        contaService.update(joaoConta);
+
+        OperacaoTransferenciaRequest operacaoTransferenciaRequest =
+                new OperacaoTransferenciaRequest(-100, mariaConta.getId());
+        String content = gson.toJson(operacaoTransferenciaRequest);
+
+        this.mvc.perform(post("/conta/{id}/transferencia", joaoConta.getId())
+                .content(content)
+                .contentType(APPLICATION_JSON_UTF8))
+                .andExpect(status().isBadRequest());
+    }
+
+
 
 }

@@ -31,37 +31,29 @@ public class OperacaoService {
         find(id);
         repo.deleteById(id);
     }
-    public void deleteALL(){
-        repo.deleteAll();
-    }
 
     public List<Operacao> findAllContaOrigem(Conta conta){
         return repo.findAllByContaOrigem(conta);
     }
-    public List<Operacao> findAllContaDestino(Conta conta){
-        return repo.findAllByContaDestino(conta);
-    }
-    public List<Operacao> findAllTipoOperacao(TipoOperacao tipoOperacao){
-        return repo.findAllByTipoOperacao(tipoOperacao);
-    }
-
     public List<Operacao> extrato(Conta conta){
-        List<Operacao> extrato = repo.findAllByContaOrigem(conta);
-        List<Operacao> listaDeDestino = repo.findAllByContaDestino(conta);
-        TipoOperacao operacao = null;
 
-        for(int i=0; i<extrato.size(); i++){
-            if(extrato.get(i).getTipoOperacao() == operacao.RECEBIMENTO_TRANSFERENCIA){
-                extrato.remove(listaDeDestino.get(i));
-            }
-        }
-        for(int i=0; i<listaDeDestino.size(); i++){
-            if(listaDeDestino.get(i).getTipoOperacao() == operacao.RECEBIMENTO_TRANSFERENCIA){
-                extrato.add(listaDeDestino.get(i));
-            }
-        }
-        //Collections.sort(extrato);
+        TipoOperacao tipoOperacao = null;
 
+        List<Operacao> extrato = repo.findAllByContaDestinoAndTipoOperacao(conta, tipoOperacao.RECEBIMENTO_TRANSFERENCIA);
+        List<Operacao> trasferencia = repo.findAllByContaOrigemAndTipoOperacao(conta, tipoOperacao.TRANSFERENCIA);
+        List<Operacao> deposito = repo.findAllByContaOrigemAndTipoOperacao(conta, tipoOperacao.DEPOSITO);
+        List<Operacao> saque = repo.findAllByContaOrigemAndTipoOperacao(conta, tipoOperacao.SAQUE);
+
+        for(int i=0; i<trasferencia.size();i++){
+            extrato.add(trasferencia.get(i));
+        }
+        for(int i=0; i<deposito.size();i++){
+            extrato.add(deposito.get(i));
+        }
+        for(int i=0; i<saque.size();i++){
+            extrato.add(saque.get(i));
+        }
+        //TODO:Ordenar a lista
         return extrato;
     }
 

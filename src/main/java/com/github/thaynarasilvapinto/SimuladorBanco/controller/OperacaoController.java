@@ -78,43 +78,45 @@ public class OperacaoController {
     }
 
     @PostMapping(value = "/conta/{id}/transferencia")
-    public ResponseEntity<OperacaoResponse> transaferencia(@PathVariable Integer id,
-                                                           @Valid @RequestBody OperacaoTransferenciaRequest operacaoTransferenciaRequest) {
+    public ResponseEntity<OperacaoResponse> transferencia(@PathVariable Integer id, @Valid @RequestBody OperacaoTransferenciaRequest operacaoTransferenciaRequest) {
+
+        //TODO: TENTAR tirar um pouco desses IFs
 
         Conta contaOrigem = serviceConta.find(id);
         Conta contaDestino = serviceConta.find(operacaoTransferenciaRequest.getContaDestino());
 
-        if (contaDestino != null && contaOrigem != null) {
-            Operacao efetuarTrasferencia
-                    = new Operacao(contaDestino, contaOrigem, operacaoTransferenciaRequest.getValorOperacao(), TipoOperacao.TRANSFERENCIA);
-            Operacao receberTransferencia
-                    = new Operacao(contaDestino, contaOrigem, operacaoTransferenciaRequest.getValorOperacao(), TipoOperacao.RECEBIMENTO_TRANSFERENCIA);
+        if (id != operacaoTransferenciaRequest.getContaDestino())
+            if (contaDestino != null && contaOrigem != null) {
+                Operacao efetuarTrasferencia
+                        = new Operacao(contaDestino, contaOrigem, operacaoTransferenciaRequest.getValorOperacao(), TipoOperacao.TRANSFERENCIA);
+                Operacao receberTransferencia
+                        = new Operacao(contaDestino, contaOrigem, operacaoTransferenciaRequest.getValorOperacao(), TipoOperacao.RECEBIMENTO_TRANSFERENCIA);
 
-            efetuarTrasferencia = serviceOperacao.insert(efetuarTrasferencia);
-            if (efetuarTrasferencia != null) {
-                receberTransferencia = serviceOperacao.insert(receberTransferencia);
-                if (receberTransferencia != null) {
-                    efetuarTrasferencia = contaOrigem.efetuarTrasferencia(efetuarTrasferencia);
-                    if (efetuarTrasferencia != null) {
-                        receberTransferencia = contaDestino.recebimentoTransferencia(receberTransferencia);
-                        if (receberTransferencia != null) {
-                            serviceConta.update(contaOrigem);
-                            serviceConta.update(contaDestino);
-                            return ResponseEntity.ok().body(new OperacaoResponse(efetuarTrasferencia));
+                efetuarTrasferencia = serviceOperacao.insert(efetuarTrasferencia);
+                if (efetuarTrasferencia != null) {
+                    receberTransferencia = serviceOperacao.insert(receberTransferencia);
+                    if (receberTransferencia != null) {
+                        efetuarTrasferencia = contaOrigem.efetuarTrasferencia(efetuarTrasferencia);
+                        if (efetuarTrasferencia != null) {
+                            receberTransferencia = contaDestino.recebimentoTransferencia(receberTransferencia);
+                            if (receberTransferencia != null) {
+                                serviceConta.update(contaOrigem);
+                                serviceConta.update(contaDestino);
+                                return ResponseEntity.ok().body(new OperacaoResponse(efetuarTrasferencia));
+                            } else {
+                                serviceOperacao.delete(receberTransferencia.getIdOperacao());
+                                serviceOperacao.delete(efetuarTrasferencia.getIdOperacao());
+                            }
                         } else {
                             serviceOperacao.delete(receberTransferencia.getIdOperacao());
                             serviceOperacao.delete(efetuarTrasferencia.getIdOperacao());
                         }
+
                     } else {
-                        serviceOperacao.delete(receberTransferencia.getIdOperacao());
                         serviceOperacao.delete(efetuarTrasferencia.getIdOperacao());
                     }
-
-                } else {
-                    serviceOperacao.delete(efetuarTrasferencia.getIdOperacao());
                 }
             }
-        }
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
     }
 
