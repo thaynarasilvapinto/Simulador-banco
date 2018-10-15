@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/thaynarasilvapinto/SimuladorBanco.svg?branch=master)](https://travis-ci.org/thaynarasilvapinto/SimuladorBanco)
 [![codecov](https://codecov.io/gh/thaynarasilvapinto/SimuladorBanco/branch/master/graph/badge.svg)](https://codecov.io/gh/thaynarasilvapinto/SimuladorBanco)
 
-#Simulador de Operações Bancárias 
+# Simulador de Operações Bancárias 
 Um projeto de treinamento para preparar o(a) estagiário(a) para que o mesmo consiga desenvolver features reais. 
 
 ### Pré-requisitos
@@ -27,7 +27,7 @@ docker-compose down
 ```
 Para sair do docker-compose up, é só dar Ctrl+c
 
-###Motivação
+### Motivação
 O projeto tem como objetivo treinar e desenvolver os seguintes tópicos.
 
 * Maven 
