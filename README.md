@@ -1,0 +1,2 @@
+[![Build Status](https://travis-ci.org/thaynarasilvapinto/SimuladorBanco.svg?branch=master)](https://travis-ci.org/thaynarasilvapinto/SimuladorBanco)
+[![codecov](https://codecov.io/gh/thaynarasilvapinto/SimuladorBanco/branch/master/graph/badge.svg)](https://codecov.io/gh/thaynarasilvapinto/SimuladorBanco)
