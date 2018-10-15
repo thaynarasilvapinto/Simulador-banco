@@ -7,9 +7,11 @@ Um projeto de treinamento para preparar o(a) estagiário(a) para que o mesmo con
 ### Pré-requisitos
 O que você precisa para instalar o software e instalá-lo
 
-* [Docker](https://docs.docker.com/install/#backporting) - Para instalara o docker no seu computador
-* [Docker-Compose](https://docs.docker.com/compose/install/#uninstallation) - Para instalar o docker-compose
-* [Postman](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?hl=pt-BR) - Link para instalação do Postman
+* [Docker](https://docs.docker.com/install/#backporting)
+* [Docker-Compose](https://docs.docker.com/compose/install/#uninstallation) 
+* [Postman](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?hl=pt-BR)
+
+Os links dos referidos softwares ensinam como deve ser feita a instalação em casa caso particular.
 
 ### Comandos auxiliares para o docker
 Após o docker e do docker-compose instalados, é preciso entrar no diretorio do projeto, e executar os seguintes comandos.
