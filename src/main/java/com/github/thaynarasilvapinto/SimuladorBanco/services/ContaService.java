@@ -1,7 +1,7 @@
 package com.github.thaynarasilvapinto.SimuladorBanco.services;
 
 import com.github.thaynarasilvapinto.SimuladorBanco.domain.Conta;
-import com.github.thaynarasilvapinto.SimuladorBanco.repositories.*;
+import com.github.thaynarasilvapinto.SimuladorBanco.repositories.ContaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,5 +28,8 @@ public class ContaService {
     public void delete(Integer id) {
         find(id);
         repo.deleteById(id);
+    }
+    public void deleteALL(){
+        repo.deleteAll();
     }
 }

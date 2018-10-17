@@ -2,16 +2,13 @@ package com.github.thaynarasilvapinto.SimuladorBanco.services;
 
 import com.github.thaynarasilvapinto.SimuladorBanco.domain.Cliente;
 import com.github.thaynarasilvapinto.SimuladorBanco.repositories.ClienteRepository;
-import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
 public class ClienteService {
-
     @Autowired
     private ClienteRepository repo;
 
@@ -19,7 +16,7 @@ public class ClienteService {
         Optional<Cliente> obj = repo.findById(id);
         return obj.orElse(null);
     }
-    public Cliente insert(Cliente obj) {
+    public Cliente insert(Cliente obj){
         obj.setId(null);
         return repo.save(obj);
     }
@@ -29,6 +26,12 @@ public class ClienteService {
     }
     public void delete(Integer id) {
         find(id);
-            repo.deleteById(id);
+        repo.deleteById(id);
+    }
+    public void deleteALL(){
+        repo.deleteAll();
+    }
+    public Cliente findCPF(String CPF){
+        return repo.findByCpfEquals(CPF);
     }
 }
