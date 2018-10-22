@@ -38,7 +38,7 @@ open class ClienteController {
         if (this.serviceCliente.findCPF(clienteCriarRequest.cpf!!).isPresent) {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null)
         } else {
-            val conta = serviceConta.insert(Conta(saldo = 2.00))
+            val conta = serviceConta.insert(Conta(saldo = 0.00))
             val cliente = Cliente(nome = clienteCriarRequest.nome!!, cpf = clienteCriarRequest.cpf!!, conta = conta)
             val clienteInserido = serviceCliente.insert(cliente)
             return ResponseEntity.ok().body(ClienteResponse(clienteInserido))
