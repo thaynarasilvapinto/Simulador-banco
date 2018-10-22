@@ -19,17 +19,17 @@ import org.springframework.test.context.junit4.SpringRunner
 
 @SpringBootTest
 @RunWith(SpringRunner::class)
-class OperacaoServiceTest(
-        @Autowired
-        private var clienteService: ClienteService,
-        @Autowired
-        private val contaService: ContaService,
-        @Autowired
-        private var operacaoService: OperacaoService,
-        private var joao: Cliente,
-        private var joaoConta: Conta,
-        private var operacaoDepositoJoao: Operacao
-) {
+class OperacaoServiceTest {
+
+    @Autowired
+    private lateinit var clienteService: ClienteService
+    @Autowired
+    private lateinit var contaService: ContaService
+    @Autowired
+    private lateinit var operacaoService: OperacaoService
+    private lateinit var joao: Cliente
+    private lateinit var joaoConta: Conta
+    private lateinit var operacaoDepositoJoao: Operacao
 
     @Before
     fun setup() {

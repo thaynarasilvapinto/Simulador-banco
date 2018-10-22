@@ -11,6 +11,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
@@ -24,14 +25,17 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 @RunWith(SpringRunner::class)
 @SpringBootTest
 @AutoConfigureMockMvc
-class ClienteControllerTest(
-        private var mvc: MockMvc,
-        private var clienteService: ClienteService,
-        private var contaService: ContaService,
-        private var joaoConta: Conta,
-        private var joao: Cliente,
-        private var gson: Gson
-) {
+class ClienteControllerTest{
+
+    @Autowired
+    private lateinit var mvc: MockMvc
+    @Autowired
+    private lateinit var clienteService: ClienteService
+    @Autowired
+    private lateinit var contaService: ContaService
+    private lateinit var joaoConta: Conta
+    private lateinit var joao: Cliente
+    private lateinit var gson: Gson
 
     @Before
     fun setup() {
@@ -55,25 +59,24 @@ class ClienteControllerTest(
     @Test
     @Throws(Exception::class)
     fun `deve retornar o cliente buscado`() {
-        val body = gson.toJson(ClienteResponse(joao))
-        this.mvc.perform(get("/cliente/{id}", joao!!.id))
+        this.mvc.perform(get("/cliente/{id}", joao.id))
                 .andExpect(status().isOk)
-                .andExpect(content().json(body))
+                .andExpect(content().contentType((MediaType.APPLICATION_JSON_UTF8)))
 
     }
 
     @Test
     @Throws(Exception::class)
     fun `deve criar um cliente`() {
-        val clienteCriarRequest = ClienteCriarRequest(nome = "Cliente Test Maria", cpf = "382.927.350-97")
+        val clienteCriarRequest = ClienteCriarRequest(nome = "Cliente Test Maria", cpf = "182.562.790-87")
         val content = gson.toJson(clienteCriarRequest)
-
-        val cliente = clienteService.findCPF("382.927.350-97")
+        
         this.mvc.perform(post("/criar-cliente")
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk)
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+        val cliente = clienteService.findCPF("182.562.790-87")
         clienteService.delete(cliente.get().id)
         contaService.delete(cliente.get().conta.id)
     }

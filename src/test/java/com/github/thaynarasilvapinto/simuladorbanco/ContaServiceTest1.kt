@@ -16,16 +16,16 @@ import org.springframework.test.context.junit4.SpringRunner
 
 @SpringBootTest
 @RunWith(SpringRunner::class)
-class ContaServiceTest(
-        @Autowired
-        private val clienteService: ClienteService,
-        @Autowired
-        private val contaService: ContaService,
-        @Autowired
-        private val operacaoService: OperacaoService,
-        private var joao: Cliente,
-        private var joaoConta: Conta) {
+class ContaServiceTest {
 
+    @Autowired
+    private lateinit var clienteService: ClienteService
+    @Autowired
+    private lateinit var contaService: ContaService
+    @Autowired
+    private lateinit var operacaoService: OperacaoService
+    private lateinit var joao: Cliente
+    private lateinit var joaoConta: Conta
 
     @Before
     fun setup() {
@@ -80,15 +80,15 @@ class ContaServiceTest(
         val operacaoDepositoJoao = Operacao(contaOrigem = joaoConta, contaDestino = joaoConta,valorOperacao =  100.00, tipoOperacao = Operacao.TipoOperacao.DEPOSITO)
         val operacaoSaqueJoao = Operacao(contaOrigem = joaoConta, contaDestino = joaoConta, valorOperacao = 100.00, tipoOperacao = Operacao.TipoOperacao.SAQUE)
 
-        val (idOperacao) = joao.conta.deposito(operacaoDepositoJoao)
-        val (idOperacao1) = joao.conta.saque(operacaoSaqueJoao)
+        var OperacaoDeposito = joao.conta.deposito(operacaoDepositoJoao)
+        var OperacaoSaque = joao.conta.saque(operacaoSaqueJoao)
 
-        operacaoService.insert(operacaoDepositoJoao)
-        operacaoService.insert(operacaoSaqueJoao)
+        OperacaoDeposito  = operacaoService.insert(operacaoDepositoJoao)
+        OperacaoSaque = operacaoService.insert(operacaoSaqueJoao)
 
         val extrato = operacaoService.findAllContaOrigem(joaoConta)
 
-        assertEquals(idOperacao.toLong(), extrato[0].idOperacao.toLong())
-        assertEquals(idOperacao1.toLong(), extrato[1].idOperacao.toLong())
+        assertEquals(Operacao.TipoOperacao.DEPOSITO, extrato[0].tipoOperacao)
+        assertEquals(Operacao.TipoOperacao.SAQUE, extrato[1].tipoOperacao)
     }
 }

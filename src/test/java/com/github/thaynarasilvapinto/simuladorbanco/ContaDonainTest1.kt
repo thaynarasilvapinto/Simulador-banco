@@ -10,18 +10,17 @@ import org.junit.Before
 import org.junit.Test
 
 
-class ContaDonainTest(
-        private var joao: Cliente,
-        private var maria: Cliente,
-        private var joaoConta: Conta,
-        private var mariaConta: Conta,
+class ContaDonainTest {
 
-        private var operacaoDepositoJoao: Operacao,
-        private var operacaoSaqueJoao: Operacao,
-        private var operacaoEfetuaTransferencia: Operacao,
-        private var operacaorecebeTransferencia: Operacao
-) {
+    private lateinit var joao: Cliente
+    private lateinit var maria: Cliente
+    private lateinit var joaoConta: Conta
+    private lateinit var mariaConta: Conta
 
+    private lateinit var operacaoDepositoJoao: Operacao
+    private lateinit var operacaoSaqueJoao: Operacao
+    private lateinit var operacaoEfetuaTransferencia: Operacao
+    private lateinit var operacaorecebeTransferencia: Operacao
 
     @Before
     fun setup() {
@@ -83,13 +82,11 @@ class ContaDonainTest(
         val saldoEsperadoMaria = 100.0
         val saldoAtualJoao: Double
         val saldoAtualMaria: Double
-        joao.conta.deposito(operacaoDepositoJoao)
+        joao.conta.saldo = 200.00
         joao.conta.efetuarTrasferencia(operacaoEfetuaTransferencia)
-        joao.conta.recebimentoTransferencia(operacaorecebeTransferencia)
-        saldoAtualJoao = joao.conta.saldo
-        saldoAtualMaria = maria.conta.saldo
+        maria.conta.recebimentoTransferencia(operacaorecebeTransferencia)
 
-        assertEquals(saldoEsperadoJoao, saldoAtualJoao, 0.00001)
-        assertEquals(saldoEsperadoMaria, saldoAtualMaria, 0.00001)
+        assertEquals(saldoEsperadoJoao, joao.conta.saldo, 0.00001)
+        assertEquals(saldoEsperadoMaria, maria.conta.saldo, 0.00001)
     }
 }

@@ -3,6 +3,7 @@ package com.github.thaynarasilvapinto.simuladorbanco
 //package com.github.thaynarasilvapinto.simuladorbanco;
 
 import com.github.thaynarasilvapinto.simuladorbanco.controller.response.ContaResponse
+import com.github.thaynarasilvapinto.simuladorbanco.controller.response.SaldoResponse
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Cliente
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Conta
 import com.github.thaynarasilvapinto.simuladorbanco.services.ClienteService
@@ -16,6 +17,7 @@ import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.http.MediaType
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
@@ -25,20 +27,18 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 @RunWith(SpringRunner::class)
 @SpringBootTest
 @AutoConfigureMockMvc
-class ContaControllerTest(
-        @Autowired
-        private val mvc: MockMvc,
-        @Autowired
-        private val clienteService: ClienteService,
-        @Autowired
-        private val contaService: ContaService,
-        @Autowired
-        private val operacaoService: OperacaoService,
-        private var joao: Cliente,
-        private var joaoConta: Conta,
-        private var gson: Gson
-) {
-
+class ContaControllerTest {
+    @Autowired
+    private lateinit var mvc: MockMvc
+    @Autowired
+    private lateinit var clienteService: ClienteService
+    @Autowired
+    private lateinit var contaService: ContaService
+    @Autowired
+    private lateinit var operacaoService: OperacaoService
+    private lateinit var joao: Cliente
+    private lateinit var joaoConta: Conta
+    private lateinit var gson: Gson
 
     @Before
     fun setup() {
@@ -66,17 +66,16 @@ class ContaControllerTest(
     @Test
     @Throws(Exception::class)
     fun `deve retonar a conta buscada`() {
-        val body = gson.toJson(ContaResponse(joaoConta))
         this.mvc.perform(get("/conta/{id}", joaoConta.id))
                 .andExpect(status().isOk)
-                .andExpect(content().json(body))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
 
     }
 
     @Test
     @Throws(Exception::class)
     fun `deve retonar o saldo buscado`() {
-        val body = gson.toJson(ContaResponse(joaoConta))
+        val body = gson.toJson(SaldoResponse(joaoConta))
         this.mvc.perform(get("/conta/{id}/saldo", joaoConta.id))
                 .andExpect(status().isOk)
                 .andExpect(content().string(body))

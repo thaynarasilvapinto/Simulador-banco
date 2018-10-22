@@ -15,15 +15,14 @@ import org.springframework.test.context.junit4.SpringRunner
 
 @SpringBootTest
 @RunWith(SpringRunner::class)
-class ClienteServiceTest(
-        @Autowired
-        private var clienteService: ClienteService,
-        @Autowired
-        private var contaService: ContaService,
-        private var joao: Cliente,
-        private var joaoConta: Conta
-) {
+class ClienteServiceTest{
 
+    @Autowired
+    private lateinit var clienteService: ClienteService
+    @Autowired
+    private lateinit var contaService: ContaService
+    private lateinit var joao: Cliente
+    private lateinit var joaoConta: Conta
 
     @Before
     fun setup() {
