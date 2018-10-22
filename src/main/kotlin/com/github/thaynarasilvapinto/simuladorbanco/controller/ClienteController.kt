@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
-@RequestMapping(value = "/")
+@RequestMapping(value = ["/"])
 open class ClienteController {
 
     @Autowired
@@ -22,23 +22,27 @@ open class ClienteController {
     @Autowired
     private lateinit var serviceConta: ContaService
 
-    @GetMapping("/cliente/{id}")
+    @GetMapping(value = ["/cliente/{id}"])
     fun mostrarCliente(@PathVariable id: Int): ResponseEntity<ClienteResponse> {
-        val cliente = serviceCliente.find(id)
-        return ResponseEntity.ok().body(ClienteResponse(ClienteResponse(cliente))) :? ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null)
+
+        val cliente = this.serviceCliente.find(id)
+
+        if (cliente.isPresent) {
+            return ResponseEntity.ok().body(ClienteResponse(cliente.get()))
+        }
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null)
     }
 
-    @PostMapping(value = "/criar-cliente")
+    @PostMapping(value = ["/criar-cliente"])
     fun criarCliente(@Valid @RequestBody clienteCriarRequest: ClienteCriarRequest): ResponseEntity<ClienteResponse> {
+        if (this.serviceCliente.findCPF(clienteCriarRequest.cpf!!).isPresent) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null)
+        } else {
+            val conta = serviceConta.insert(Conta(saldo = 2.00))
+            val cliente = Cliente(nome = clienteCriarRequest.nome!!, cpf = clienteCriarRequest.cpf!!, conta = conta)
+            val clienteInserido = serviceCliente.insert(cliente)
+            return ResponseEntity.ok().body(ClienteResponse(clienteInserido))
+        }
 
-            var cliente = Cliente(nome = clienteCriarRequest.nome, clienteCriarRequest.cpf)
-            cliente = serviceCliente.insert(cliente)
-            val conta = Conta(0.00)
-            val contaInserida = serviceConta!!.insert(conta)
-            if (contaInserida != null) {
-                cliente.conta = contaInserida
-                serviceCliente.update(cliente)
-                return ResponseEntity.ok().body(ClienteResponse(cliente))
-        //return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null)
     }
 }

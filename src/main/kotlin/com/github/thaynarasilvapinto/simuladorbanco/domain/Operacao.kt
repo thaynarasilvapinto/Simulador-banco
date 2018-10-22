@@ -9,7 +9,7 @@ import javax.persistence.*
 data class Operacao(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var idOperacao: Int,
+        var idOperacao: Int = -1,
         var valorOperacao: Double,
         var dataHoraOperacao: LocalDateTime = LocalDateTime.now(),
         var tipoOperacao: TipoOperacao,
@@ -23,4 +23,5 @@ data class Operacao(
     enum class TipoOperacao {
         SAQUE, DEPOSITO, TRANSFERENCIA, RECEBIMENTO_TRANSFERENCIA
     }
+
 }

@@ -4,9 +4,9 @@ import org.hibernate.validator.constraints.br.CPF
 import javax.validation.constraints.NotNull
 
 data class ClienteCriarRequest(
-        @NotNull
+        @get: NotNull
         val nome: String?,
-        @NotNull
-        @CPF
+        @get: NotNull
+        @get: CPF
         val cpf: String?
 )

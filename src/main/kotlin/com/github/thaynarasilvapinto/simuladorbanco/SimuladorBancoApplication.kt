@@ -11,4 +11,3 @@ open class SimuladorBancoApplication
 fun main(args: Array<String>) {
     SpringApplication.run(SimuladorBancoApplication::class.java, *args)
 }
-

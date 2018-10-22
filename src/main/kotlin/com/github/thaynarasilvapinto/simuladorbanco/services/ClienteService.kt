@@ -4,6 +4,8 @@ import com.github.thaynarasilvapinto.simuladorbanco.domain.Cliente
 import com.github.thaynarasilvapinto.simuladorbanco.repositories.ClienteRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.util.*
+
 
 @Service
 open class ClienteService {
@@ -11,12 +13,13 @@ open class ClienteService {
     @Autowired
     private lateinit var repo: ClienteRepository
 
-    fun find(id: Int) = repo.findById(id)
-
+    fun find(id: Int): Optional<Cliente> {
+        return repo.findById(id)
+    }
 
     fun insert(obj: Cliente) = repo.save(obj)
 
-    fun update(cliente: Cliente): Cliente{
+    fun update(cliente: Cliente): Cliente {
         find(cliente.id)
         return repo.save(cliente)
     }
@@ -26,5 +29,8 @@ open class ClienteService {
         repo.deleteById(id)
     }
 
-    fun findCPF(CPF: String) = repo.findByCpfEquals(CPF)
+    fun findCPF(CPF: String): Optional<Cliente> {
+        return repo.findByCpfEquals(CPF)
+    }
+
 }

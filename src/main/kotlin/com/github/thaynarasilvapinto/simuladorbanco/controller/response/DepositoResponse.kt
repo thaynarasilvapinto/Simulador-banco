@@ -3,7 +3,7 @@ package com.github.thaynarasilvapinto.simuladorbanco.controller.response
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Operacao
 import java.time.LocalDateTime
 
-class DepositoResponse(
+data class DepositoResponse(
         val idOperacao: Int,
         val valorOperacao: Double,
         val dataHora: LocalDateTime,

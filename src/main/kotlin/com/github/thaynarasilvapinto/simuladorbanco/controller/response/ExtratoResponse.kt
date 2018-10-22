@@ -3,12 +3,12 @@ package com.github.thaynarasilvapinto.simuladorbanco.controller.response
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Operacao
 import java.time.LocalDateTime
 
-data class TransferenciaResponse(
+data class ExtratoResponse(
         val idOperacao: Int,
         val valorOperacao: Double,
         val dataHora: LocalDateTime,
         val tipoOperacao: Operacao.TipoOperacao,
-        val contaDestino: Int
+        val contaDestino: Int?
 ) {
     constructor(operacao: Operacao) : this(
             idOperacao = operacao.idOperacao,

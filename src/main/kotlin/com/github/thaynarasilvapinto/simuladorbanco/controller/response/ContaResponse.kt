@@ -10,7 +10,7 @@ data class ContaResponse(
         @NotNull
         val saldo: Double?,
         @NotNull
-        val dataHora: LocalDateTime??
+        val dataHora: LocalDateTime?
         //TODO:Lembrar de perguntar o Danilo sobre a ?
 ){
     constructor(conta: Conta) : this (
