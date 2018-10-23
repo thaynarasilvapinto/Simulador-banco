@@ -1,8 +1,6 @@
 package com.github.thaynarasilvapinto.simuladorbanco
 
-//package com.github.thaynarasilvapinto.simuladorbanco;
 
-import com.github.thaynarasilvapinto.simuladorbanco.controller.response.ContaResponse
 import com.github.thaynarasilvapinto.simuladorbanco.controller.response.SaldoResponse
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Cliente
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Conta

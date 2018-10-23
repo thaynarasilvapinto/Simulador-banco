@@ -1,12 +1,6 @@
 package com.github.thaynarasilvapinto.simuladorbanco
 
-//package com.github.thaynarasilvapinto.simuladorbanco;
-
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.thaynarasilvapinto.simuladorbanco.controller.request.OperacaoRequest
-import com.github.thaynarasilvapinto.simuladorbanco.controller.response.DepositoResponse
-import com.github.thaynarasilvapinto.simuladorbanco.controller.response.SaqueResponse
-import com.github.thaynarasilvapinto.simuladorbanco.controller.response.TransferenciaResponse
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Cliente
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Conta
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Operacao
@@ -16,7 +10,6 @@ import com.github.thaynarasilvapinto.simuladorbanco.services.OperacaoService
 import com.google.gson.Gson
 import org.hamcrest.CoreMatchers.notNullValue
 import org.junit.After
-import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -32,7 +25,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 @RunWith(SpringRunner::class)
 @SpringBootTest
 @AutoConfigureMockMvc
-class OperacaoControllerTest{
+class OperacaoControllerTest {
     @Autowired
     private lateinit var mvc: MockMvc
     @Autowired

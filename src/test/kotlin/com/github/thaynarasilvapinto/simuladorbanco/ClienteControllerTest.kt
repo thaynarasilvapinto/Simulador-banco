@@ -1,7 +1,6 @@
 package com.github.thaynarasilvapinto.simuladorbanco
 
 import com.github.thaynarasilvapinto.simuladorbanco.controller.request.ClienteCriarRequest
-import com.github.thaynarasilvapinto.simuladorbanco.controller.response.ClienteResponse
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Cliente
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Conta
 import com.github.thaynarasilvapinto.simuladorbanco.services.ClienteService
@@ -25,7 +24,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 @RunWith(SpringRunner::class)
 @SpringBootTest
 @AutoConfigureMockMvc
-class ClienteControllerTest{
+class ClienteControllerTest {
 
     @Autowired
     private lateinit var mvc: MockMvc
@@ -70,7 +69,7 @@ class ClienteControllerTest{
     fun `deve criar um cliente`() {
         val clienteCriarRequest = ClienteCriarRequest(nome = "Cliente Test Maria", cpf = "182.562.790-87")
         val content = gson.toJson(clienteCriarRequest)
-        
+
         this.mvc.perform(post("/criar-cliente")
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON_UTF8))

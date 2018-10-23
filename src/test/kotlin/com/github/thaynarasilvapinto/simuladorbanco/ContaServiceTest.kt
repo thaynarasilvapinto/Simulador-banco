@@ -1,4 +1,5 @@
 package com.github.thaynarasilvapinto.simuladorbanco
+
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Cliente
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Conta
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Operacao
@@ -32,7 +33,7 @@ class ContaServiceTest {
         createClient()
     }
 
-    private fun createClient(){
+    private fun createClient() {
         joaoConta = Conta(saldo = 0.00)
         joaoConta = contaService.insert(joaoConta)
         this.joao = Cliente(nome = "Cliente Test ClienteController", cpf = "151.425.426-75", conta = joaoConta)
@@ -77,13 +78,13 @@ class ContaServiceTest {
     @Test
     fun `deve buscar o extrato`() {
 
-        val operacaoDepositoJoao = Operacao(contaOrigem = joaoConta, contaDestino = joaoConta,valorOperacao =  100.00, tipoOperacao = Operacao.TipoOperacao.DEPOSITO)
+        val operacaoDepositoJoao = Operacao(contaOrigem = joaoConta, contaDestino = joaoConta, valorOperacao = 100.00, tipoOperacao = Operacao.TipoOperacao.DEPOSITO)
         val operacaoSaqueJoao = Operacao(contaOrigem = joaoConta, contaDestino = joaoConta, valorOperacao = 100.00, tipoOperacao = Operacao.TipoOperacao.SAQUE)
 
         var OperacaoDeposito = joao.conta.deposito(operacaoDepositoJoao)
         var OperacaoSaque = joao.conta.saque(operacaoSaqueJoao)
 
-        OperacaoDeposito  = operacaoService.insert(operacaoDepositoJoao)
+        OperacaoDeposito = operacaoService.insert(operacaoDepositoJoao)
         OperacaoSaque = operacaoService.insert(operacaoSaqueJoao)
 
         val extrato = operacaoService.findAllContaOrigem(joaoConta)
