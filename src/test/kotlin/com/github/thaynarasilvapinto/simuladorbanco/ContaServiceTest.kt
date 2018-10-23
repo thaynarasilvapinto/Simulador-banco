@@ -41,7 +41,7 @@ class ContaServiceTest {
     }
 
     @After
-    fun delete() {
+    fun tearDown() {
         clienteService.delete(joao.id)
         val extrato = operacaoService.findAllContaOrigem(joaoConta)
         for (i in extrato.indices) {
@@ -51,7 +51,7 @@ class ContaServiceTest {
     }
 
     @Test
-    fun buscar() {
+    fun search() {
 
         val conta = contaService.find(joaoConta.id)
         val id = conta.get().id
@@ -68,7 +68,7 @@ class ContaServiceTest {
     }
 
     @Test
-    fun `deve buscar o saldo do cliente `() {
+    fun `should fetch the client's balance`() {
         val conta = contaService.find(joaoConta.id)
         val saldo = conta.get().saldo
         assertEquals(joaoConta.saldo, saldo, 0.00001)
@@ -76,7 +76,7 @@ class ContaServiceTest {
     }
 
     @Test
-    fun `deve buscar o extrato`() {
+    fun `must obtain the client's bank statement`() {
 
         val operacaoDepositoJoao = Operacao(contaOrigem = joaoConta, contaDestino = joaoConta, valorOperacao = 100.00, tipoOperacao = Operacao.TipoOperacao.DEPOSITO)
         val operacaoSaqueJoao = Operacao(contaOrigem = joaoConta, contaDestino = joaoConta, valorOperacao = 100.00, tipoOperacao = Operacao.TipoOperacao.SAQUE)

@@ -28,7 +28,7 @@ class ContaDonainTest {
     lateinit var operacaorecebeTransferencia: Operacao
 
     @Before
-    fun setup() {
+    fun setUp() {
         mariaConta = Conta(saldo = 0.00)
         joaoConta = Conta(saldo = 0.00)
         this.joao = Cliente(nome = "João Pedro da Silva", cpf = "151.425.426-75", conta = joaoConta)
@@ -58,7 +58,7 @@ class ContaDonainTest {
     }
 
     @Test
-    fun `deve realizar deposito`() {
+    fun `must make deposit`() {
         joao.conta.deposito(operacaoDepositoJoao)
 
         val saldoEsperado = 200.00
@@ -68,7 +68,7 @@ class ContaDonainTest {
     }
 
     @Test
-    fun `deve realizar saque`() {
+    fun `must make withdrawal`() {
         val saldoEsperado = 100.00
         val saldoAtual: Double
 
@@ -82,7 +82,7 @@ class ContaDonainTest {
 
 
     @Test
-    fun `deve realizar transferencia`() {
+    fun `must make transference`() {
         val saldoEsperadoJoao = 100.0
         val saldoEsperadoMaria = 100.0
         val saldoAtualJoao: Double
@@ -96,14 +96,14 @@ class ContaDonainTest {
     }
 
     @Test
-    fun `nao deve realizar saque caso o saldo não seja suficiente`(){
+    fun `must not withdraw a value greater than the balance`(){
         thrown.expect(Exception::class.java)
         thrown.expectMessage("Saldo Insuficiente")
         joao.conta.saque(operacaoSaqueJoao)
     }
 
     @Test
-    fun `nao deve realizar transferencia caso o saldo não seja suficiente`(){
+    fun `must not make transference a value greater than the balance`(){
         thrown.expect(Exception::class.java)
         thrown.expectMessage("Saldo Insuficiente")
         joao.conta.efetuarTrasferencia(operacaoEfetuaTransferencia)
