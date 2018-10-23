@@ -5,20 +5,27 @@ import com.github.thaynarasilvapinto.simuladorbanco.domain.Conta
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Operacao
 import org.junit.Assert.assertEquals
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.ExpectedException
+
+
 
 
 class ContaDonainTest {
 
-    private lateinit var joao: Cliente
-    private lateinit var maria: Cliente
-    private lateinit var joaoConta: Conta
-    private lateinit var mariaConta: Conta
+    @get:Rule
+    open var thrown = ExpectedException.none()
 
-    private lateinit var operacaoDepositoJoao: Operacao
-    private lateinit var operacaoSaqueJoao: Operacao
-    private lateinit var operacaoEfetuaTransferencia: Operacao
-    private lateinit var operacaorecebeTransferencia: Operacao
+    lateinit var joao: Cliente
+    lateinit var maria: Cliente
+    lateinit var joaoConta: Conta
+    lateinit var mariaConta: Conta
+
+    lateinit var operacaoDepositoJoao: Operacao
+    lateinit var operacaoSaqueJoao: Operacao
+    lateinit var operacaoEfetuaTransferencia: Operacao
+    lateinit var operacaorecebeTransferencia: Operacao
 
     @Before
     fun setup() {
@@ -86,5 +93,20 @@ class ContaDonainTest {
 
         assertEquals(saldoEsperadoJoao, joao.conta.saldo, 0.00001)
         assertEquals(saldoEsperadoMaria, maria.conta.saldo, 0.00001)
+    }
+
+    @Test
+    fun `nao deve realizar saque caso o saldo não seja suficiente`(){
+        thrown.expect(Exception::class.java)
+        thrown.expectMessage("Saldo Insuficiente")
+        joao.conta.saque(operacaoSaqueJoao)
+    }
+
+    @Test
+    fun `nao deve realizar transferencia caso o saldo não seja suficiente`(){
+        thrown.expect(Exception::class.java)
+        thrown.expectMessage("Saldo Insuficiente")
+        joao.conta.efetuarTrasferencia(operacaoEfetuaTransferencia)
+        maria.conta.recebimentoTransferencia(operacaorecebeTransferencia)
     }
 }

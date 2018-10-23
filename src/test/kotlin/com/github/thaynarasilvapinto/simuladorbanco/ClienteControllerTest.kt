@@ -63,7 +63,12 @@ class ClienteControllerTest {
                 .andExpect(content().contentType((MediaType.APPLICATION_JSON_UTF8)))
 
     }
-
+    @Test
+    @Throws(Exception::class)
+    fun `não deve retonar um cliente que não existe`() {
+        this.mvc.perform(get("/cliente/{id}", -1))
+                .andExpect(status().isUnprocessableEntity)
+    }
     @Test
     @Throws(Exception::class)
     fun `deve criar um cliente`() {
@@ -78,6 +83,17 @@ class ClienteControllerTest {
         val cliente = clienteService.findCPF("182.562.790-87")
         clienteService.delete(cliente.get().id)
         contaService.delete(cliente.get().conta.id)
+    }
+    @Test
+    @Throws(Exception::class)
+    fun `nao deve criar um cliente que existe no banco`() {
+        val clienteCriarRequest = ClienteCriarRequest(nome = "Cliente Test Maria", cpf = "151.425.426-75")
+        val content = gson.toJson(clienteCriarRequest)
+
+        this.mvc.perform(post("/criar-cliente")
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isBadRequest)
     }
 }
 
