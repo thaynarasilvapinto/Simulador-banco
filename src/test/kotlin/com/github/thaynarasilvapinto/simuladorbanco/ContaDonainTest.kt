@@ -1,7 +1,5 @@
 package com.github.thaynarasilvapinto.simuladorbanco
 
-//package com.github.thaynarasilvapinto.simuladorbanco;
-
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Cliente
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Conta
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Operacao
