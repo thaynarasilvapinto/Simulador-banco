@@ -1,9 +1,11 @@
 package com.github.thaynarasilvapinto.simuladorbanco
 
 
+import com.github.thaynarasilvapinto.simuladorbanco.controller.response.ExtratoResponse
 import com.github.thaynarasilvapinto.simuladorbanco.controller.response.SaldoResponse
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Cliente
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Conta
+import com.github.thaynarasilvapinto.simuladorbanco.domain.Operacao
 import com.github.thaynarasilvapinto.simuladorbanco.services.ClienteService
 import com.github.thaynarasilvapinto.simuladorbanco.services.ContaService
 import com.github.thaynarasilvapinto.simuladorbanco.services.OperacaoService
@@ -21,6 +23,10 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import java.util.*
+import com.fasterxml.jackson.databind.ObjectMapper
+
+
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
@@ -69,6 +75,13 @@ class ContaControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
 
     }
+    @Test
+    @Throws(Exception::class)
+    fun `não deve retonar uma conta que não existe no banco`() {
+        this.mvc.perform(get("/conta/{id}", -1))
+                .andExpect(status().isUnprocessableEntity)
+
+    }
 
     @Test
     @Throws(Exception::class)
@@ -77,5 +90,32 @@ class ContaControllerTest {
         this.mvc.perform(get("/conta/{id}/saldo", joaoConta.id))
                 .andExpect(status().isOk)
                 .andExpect(content().string(body))
+    }
+    @Test
+    @Throws(Exception::class)
+    fun `não deve retonar o saldo de um cliente que não existe`() {
+        this.mvc.perform(get("/conta/{id}/saldo", -1))
+                .andExpect(status().isUnprocessableEntity)
+    }
+    @Test
+    @Throws(Exception::class)
+    fun `deve retonar o extrato de um cliente`() {
+
+        var operacaoDeposito: Operacao = Operacao(contaOrigem = joaoConta, contaDestino = joaoConta, valorOperacao = 200.00, tipoOperacao = Operacao.TipoOperacao.DEPOSITO)
+        var operacaoSaque: Operacao = Operacao(contaOrigem = joaoConta, contaDestino = joaoConta, valorOperacao = 100.00, tipoOperacao = Operacao.TipoOperacao.SAQUE)
+
+        operacaoDeposito = operacaoService.insert(operacaoDeposito)
+        operacaoSaque = operacaoService.insert(operacaoSaque)
+
+        this.mvc.perform(get("/conta/{id}/extrato", joaoConta.id))
+                .andExpect(status().isOk)
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun `não deve retonar o extrato de um cliente que não existe`() {
+        this.mvc.perform(get("/conta/{id}/extrato", -1))
+                .andExpect(status().isUnprocessableEntity)
     }
 }

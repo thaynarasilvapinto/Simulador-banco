@@ -19,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType.APPLICATION_JSON_UTF8
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
@@ -94,6 +95,16 @@ class OperacaoControllerTest {
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$.idOperacao", notNullValue()))
     }
+    @Test
+    @Throws(Exception::class)
+    fun `não deve retonar o deposito de um conta que não existe`() {
+        val operacaoDepositoRequest = OperacaoRequest(valorOperacao = 500.00, contaDestino = null)
+        val content = gson.toJson(operacaoDepositoRequest)
+        this.mvc.perform(post("/conta/{id}/deposito", -1)
+                .content(content)
+                .contentType(APPLICATION_JSON_UTF8))
+                .andExpect(status().isUnprocessableEntity)
+    }
 
     @Test
     @Throws(Exception::class)
@@ -111,7 +122,16 @@ class OperacaoControllerTest {
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$.idOperacao", notNullValue()))
     }
-
+    @Test
+    @Throws(Exception::class)
+    fun `não deve retonar o saque de um conta que não existe`() {
+        val operacaoSaqueRequest = OperacaoRequest(valorOperacao = 200.00, contaDestino = null)
+        val content = gson.toJson(operacaoSaqueRequest)
+        this.mvc.perform(post("/conta/{id}/saque", -1)
+                .content(content)
+                .contentType(APPLICATION_JSON_UTF8))
+                .andExpect(status().isUnprocessableEntity)
+    }
     @Test
     @Throws(Exception::class)
     fun `deve realizar transferencia`() {
@@ -165,12 +185,34 @@ class OperacaoControllerTest {
 
     @Test
     @Throws(Exception::class)
-    fun `nao deve trealizar transfefrencia para mesmo conta`() {
+    fun `nao deve trealizar transfefrencia para mesma conta`() {
         joaoConta.saldo = 300.00
         contaService.update(joaoConta)
         val operacaoTransferenciaRequest = OperacaoRequest(valorOperacao = 300.00, contaDestino = joaoConta.id)
         val content = gson.toJson(operacaoTransferenciaRequest)
         this.mvc.perform(post("/conta/{id}/transferencia", joaoConta.id)
+                .content(content)
+                .contentType(APPLICATION_JSON_UTF8))
+                .andExpect(status().isUnprocessableEntity)
+    }
+    @Test
+    @Throws(Exception::class)
+    fun `nao deve trealizar transfefrencia para uma conta que nao existe`() {
+        joaoConta.saldo = 300.00
+        contaService.update(joaoConta)
+        val operacaoTransferenciaRequest = OperacaoRequest(valorOperacao = 300.00, contaDestino = -1)
+        val content = gson.toJson(operacaoTransferenciaRequest)
+        this.mvc.perform(post("/conta/{id}/transferencia", joaoConta.id)
+                .content(content)
+                .contentType(APPLICATION_JSON_UTF8))
+                .andExpect(status().isUnprocessableEntity)
+    }
+    @Test
+    @Throws(Exception::class)
+    fun `nao deve trealizar transfefrencia de uma conta que nao existe`() {
+        val operacaoTransferenciaRequest = OperacaoRequest(valorOperacao = 300.00, contaDestino = mariaConta.id)
+        val content = gson.toJson(operacaoTransferenciaRequest)
+        this.mvc.perform(post("/conta/{id}/transferencia", -1)
                 .content(content)
                 .contentType(APPLICATION_JSON_UTF8))
                 .andExpect(status().isUnprocessableEntity)
