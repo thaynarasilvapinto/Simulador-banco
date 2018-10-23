@@ -30,7 +30,7 @@ class OperacaoServiceTest {
     private lateinit var operacaoDepositoJoao: Operacao
 
     @Before
-    fun setup() {
+    fun setUp() {
         createClient()
         this.operacaoDepositoJoao = Operacao(
                 contaDestino = joaoConta,
@@ -44,7 +44,7 @@ class OperacaoServiceTest {
     }
 
     @After
-    fun delete() {
+    fun tearDown() {
         clienteService.delete(joao.id)
         val extrato = operacaoService.findAllContaOrigem(joaoConta)
         for (i in extrato.indices) {
@@ -61,7 +61,7 @@ class OperacaoServiceTest {
     }
 
     @Test
-    fun buscar() {
+    fun search() {
         val conta = operacaoService.find(operacaoDepositoJoao.idOperacao)
         val id = conta.get().idOperacao
         assertEquals(operacaoDepositoJoao.idOperacao, id)

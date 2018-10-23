@@ -47,7 +47,7 @@ class OperacaoControllerTest {
     private lateinit var operacaoTransferencia: Operacao
 
     @Before
-    fun setup() {
+    fun setUp() {
         createClient()
         this.gson = Gson()
 
@@ -85,7 +85,7 @@ class OperacaoControllerTest {
 
     @Test
     @Throws(Exception::class)
-    fun `deve realizar deposito`() {
+    fun `must make deposit`() {
         val operacaoDepositoRequest = OperacaoRequest(valorOperacao = 500.00, contaDestino = null)
         val content = gson.toJson(operacaoDepositoRequest)
         this.mvc.perform(post("/conta/{id}/deposito", joaoConta.id)
@@ -97,7 +97,7 @@ class OperacaoControllerTest {
     }
     @Test
     @Throws(Exception::class)
-    fun `não deve retonar o deposito de um conta que não existe`() {
+    fun `should not deposit  in of an account that does not exist`() {
         val operacaoDepositoRequest = OperacaoRequest(valorOperacao = 500.00, contaDestino = null)
         val content = gson.toJson(operacaoDepositoRequest)
         this.mvc.perform(post("/conta/{id}/deposito", -1)
@@ -108,7 +108,7 @@ class OperacaoControllerTest {
 
     @Test
     @Throws(Exception::class)
-    fun ` deve realizar saque`() {
+    fun `must make withdrawal`() {
 
         joaoConta.saldo = 300.00
         contaService.update(joaoConta)
@@ -124,7 +124,7 @@ class OperacaoControllerTest {
     }
     @Test
     @Throws(Exception::class)
-    fun `não deve retonar o saque de um conta que não existe`() {
+    fun `should not  withdrawal from an account that does not exist`() {
         val operacaoSaqueRequest = OperacaoRequest(valorOperacao = 200.00, contaDestino = null)
         val content = gson.toJson(operacaoSaqueRequest)
         this.mvc.perform(post("/conta/{id}/saque", -1)
@@ -134,7 +134,7 @@ class OperacaoControllerTest {
     }
     @Test
     @Throws(Exception::class)
-    fun `deve realizar transferencia`() {
+    fun `must make transference`() {
         joaoConta.saldo = 300.00
         contaService.update(joaoConta)
 
@@ -151,7 +151,7 @@ class OperacaoControllerTest {
 
     @Test
     @Throws(Exception::class)
-    fun `nao deve realizar deposito`() {
+    fun `must not carry out negative deposit`() {
         val operacaoDepositoRequest = OperacaoRequest(valorOperacao = -500.00, contaDestino = null)
         val content = gson.toJson(operacaoDepositoRequest)
         this.mvc.perform(post("/conta/{id}/deposito", joaoConta.id)
@@ -162,7 +162,7 @@ class OperacaoControllerTest {
 
     @Test
     @Throws(Exception::class)
-    fun `nao deve realizar saque`() {
+    fun `should not make negative withdrawals`() {
         val operacaoSaqueRequest = OperacaoRequest(valorOperacao = -200.00, contaDestino = null)
         val content = gson.toJson(operacaoSaqueRequest)
         this.mvc.perform(post("/conta/{id}/saque", joaoConta.id)
@@ -173,7 +173,7 @@ class OperacaoControllerTest {
 
     @Test
     @Throws(Exception::class)
-    fun `nao deve trealizar transfefrencia de valor negativo`() {
+    fun `should not perform negative value transference`() {
         val operacaoTransferenciaRequest = OperacaoRequest(valorOperacao = -100.00, contaDestino = mariaConta.id)
         val content = gson.toJson(operacaoTransferenciaRequest)
 
@@ -185,7 +185,7 @@ class OperacaoControllerTest {
 
     @Test
     @Throws(Exception::class)
-    fun `nao deve trealizar transfefrencia para mesma conta`() {
+    fun `should not transference for the same account`() {
         joaoConta.saldo = 300.00
         contaService.update(joaoConta)
         val operacaoTransferenciaRequest = OperacaoRequest(valorOperacao = 300.00, contaDestino = joaoConta.id)
@@ -197,7 +197,7 @@ class OperacaoControllerTest {
     }
     @Test
     @Throws(Exception::class)
-    fun `nao deve trealizar transfefrencia para uma conta que nao existe`() {
+    fun `must not transfer to an account that does not exist`() {
         joaoConta.saldo = 300.00
         contaService.update(joaoConta)
         val operacaoTransferenciaRequest = OperacaoRequest(valorOperacao = 300.00, contaDestino = -1)
@@ -209,7 +209,7 @@ class OperacaoControllerTest {
     }
     @Test
     @Throws(Exception::class)
-    fun `nao deve trealizar transfefrencia de uma conta que nao existe`() {
+    fun `you must not transfer an account that does not exist`() {
         val operacaoTransferenciaRequest = OperacaoRequest(valorOperacao = 300.00, contaDestino = mariaConta.id)
         val content = gson.toJson(operacaoTransferenciaRequest)
         this.mvc.perform(post("/conta/{id}/transferencia", -1)

@@ -37,7 +37,7 @@ class ClienteControllerTest {
     private lateinit var gson: Gson
 
     @Before
-    fun setup() {
+    fun setUp() {
         createClient()
         this.gson = Gson()
     }
@@ -50,14 +50,14 @@ class ClienteControllerTest {
     }
 
     @After
-    fun delete() {
+    fun tearDown() {
         clienteService.delete(joao.id)
         contaService.delete(joaoConta.id)
     }
 
     @Test
     @Throws(Exception::class)
-    fun `deve retornar o cliente buscado`() {
+    fun `should return the requested client`() {
         this.mvc.perform(get("/cliente/{id}", joao.id))
                 .andExpect(status().isOk)
                 .andExpect(content().contentType((MediaType.APPLICATION_JSON_UTF8)))
@@ -65,13 +65,13 @@ class ClienteControllerTest {
     }
     @Test
     @Throws(Exception::class)
-    fun `não deve retonar um cliente que não existe`() {
+    fun `should not return a client that does not exist in banc`() {
         this.mvc.perform(get("/cliente/{id}", -1))
                 .andExpect(status().isUnprocessableEntity)
     }
     @Test
     @Throws(Exception::class)
-    fun `deve criar um cliente`() {
+    fun `must create a client`() {
         val clienteCriarRequest = ClienteCriarRequest(nome = "Cliente Test Maria", cpf = "182.562.790-87")
         val content = gson.toJson(clienteCriarRequest)
 
@@ -86,7 +86,7 @@ class ClienteControllerTest {
     }
     @Test
     @Throws(Exception::class)
-    fun `nao deve criar um cliente que existe no banco`() {
+    fun `should not create a client that does exist in the bank`(){
         val clienteCriarRequest = ClienteCriarRequest(nome = "Cliente Test Maria", cpf = "151.425.426-75")
         val content = gson.toJson(clienteCriarRequest)
 

@@ -25,7 +25,7 @@ class ClienteServiceTest {
     private lateinit var joaoConta: Conta
 
     @Before
-    fun setup() {
+    fun setUp() {
         createClient()
     }
 
@@ -43,7 +43,7 @@ class ClienteServiceTest {
     }
 
     @Test
-    fun buscar() {
+    fun tearDown() {
         val clienteBuscado = clienteService.find(joao.id)
         assertEquals(joao.id.toLong(), clienteBuscado.get().id.toLong())
     }
