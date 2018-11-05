@@ -1,6 +1,6 @@
 package com.github.thaynarasilvapinto.simuladorbanco
 
-import com.github.thaynarasilvapinto.simuladorbanco.controller.request.OperacaoRequest
+import com.github.thaynarasilvapinto.simuladorbanco.api.request.OperacaoRequest
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Cliente
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Conta
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Operacao
@@ -19,7 +19,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType.APPLICATION_JSON_UTF8
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
@@ -51,20 +50,34 @@ class OperacaoControllerTest {
         createClient()
         this.gson = Gson()
 
-        this.operacaoDepositoJoao = Operacao(contaOrigem = joaoConta, contaDestino = joaoConta, valorOperacao = 200.00, tipoOperacao = Operacao.TipoOperacao.DEPOSITO)
-        this.operacaoSaqueJoao = Operacao(contaOrigem = joaoConta, contaDestino = joaoConta, valorOperacao = 100.00, tipoOperacao = Operacao.TipoOperacao.SAQUE)
-        this.operacaoTransferencia = Operacao(contaOrigem = joaoConta, contaDestino = mariaConta, valorOperacao = 100.00, tipoOperacao = Operacao.TipoOperacao.TRANSFERENCIA)
+        this.operacaoDepositoJoao = Operacao(
+                contaOrigem = joaoConta,
+                contaDestino = joaoConta,
+                valorOperacao = 200.00,
+                tipoOperacao = Operacao.TipoOperacao.DEPOSITO)
+        this.operacaoSaqueJoao = Operacao(
+                contaOrigem = joaoConta,
+                contaDestino = joaoConta,
+                valorOperacao = 100.00,
+                tipoOperacao = Operacao.TipoOperacao.SAQUE)
+        this.operacaoTransferencia = Operacao(
+                contaOrigem = joaoConta,
+                contaDestino = mariaConta,
+                valorOperacao = 100.00,
+                tipoOperacao = Operacao.TipoOperacao.TRANSFERENCIA)
     }
 
     private fun createClient() {
-        joaoConta = Conta(saldo = 0.00)
-        joaoConta = contaService.insert(joaoConta)
-        joao = Cliente(nome = "Joao Operacao Test ClienteController", cpf = "151.425.426-75", conta = joaoConta)
-        mariaConta = Conta(saldo = 0.00)
-        mariaConta = contaService.insert(mariaConta)
-        maria = Cliente(nome = "Maria Operacao Test ClienteController", cpf = "177.082.896-67", conta = mariaConta)
-        joao = clienteService.insert(joao)
-        maria = clienteService.insert(maria)
+        joao = clienteService.criarCliente(Cliente(
+                nome = "Cliente Test ClienteController",
+                cpf = "055.059.396-94",
+                conta = Conta(saldo = 0.00)))
+        maria = clienteService.criarCliente(Cliente(
+                nome = "Cliente Test ClienteController",
+                cpf = "177.082.896-67",
+                conta = Conta(saldo = 0.00)))
+        joaoConta = joao.conta
+        mariaConta = maria.conta
     }
 
     @After
@@ -84,8 +97,7 @@ class OperacaoControllerTest {
     }
 
     @Test
-    @Throws(Exception::class)
-    fun `must make deposit`() {
+    fun `deve fazer deposito`() {
         val operacaoDepositoRequest = OperacaoRequest(valorOperacao = 500.00, contaDestino = null)
         val content = gson.toJson(operacaoDepositoRequest)
         this.mvc.perform(post("/conta/{id}/deposito", joaoConta.id)
@@ -95,9 +107,9 @@ class OperacaoControllerTest {
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$.idOperacao", notNullValue()))
     }
+
     @Test
-    @Throws(Exception::class)
-    fun `should not deposit  in of an account that does not exist`() {
+    fun `Nao deve depositar em uma conta que nao existe`() {
         val operacaoDepositoRequest = OperacaoRequest(valorOperacao = 500.00, contaDestino = null)
         val content = gson.toJson(operacaoDepositoRequest)
         this.mvc.perform(post("/conta/{id}/deposito", -1)
@@ -107,8 +119,7 @@ class OperacaoControllerTest {
     }
 
     @Test
-    @Throws(Exception::class)
-    fun `must make withdrawal`() {
+    fun `Deve realizar saque`() {
 
         joaoConta.saldo = 300.00
         contaService.update(joaoConta)
@@ -122,9 +133,9 @@ class OperacaoControllerTest {
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$.idOperacao", notNullValue()))
     }
+
     @Test
-    @Throws(Exception::class)
-    fun `should not  withdrawal from an account that does not exist`() {
+    fun `Nao deve realizar saque de conta que nao existe`() {
         val operacaoSaqueRequest = OperacaoRequest(valorOperacao = 200.00, contaDestino = null)
         val content = gson.toJson(operacaoSaqueRequest)
         this.mvc.perform(post("/conta/{id}/saque", -1)
@@ -132,9 +143,10 @@ class OperacaoControllerTest {
                 .contentType(APPLICATION_JSON_UTF8))
                 .andExpect(status().isUnprocessableEntity)
     }
+
     @Test
     @Throws(Exception::class)
-    fun `must make transference`() {
+    fun `deve realizar transferencia`() {
         joaoConta.saldo = 300.00
         contaService.update(joaoConta)
 
@@ -150,8 +162,7 @@ class OperacaoControllerTest {
     }
 
     @Test
-    @Throws(Exception::class)
-    fun `must not carry out negative deposit`() {
+    fun `Nao deve realizar deposito abaixo de 1`() {
         val operacaoDepositoRequest = OperacaoRequest(valorOperacao = -500.00, contaDestino = null)
         val content = gson.toJson(operacaoDepositoRequest)
         this.mvc.perform(post("/conta/{id}/deposito", joaoConta.id)
@@ -161,8 +172,7 @@ class OperacaoControllerTest {
     }
 
     @Test
-    @Throws(Exception::class)
-    fun `should not make negative withdrawals`() {
+    fun `Nao deve realizar uma saque negativo`() {
         val operacaoSaqueRequest = OperacaoRequest(valorOperacao = -200.00, contaDestino = null)
         val content = gson.toJson(operacaoSaqueRequest)
         this.mvc.perform(post("/conta/{id}/saque", joaoConta.id)
@@ -172,8 +182,7 @@ class OperacaoControllerTest {
     }
 
     @Test
-    @Throws(Exception::class)
-    fun `should not perform negative value transference`() {
+    fun `Nao deve realizar transferencia negativa`() {
         val operacaoTransferenciaRequest = OperacaoRequest(valorOperacao = -100.00, contaDestino = mariaConta.id)
         val content = gson.toJson(operacaoTransferenciaRequest)
 
@@ -184,8 +193,7 @@ class OperacaoControllerTest {
     }
 
     @Test
-    @Throws(Exception::class)
-    fun `should not transference for the same account`() {
+    fun `Nao deve realizar transferencia para a mesma conta`() {
         joaoConta.saldo = 300.00
         contaService.update(joaoConta)
         val operacaoTransferenciaRequest = OperacaoRequest(valorOperacao = 300.00, contaDestino = joaoConta.id)
@@ -195,9 +203,9 @@ class OperacaoControllerTest {
                 .contentType(APPLICATION_JSON_UTF8))
                 .andExpect(status().isUnprocessableEntity)
     }
+
     @Test
-    @Throws(Exception::class)
-    fun `must not transfer to an account that does not exist`() {
+    fun `Nao deve transferir para uma conta invalida`() {
         joaoConta.saldo = 300.00
         contaService.update(joaoConta)
         val operacaoTransferenciaRequest = OperacaoRequest(valorOperacao = 300.00, contaDestino = -1)
@@ -207,9 +215,9 @@ class OperacaoControllerTest {
                 .contentType(APPLICATION_JSON_UTF8))
                 .andExpect(status().isUnprocessableEntity)
     }
+
     @Test
-    @Throws(Exception::class)
-    fun `you must not transfer an account that does not exist`() {
+    fun `Nao deve transferir de uma conta que nao existe`() {
         val operacaoTransferenciaRequest = OperacaoRequest(valorOperacao = 300.00, contaDestino = mariaConta.id)
         val content = gson.toJson(operacaoTransferenciaRequest)
         this.mvc.perform(post("/conta/{id}/transferencia", -1)

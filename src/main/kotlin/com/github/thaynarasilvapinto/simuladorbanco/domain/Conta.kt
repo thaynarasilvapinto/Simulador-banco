@@ -16,31 +16,4 @@ data class Conta(
         @Min(0)
         var saldo: Double,
         var dataHora: LocalDateTime = LocalDateTime.now()
-) : Serializable {
-
-    fun saque(operacao: Operacao): Operacao {
-        if (operacao.valorOperacao <= this.saldo) {
-            saldo -= operacao.valorOperacao
-            return operacao
-        }
-        throw Exception("Saldo Insuficiente")
-    }
-
-    fun deposito(operacao: Operacao): Operacao {
-        saldo += operacao.valorOperacao
-        return operacao
-    }
-
-    fun recebimentoTransferencia(operacao: Operacao): Operacao {
-        saldo += operacao.valorOperacao
-        return operacao
-    }
-
-    fun efetuarTrasferencia(operacao: Operacao): Operacao {
-        if (operacao.valorOperacao <= this.saldo) {
-            saldo -= operacao.valorOperacao
-            return operacao
-        }
-        throw Exception("Saldo Insuficiente")
-    }
-}
+) : Serializable

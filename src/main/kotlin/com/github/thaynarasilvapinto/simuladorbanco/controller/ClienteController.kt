@@ -1,7 +1,8 @@
 package com.github.thaynarasilvapinto.simuladorbanco.controller
 
-import com.github.thaynarasilvapinto.simuladorbanco.controller.request.ClienteCriarRequest
-import com.github.thaynarasilvapinto.simuladorbanco.controller.response.ClienteResponse
+import com.github.thaynarasilvapinto.simuladorbanco.api.request.ClienteCriarRequest
+import com.github.thaynarasilvapinto.simuladorbanco.api.response.ClienteResponse
+import com.github.thaynarasilvapinto.simuladorbanco.controller.utils.toResponse
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Cliente
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Conta
 import com.github.thaynarasilvapinto.simuladorbanco.services.ClienteService
@@ -15,34 +16,21 @@ import javax.validation.Valid
 @RestController
 @RequestMapping(value = ["/"])
 open class ClienteController {
-
     @Autowired
     private lateinit var serviceCliente: ClienteService
 
-    @Autowired
-    private lateinit var serviceConta: ContaService
 
     @GetMapping(value = ["/cliente/{id}"])
     fun mostrarCliente(@PathVariable id: Int): ResponseEntity<ClienteResponse> {
+        val cliente = serviceCliente.cliente(id)
+        return ResponseEntity.ok().body(cliente.toResponse())
 
-        val cliente = this.serviceCliente.find(id)
-
-        if (cliente.isPresent) {
-            return ResponseEntity.ok().body(ClienteResponse(cliente.get()))
-        }
-        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null)
     }
 
     @PostMapping(value = ["/criar-cliente"])
     fun criarCliente(@Valid @RequestBody clienteCriarRequest: ClienteCriarRequest): ResponseEntity<ClienteResponse> {
-        if (this.serviceCliente.findCPF(clienteCriarRequest.cpf!!).isPresent) {
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null)
-        } else {
-            val conta = serviceConta.insert(Conta(saldo = 0.00))
-            val cliente = Cliente(nome = clienteCriarRequest.nome!!, cpf = clienteCriarRequest.cpf!!, conta = conta)
-            val clienteInserido = serviceCliente.insert(cliente)
-            return ResponseEntity.ok().body(ClienteResponse(clienteInserido))
-        }
+        val cliente = serviceCliente.criarCliente(Cliente(nome = clienteCriarRequest.nome!!, cpf = clienteCriarRequest.cpf!!, conta = Conta(saldo = 0.00)))
+        return ResponseEntity.ok().body(cliente.toResponse())
 
     }
 }

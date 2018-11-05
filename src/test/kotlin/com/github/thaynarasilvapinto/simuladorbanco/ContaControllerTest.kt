@@ -1,7 +1,7 @@
 package com.github.thaynarasilvapinto.simuladorbanco
 
 
-import com.github.thaynarasilvapinto.simuladorbanco.controller.response.SaldoResponse
+import com.github.thaynarasilvapinto.simuladorbanco.controller.utils.toResponseSaldo
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Cliente
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Conta
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Operacao
@@ -47,10 +47,11 @@ class ContaControllerTest {
     }
 
     private fun createClient() {
-        joaoConta = Conta(saldo = 0.00)
-        joaoConta = contaService.insert(joaoConta)
-        this.joao = Cliente(nome = "Cliente Test ClienteController", cpf = "151.425.426-75", conta = joaoConta)
-        joao = clienteService.insert(joao)
+        joao = clienteService.criarCliente(Cliente(
+                nome = "Cliente Test ClienteController",
+                cpf = "055.059.396-94",
+                conta = Conta(saldo = 0.00)))
+        joaoConta = joao.conta
     }
 
     @After
@@ -64,8 +65,7 @@ class ContaControllerTest {
     }
 
     @Test
-    @Throws(Exception::class)
-    fun `must return the sought account`() {
+    fun `Deve retornar a conta`() {
         this.mvc.perform(get("/conta/{id}", joaoConta.id))
                 .andExpect(status().isOk)
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -73,38 +73,42 @@ class ContaControllerTest {
     }
 
     @Test
-    @Throws(Exception::class)
-    fun `should not return an account that does not exist in the bank`() {
+    fun `Nao deve retornar uma conta que nao existe no banco`() {
         this.mvc.perform(get("/conta/{id}", -1))
                 .andExpect(status().isUnprocessableEntity)
 
     }
 
     @Test
-    @Throws(Exception::class)
-    fun `must return the requested account balance`() {
-        val body = gson.toJson(SaldoResponse(joaoConta))
+    fun `Deve retornar o saldo`() {
+        val body = gson.toJson(joaoConta.toResponseSaldo())
         this.mvc.perform(get("/conta/{id}/saldo", joaoConta.id))
                 .andExpect(status().isOk)
                 .andExpect(content().string(body))
     }
 
     @Test
-    @Throws(Exception::class)
-    fun `should not return balance of an account that does not exist`() {
+    fun `Nao deve retornar o saldo de uma conta que nao existe no banco`() {
         this.mvc.perform(get("/conta/{id}/saldo", -1))
                 .andExpect(status().isUnprocessableEntity)
     }
 
     @Test
-    @Throws(Exception::class)
-    fun `must return a bank statement from the customer`() {
+    fun `Deve retornar o extrato de um cliente`() {
 
-        var operacaoDeposito: Operacao = Operacao(contaOrigem = joaoConta, contaDestino = joaoConta, valorOperacao = 200.00, tipoOperacao = Operacao.TipoOperacao.DEPOSITO)
-        var operacaoSaque: Operacao = Operacao(contaOrigem = joaoConta, contaDestino = joaoConta, valorOperacao = 100.00, tipoOperacao = Operacao.TipoOperacao.SAQUE)
+        var operacaoDeposito = Operacao(
+                contaOrigem = joaoConta,
+                contaDestino = joaoConta,
+                valorOperacao = 200.00,
+                tipoOperacao = Operacao.TipoOperacao.DEPOSITO)
+        var operacaoSaque = Operacao(
+                contaOrigem = joaoConta,
+                contaDestino = joaoConta,
+                valorOperacao = 100.00,
+                tipoOperacao = Operacao.TipoOperacao.SAQUE)
 
-        operacaoDeposito = operacaoService.insert(operacaoDeposito)
-        operacaoSaque = operacaoService.insert(operacaoSaque)
+        operacaoService.insert(operacaoDeposito)
+        operacaoService.insert(operacaoSaque)
 
         this.mvc.perform(get("/conta/{id}/extrato", joaoConta.id))
                 .andExpect(status().isOk)
@@ -112,8 +116,7 @@ class ContaControllerTest {
     }
 
     @Test
-    @Throws(Exception::class)
-    fun `should not return the bank statement of a customer that does not exist`() {
+    fun `Nao deve retornar o extrato de um cliente que nao existe no banco`() {
         this.mvc.perform(get("/conta/{id}/extrato", -1))
                 .andExpect(status().isUnprocessableEntity)
     }
