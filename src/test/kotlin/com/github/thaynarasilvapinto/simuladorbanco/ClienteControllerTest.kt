@@ -76,8 +76,8 @@ class ClienteControllerTest {
                     val response = mapper.readValue(mvcResult.response.contentAsString, ClienteResponse::class.java)
                     assertEquals(joao.cpf, response.cpf)
                     assertEquals(joao.nome, response.nome)
-                    assertEquals(joao.conta.saldo, response.conta!!.saldo)
-                    assertEquals(joao.conta.id, response.conta!!.id)
+                    assertEquals(joao.conta.saldo, response.conta.saldo)
+                    assertEquals(joao.conta.id, response.conta.id)
                 }
     }
 
