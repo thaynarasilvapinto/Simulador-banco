@@ -1,4 +1,4 @@
-package com.github.thaynarasilvapinto.simuladorbanco.controller.response
+package com.github.thaynarasilvapinto.simuladorbanco.api.response
 
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Conta
 import org.jetbrains.annotations.NotNull

@@ -10,6 +10,5 @@ interface OperacaoRepository : JpaRepository<Operacao, Int> {
 
     fun findAllByContaOrigem(conta: Conta): List<Operacao>
     fun findAllByContaDestinoAndTipoOperacao(conta: Conta, operacao: Operacao.TipoOperacao): List<Operacao>
-    fun findAllByContaOrigemAndTipoOperacao(conta: Conta, operacao: Operacao.TipoOperacao): List<Operacao>
 
 }

@@ -1,4 +1,4 @@
-package com.github.thaynarasilvapinto.simuladorbanco.controller.request
+package com.github.thaynarasilvapinto.simuladorbanco.api.request
 
 import org.hibernate.validator.constraints.br.CPF
 import javax.validation.constraints.NotEmpty

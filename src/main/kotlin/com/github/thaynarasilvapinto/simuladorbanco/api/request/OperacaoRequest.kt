@@ -1,4 +1,4 @@
-package com.github.thaynarasilvapinto.simuladorbanco.controller.request
+package com.github.thaynarasilvapinto.simuladorbanco.api.request
 
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotNull
