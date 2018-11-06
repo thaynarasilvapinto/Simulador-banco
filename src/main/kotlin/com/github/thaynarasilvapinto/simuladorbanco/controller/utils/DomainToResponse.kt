@@ -11,7 +11,7 @@ fun Cliente.toResponse(): ClienteResponse =
                 cpf = this.cpf,
                 nome = this.nome,
                 dataHora = this.dataHora,
-                conta = this.conta
+                conta = this.conta.id
         )
 
 fun Conta.toResponse(): ContaResponse =
@@ -43,7 +43,7 @@ fun Operacao.toResponseTransferencia(): TransferenciaResponse =
                 valorOperacao = this.valorOperacao,
                 dataHora = this.dataHoraOperacao,
                 tipoOperacao = enumValueOf(this.tipoOperacao.name),
-                contaDestino = this.contaDestino
+                contaDestino = this.contaDestino.id
         )
 
 fun Conta.toResponseSaldo(): SaldoResponse =

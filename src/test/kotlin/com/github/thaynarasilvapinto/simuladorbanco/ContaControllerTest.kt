@@ -50,8 +50,8 @@ class ContaControllerTest {
         joao = clienteService.criarCliente(Cliente(
                 nome = "Cliente Test ClienteController",
                 cpf = "055.059.396-94",
-                conta = -1))
-        joaoConta = contaService.find(joao.conta).get()
+                conta = Conta(saldo = 0.00)))
+        joaoConta = joao.conta
     }
 
     @After
@@ -97,13 +97,13 @@ class ContaControllerTest {
     fun `Deve retornar o extrato de um cliente`() {
 
         var operacaoDeposito = Operacao(
-                contaOrigem = joaoConta.id,
-                contaDestino = joaoConta.id,
+                contaOrigem = joaoConta,
+                contaDestino = joaoConta,
                 valorOperacao = 200.00,
                 tipoOperacao = Operacao.TipoOperacao.DEPOSITO)
         var operacaoSaque = Operacao(
-                contaOrigem = joaoConta.id,
-                contaDestino = joaoConta.id,
+                contaOrigem = joaoConta,
+                contaDestino = joaoConta,
                 valorOperacao = 100.00,
                 tipoOperacao = Operacao.TipoOperacao.SAQUE)
 

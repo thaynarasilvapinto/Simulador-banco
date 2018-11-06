@@ -2,15 +2,16 @@ package com.github.thaynarasilvapinto.simuladorbanco.domain.repository
 
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Conta
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Operacao
+import java.util.*
 
 interface OperacaoRepository {
     fun save(operacao: Operacao): Int
 
-    fun find(operacaoId: Int): Operacao?
+    fun findById(operacaoId: Int): Optional<Operacao>
 
     fun update(operacao: Operacao): Int
 
-    fun delete(id: Int): Int
+    fun deleteById(id: Int): Int
 
     fun findAllByContaOrigem(conta: Conta): List<Operacao>
 

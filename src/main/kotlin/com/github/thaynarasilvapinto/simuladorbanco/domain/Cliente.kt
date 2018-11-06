@@ -9,7 +9,6 @@ import javax.validation.constraints.NotNull
 @Table(name = "cliente")
 data class Cliente(
         @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
         var id: Int = -1,
         @NotNull
         var nome: String,
@@ -17,5 +16,5 @@ data class Cliente(
         var dataHora: LocalDateTime = LocalDateTime.now(),
         @OneToOne
         @JoinColumn(name = "conta_id")
-        var conta: Int
+        var conta: Conta
 ) : Serializable

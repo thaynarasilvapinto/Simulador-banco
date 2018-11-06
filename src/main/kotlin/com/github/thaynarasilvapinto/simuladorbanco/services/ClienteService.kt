@@ -2,7 +2,7 @@ package com.github.thaynarasilvapinto.simuladorbanco.services
 
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Cliente
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Conta
-import com.github.thaynarasilvapinto.simuladorbanco.repositories.ClienteRepository
+import com.github.thaynarasilvapinto.simuladorbanco.repositories.JdbcClienteRepository
 import com.github.thaynarasilvapinto.simuladorbanco.services.exception.AccountIsValidException
 import com.github.thaynarasilvapinto.simuladorbanco.services.exception.CpfIsValidException
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,7 +14,7 @@ import java.util.*
 open class ClienteService {
 
     @Autowired
-    private lateinit var repo: ClienteRepository
+    private lateinit var repo: JdbcClienteRepository
 
 
     @Autowired
@@ -24,11 +24,12 @@ open class ClienteService {
         return repo.findById(id)
     }
 
-    fun insert(obj: Cliente) = repo.save(obj)
+    fun insert(obj: Cliente) = repo.findById(repo.save(obj)).get()
 
     fun update(cliente: Cliente): Cliente {
         find(cliente.id)
-        return repo.save(cliente)
+
+        return repo.findById(repo.save(cliente)).get()
     }
 
     fun delete(id: Int) {
@@ -46,7 +47,7 @@ open class ClienteService {
             throw CpfIsValidException(message = "O CPF já existe")
         } else {
             val conta = serviceConta.insert(Conta(saldo = 0.00))
-            val client = Cliente(nome = cliente.nome, cpf = cliente.cpf, conta = -1)
+            val client = Cliente(nome = cliente.nome, cpf = cliente.cpf, conta = conta)
             val clienteInserido = insert(client)
             return clienteInserido
         }

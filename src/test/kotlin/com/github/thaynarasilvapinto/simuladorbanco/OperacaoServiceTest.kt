@@ -59,12 +59,12 @@ class OperacaoServiceTest {
     private fun createClient() {
         joaoConta = Conta(saldo = 200.00)
         joaoConta = contaService.insert(joaoConta)
-        this.joao = Cliente(nome = "Cliente Test ClienteController", cpf = "151.425.426-75", conta = joaoConta.id)
+        this.joao = Cliente(nome = "Cliente Test ClienteController", cpf = "151.425.426-75", conta = joaoConta)
         joao = clienteService.insert(joao)
 
         contaMaria = Conta(saldo = 0.00)
         contaMaria = contaService.insert(contaMaria)
-        this.maria = Cliente(nome = "Cliente Test", cpf = "086.385.420-62", conta = contaMaria.id)
+        this.maria = Cliente(nome = "Cliente Test", cpf = "086.385.420-62", conta = contaMaria)
         maria = clienteService.insert(maria)
     }
 

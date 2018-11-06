@@ -2,7 +2,7 @@ package com.github.thaynarasilvapinto.simuladorbanco.services
 
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Conta
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Operacao
-import com.github.thaynarasilvapinto.simuladorbanco.repositories.ContaRepository
+import com.github.thaynarasilvapinto.simuladorbanco.repositories.JdbcContaRepository
 import com.github.thaynarasilvapinto.simuladorbanco.services.exception.AccountIsValidException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -12,7 +12,7 @@ import java.util.*
 open class ContaService {
 
     @Autowired
-    private lateinit var repo: ContaRepository
+    private lateinit var repo: JdbcContaRepository
 
     @Autowired
     private lateinit var serviceConta: ContaService
@@ -24,11 +24,11 @@ open class ContaService {
         return repo.findById(id)
     }
 
-    fun insert(obj: Conta) = repo.save(obj)
+    fun insert(obj: Conta) = repo.findById(repo.save(obj)).get()
 
     fun update(obj: Conta): Conta {
         find(obj.id)
-        return repo.save(obj)
+        return repo.findById(repo.save(obj)).get()
     }
 
     fun delete(id: Int) {

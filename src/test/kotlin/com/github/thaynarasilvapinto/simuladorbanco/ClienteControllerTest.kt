@@ -58,13 +58,13 @@ class ClienteControllerTest {
         joao = clienteService.criarCliente(Cliente(
                 nome = "Cliente Test ClienteController",
                 cpf = "055.059.396-94",
-                conta = -1))
+                conta = Conta(saldo = 0.00)))
     }
 
     @After
     fun tearDown() {
         clienteService.delete(joao.id)
-        contaService.delete(joao.conta)
+        contaService.delete(joao.conta.id)
     }
 
     @Test
@@ -76,7 +76,7 @@ class ClienteControllerTest {
                     val response = mapper.readValue(mvcResult.response.contentAsString, ClienteResponse::class.java)
                     assertEquals(joao.cpf, response.cpf)
                     assertEquals(joao.nome, response.nome)
-                    assertEquals(joao.conta, response.conta)
+                    assertEquals(joao.conta.id, response.conta)
                 }
     }
 
@@ -100,7 +100,7 @@ class ClienteControllerTest {
 
         val cliente = clienteService.findCPF("182.562.790-87")
         clienteService.delete(cliente.get().id)
-        contaService.delete(cliente.get().conta)
+        contaService.delete(cliente.get().conta.id)
     }
 
     @Test
