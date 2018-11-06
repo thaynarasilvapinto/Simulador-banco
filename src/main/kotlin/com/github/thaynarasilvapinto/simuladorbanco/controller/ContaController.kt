@@ -41,7 +41,7 @@ open class ContaController {
                     valorOperacao = it.valorOperacao,
                     dataHora = it.dataHoraOperacao,
                     tipoOperacao = enumValueOf(it.tipoOperacao.name),
-                    contaDestino = it.contaDestino.id)
+                    contaDestino = it.contaDestino)
         }
         return ResponseEntity.ok().body(extrato)
     }

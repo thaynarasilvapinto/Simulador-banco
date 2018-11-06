@@ -29,7 +29,7 @@ open class ClienteController {
 
     @PostMapping(value = ["/criar-cliente"])
     fun criarCliente(@Valid @RequestBody clienteCriarRequest: ClienteCriarRequest): ResponseEntity<ClienteResponse> {
-        val cliente = serviceCliente.criarCliente(Cliente(nome = clienteCriarRequest.nome!!, cpf = clienteCriarRequest.cpf!!, conta = Conta(saldo = 0.00)))
+        val cliente = serviceCliente.criarCliente(Cliente(nome = clienteCriarRequest.nome!!, cpf = clienteCriarRequest.cpf!!, conta = -1))
         return ResponseEntity.ok().body(cliente.toResponse())
 
     }

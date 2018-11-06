@@ -15,10 +15,10 @@ data class Operacao(
         var tipoOperacao: TipoOperacao,
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "conta_id_origem")
-        var contaOrigem: Conta,
+        var contaOrigem: Int,
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "conta_id_destino")
-        var contaDestino: Conta
+        var contaDestino: Int
 ) : Serializable {
     enum class TipoOperacao {
         SAQUE, DEPOSITO, TRANSFERENCIA, RECEBIMENTO_TRANSFERENCIA

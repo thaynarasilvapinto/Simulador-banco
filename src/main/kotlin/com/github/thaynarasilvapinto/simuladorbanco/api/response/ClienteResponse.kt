@@ -13,5 +13,5 @@ data class ClienteResponse(
         @NotNull
         val dataHora: LocalDateTime,
         @NotNull
-        val conta: ContaResponse
+        val conta: Int
 )

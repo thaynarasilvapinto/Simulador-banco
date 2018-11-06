@@ -51,18 +51,18 @@ class OperacaoControllerTest {
         this.gson = Gson()
 
         this.operacaoDepositoJoao = Operacao(
-                contaOrigem = joaoConta,
-                contaDestino = joaoConta,
+                contaOrigem = joaoConta.id,
+                contaDestino = joaoConta.id,
                 valorOperacao = 200.00,
                 tipoOperacao = Operacao.TipoOperacao.DEPOSITO)
         this.operacaoSaqueJoao = Operacao(
-                contaOrigem = joaoConta,
-                contaDestino = joaoConta,
+                contaOrigem = joaoConta.id,
+                contaDestino = joaoConta.id,
                 valorOperacao = 100.00,
                 tipoOperacao = Operacao.TipoOperacao.SAQUE)
         this.operacaoTransferencia = Operacao(
-                contaOrigem = joaoConta,
-                contaDestino = mariaConta,
+                contaOrigem = joaoConta.id,
+                contaDestino = mariaConta.id,
                 valorOperacao = 100.00,
                 tipoOperacao = Operacao.TipoOperacao.TRANSFERENCIA)
     }
@@ -71,13 +71,13 @@ class OperacaoControllerTest {
         joao = clienteService.criarCliente(Cliente(
                 nome = "Cliente Test ClienteController",
                 cpf = "055.059.396-94",
-                conta = Conta(saldo = 0.00)))
+                conta = -1))
         maria = clienteService.criarCliente(Cliente(
                 nome = "Cliente Test ClienteController",
                 cpf = "177.082.896-67",
-                conta = Conta(saldo = 0.00)))
-        joaoConta = joao.conta
-        mariaConta = maria.conta
+                conta = -1))
+        joaoConta = contaService.find(joao.conta).get()
+        mariaConta = contaService.find(maria.conta).get()
     }
 
     @After

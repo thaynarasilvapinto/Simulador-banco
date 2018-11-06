@@ -44,12 +44,12 @@ class ContaServiceTest {
     private fun createClient() {
         joaoConta = Conta(saldo = 0.00)
         joaoConta = contaService.insert(joaoConta)
-        this.joao = Cliente(nome = "Cliente Test", cpf = "151.425.426-75", conta = joaoConta)
+        this.joao = Cliente(nome = "Cliente Test", cpf = "151.425.426-75", conta = joaoConta.id)
         joao = clienteService.insert(joao)
 
         contaMaria = Conta(saldo = 0.00)
         contaMaria = contaService.insert(contaMaria)
-        this.maria = Cliente(nome = "Cliente Test", cpf = "086.385.420-62", conta = contaMaria)
+        this.maria = Cliente(nome = "Cliente Test", cpf = "086.385.420-62", conta = contaMaria.id)
         maria = clienteService.insert(maria)
     }
 

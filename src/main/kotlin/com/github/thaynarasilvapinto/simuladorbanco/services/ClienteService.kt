@@ -46,7 +46,7 @@ open class ClienteService {
             throw CpfIsValidException(message = "O CPF já existe")
         } else {
             val conta = serviceConta.insert(Conta(saldo = 0.00))
-            val client = Cliente(nome = cliente.nome, cpf = cliente.cpf, conta = conta)
+            val client = Cliente(nome = cliente.nome, cpf = cliente.cpf, conta = -1)
             val clienteInserido = insert(client)
             return clienteInserido
         }

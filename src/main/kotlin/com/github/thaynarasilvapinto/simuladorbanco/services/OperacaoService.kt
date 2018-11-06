@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
 import javax.swing.SwingUtilities
+import javax.transaction.Transactional
 
 @Service
 open class OperacaoService {
@@ -40,7 +41,8 @@ open class OperacaoService {
 
     fun findAllByContaDestinoAndTipoOperacao(conta: Conta, tipoOperacao: Operacao.TipoOperacao) = repo.findAllByContaDestinoAndTipoOperacao(conta, tipoOperacao)
 
-    fun saque(valor: Double, id: Int): Operacao {
+    @Transactional
+    open fun saque(valor: Double, id: Int): Operacao {
 
         val conta = serviceConta.find(id)
 
@@ -48,8 +50,8 @@ open class OperacaoService {
             if (valor <= conta.get().saldo) {
 
                 var saque = Operacao(
-                        contaOrigem = conta.get(),
-                        contaDestino = conta.get(),
+                        contaOrigem = conta.get().id,
+                        contaDestino = conta.get().id,
                         valorOperacao = valor,
                         tipoOperacao = Operacao.TipoOperacao.SAQUE)
 
@@ -66,15 +68,16 @@ open class OperacaoService {
         throw AccountIsValidException(message = "A conta deve ser valida")
     }
 
-    fun deposito(valor: Double, id: Int): Operacao {
+    @Transactional
+    open fun deposito(valor: Double, id: Int): Operacao {
 
         val conta = serviceConta.find(id)
 
         if (conta.isPresent) {
 
             var deposito = Operacao(
-                    contaOrigem = conta.get(),
-                    contaDestino = conta.get(),
+                    contaOrigem = conta.get().id,
+                    contaDestino = conta.get().id,
                     valorOperacao = valor,
                     tipoOperacao = Operacao.TipoOperacao.DEPOSITO)
 
@@ -89,7 +92,8 @@ open class OperacaoService {
         throw AccountIsValidException(message = "A conta deve ser valida")
     }
 
-    fun transferencia(valor: Double, id: Int, idDestino: Int): Operacao {
+    @Transactional
+    open fun transferencia(valor: Double, id: Int, idDestino: Int): Operacao {
 
         val contaOrigem = serviceConta.find(id)
         val contaDestino = serviceConta.find(idDestino)
@@ -99,13 +103,13 @@ open class OperacaoService {
                 if (valor <= contaOrigem.get().saldo) {
 
                     var recebimentoTransferencia = Operacao(
-                            contaOrigem = contaOrigem.get(),
-                            contaDestino = contaDestino.get(),
+                            contaOrigem = contaOrigem.get().id,
+                            contaDestino = contaDestino.get().id,
                             valorOperacao = valor,
                             tipoOperacao = Operacao.TipoOperacao.RECEBIMENTO_TRANSFERENCIA)
                     var efetuarTrasferencia = Operacao(
-                            contaOrigem = contaOrigem.get(),
-                            contaDestino = contaDestino.get(),
+                            contaOrigem = contaOrigem.get().id,
+                            contaDestino = contaDestino.get().id,
                             valorOperacao = valor,
                             tipoOperacao = Operacao.TipoOperacao.TRANSFERENCIA)
 

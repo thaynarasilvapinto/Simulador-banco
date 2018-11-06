@@ -17,5 +17,5 @@ data class Cliente(
         var dataHora: LocalDateTime = LocalDateTime.now(),
         @OneToOne
         @JoinColumn(name = "conta_id")
-        var conta: Conta
+        var conta: Int
 ) : Serializable

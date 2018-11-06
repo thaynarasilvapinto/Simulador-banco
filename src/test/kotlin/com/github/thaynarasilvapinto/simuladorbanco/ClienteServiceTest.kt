@@ -39,7 +39,7 @@ class ClienteServiceTest {
     private fun createClient() {
         joaoConta = Conta(saldo = 0.00)
         joaoConta = contaService.insert(joaoConta)
-        this.joao = Cliente(nome = "Cliente Test ClienteController", cpf = "151.425.426-75", conta = joaoConta)
+        this.joao = Cliente(nome = "Cliente Test ClienteController", cpf = "151.425.426-75", conta = joaoConta.id)
         joao = clienteService.insert(joao)
     }
 
@@ -69,13 +69,13 @@ class ClienteServiceTest {
         var cliente = clienteService.criarCliente(Cliente(
                 nome = "teste",
                 cpf = "611.018.420-91",
-                conta = Conta(-1, 0.00)))
+                conta = -1))
         val clienteEsperado = clienteService.find(cliente.id).get()
         assertNotNull(cliente.id)
         assertEquals(clienteEsperado, cliente)
 
         clienteService.delete(cliente.id)
-        contaService.delete(cliente.conta.id)
+        contaService.delete(cliente.conta)
     }
 
     @Test
@@ -83,7 +83,7 @@ class ClienteServiceTest {
         thrown.expect(CpfIsValidException::class.java)
         thrown.expectMessage("O CPF já existe")
 
-        clienteService.criarCliente(Cliente(nome = "teste", cpf = "151.425.426-75", conta = Conta(-1, 0.00)))
+        clienteService.criarCliente(Cliente(nome = "teste", cpf = "151.425.426-75", conta = -1))
     }
 
 }
