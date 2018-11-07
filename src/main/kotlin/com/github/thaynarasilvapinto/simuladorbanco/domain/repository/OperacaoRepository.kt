@@ -1,6 +1,5 @@
 package com.github.thaynarasilvapinto.simuladorbanco.domain.repository
 
-import com.github.thaynarasilvapinto.simuladorbanco.domain.Conta
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Operacao
 import java.util.*
 
@@ -9,11 +8,9 @@ interface OperacaoRepository {
 
     fun findById(operacaoId: Int): Optional<Operacao>
 
-    fun update(operacao: Operacao): Int
-
     fun deleteById(id: Int): Int
 
-    fun findAllByContaOrigem(conta: Conta): List<Operacao>
+    fun findAllByContaOrigem(id: Int): List<Operacao>
 
-    fun findAllByContaDestinoAndTipoOperacao(conta: Conta, operacao: Operacao.TipoOperacao): List<Operacao>
+    fun findAllByContaDestinoAndTipoOperacao(id: Int, operacao: String): List<Operacao>
 }

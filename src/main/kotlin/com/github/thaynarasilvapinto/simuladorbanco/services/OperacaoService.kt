@@ -2,7 +2,7 @@ package com.github.thaynarasilvapinto.simuladorbanco.services
 
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Conta
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Operacao
-import com.github.thaynarasilvapinto.simuladorbanco.repositories.JdbcOperacaoRepository
+import com.github.thaynarasilvapinto.simuladorbanco.domain.repository.OperacaoRepository
 import com.github.thaynarasilvapinto.simuladorbanco.services.exception.AccountIsValidException
 import com.github.thaynarasilvapinto.simuladorbanco.services.exception.BalanceIsInsufficientException
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,7 +13,7 @@ import java.util.*
 open class OperacaoService {
 
     @Autowired
-    private lateinit var repo: JdbcOperacaoRepository
+    private lateinit var repo: OperacaoRepository
 
     @Autowired
     private lateinit var serviceConta: ContaService
@@ -35,9 +35,9 @@ open class OperacaoService {
         repo.deleteById(id)
     }
 
-    fun findAllContaOrigem(conta: Conta) = repo.findAllByContaOrigem(conta)
+    fun findAllContaOrigem(conta: Conta) = repo.findAllByContaOrigem(conta.id)
 
-    fun findAllByContaDestinoAndTipoOperacao(conta: Conta, tipoOperacao: Operacao.TipoOperacao) = repo.findAllByContaDestinoAndTipoOperacao(conta, tipoOperacao)
+    fun findAllByContaDestinoAndTipoOperacao(conta: Conta, tipoOperacao: Operacao.TipoOperacao) = repo.findAllByContaDestinoAndTipoOperacao(conta.id, tipoOperacao.name)
 
     fun saque(valor: Double, id: Int): Operacao {
 

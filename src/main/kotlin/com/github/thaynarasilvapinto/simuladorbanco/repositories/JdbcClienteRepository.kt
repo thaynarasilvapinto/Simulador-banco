@@ -9,14 +9,15 @@ import org.springframework.stereotype.Repository
 import java.util.*
 
 @Repository
-open class JdbcClienteRepository @Autowired constructor(private val jdbcTemplate: JdbcTemplate) : ClienteRepository {
+open class JdbcClienteRepository @Autowired constructor(
+    private val jdbcTemplate: JdbcTemplate
+) : ClienteRepository {
 
-    var id = 0
 
     companion object {
         const val TABLE_NAME = "cliente"
         const val ID_COLUMN = "id"
-        const val NAME_COLUMN = "name"
+        const val NAME_COLUMN = "nome"
         const val CPF_COLUMN = "cpf"
         const val DATA_HORA_COLUMN = "data_hora"
         const val CONTA_ID_COLUMN = "conta_id"
@@ -25,40 +26,50 @@ open class JdbcClienteRepository @Autowired constructor(private val jdbcTemplate
     override fun save(cliente: Cliente): Int {
         val sql = """
             insert into $TABLE_NAME ($ID_COLUMN, $NAME_COLUMN, $CPF_COLUMN, $DATA_HORA_COLUMN, $CONTA_ID_COLUMN)
-                values (id,?,?,?,?, now())
+                values (?, ?, ?, ?, ?)
                 """
 
-        id++
         return jdbcTemplate.update(
-                sql,
-                cliente.id,
-                cliente.nome,
-                cliente.cpf,
-                cliente.dataHora
+            sql,
+            cliente.id,
+            cliente.nome,
+            cliente.cpf,
+            cliente.dataHora,
+            cliente.conta.id
         )
     }
 
     override fun findById(clienteId: Int): Optional<Cliente> {
         val sql = """
-            select * from $TABLE_NAME where $ID_COLUMN = ?
-            """
+                SELECT
+                       cliente.*,
+                       conta.data_hora,
+                       conta.saldo
+                FROM
+                     cliente,
+                     conta
+                WHERE
+                    cliente.conta_id = conta.id AND
+                    cliente.id = ?
+                """
 
         return Optional.ofNullable(jdbcTemplate.queryForObject(sql, ClienteRowMapper(), clienteId))
     }
 
     override fun update(cliente: Cliente): Int {
         val sql = """
-            update $TABLE_NAME set $ID_COLUMN = ?, $NAME_COLUMN = ?,
-                   $CPF_COLUMN = ?, $DATA_HORA_COLUMN,
+            update $TABLE_NAME set
+                   $NAME_COLUMN = ?,
+                   $CPF_COLUMN = ?,
                    $CONTA_ID_COLUMN = ?
                 where $ID_COLUMN = ?
             """
         return jdbcTemplate.update(
-                sql,
-                cliente.nome,
-                cliente.cpf,
-                cliente.dataHora,
-                cliente.conta
+            sql,
+            cliente.nome,
+            cliente.cpf,
+            cliente.conta.id,
+            cliente.id
         )
     }
 
@@ -69,10 +80,19 @@ open class JdbcClienteRepository @Autowired constructor(private val jdbcTemplate
         return jdbcTemplate.update(sql, id)
     }
 
-    override fun findByCpfEquals(CPF: String): Optional<Cliente> {
+    override fun findByCpfEquals(cpf: String): Optional<Cliente> {
         val sql = """
-            select * from $TABLE_NAME where $CPF_COLUMN = '?'
+                SELECT
+                       cliente.*,
+                       conta.data_hora,
+                       conta.saldo
+                FROM
+                     cliente,
+                     conta
+                WHERE
+                    cliente.conta_id = conta.id AND
+                    cliente.cpf = ?
             """
-        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, ClienteRowMapper()))
+        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, ClienteRowMapper(), cpf))
     }
 }

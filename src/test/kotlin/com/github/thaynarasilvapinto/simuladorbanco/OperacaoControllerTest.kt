@@ -81,7 +81,7 @@ class OperacaoControllerTest {
     }
 
     @After
-    fun delete() {
+    fun tearDown() {
         clienteService.delete(joao.id)
         clienteService.delete(maria.id)
         var extrato = operacaoService.findAllContaOrigem(joaoConta)

@@ -2,7 +2,7 @@ package com.github.thaynarasilvapinto.simuladorbanco.services
 
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Cliente
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Conta
-import com.github.thaynarasilvapinto.simuladorbanco.repositories.JdbcClienteRepository
+import com.github.thaynarasilvapinto.simuladorbanco.domain.repository.ClienteRepository
 import com.github.thaynarasilvapinto.simuladorbanco.services.exception.AccountIsValidException
 import com.github.thaynarasilvapinto.simuladorbanco.services.exception.CpfIsValidException
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,7 +14,7 @@ import java.util.*
 open class ClienteService {
 
     @Autowired
-    private lateinit var repo: JdbcClienteRepository
+    private lateinit var repo: ClienteRepository
 
 
     @Autowired

@@ -17,4 +17,6 @@ data class Cliente(
         @OneToOne
         @JoinColumn(name = "conta_id")
         var conta: Conta
-) : Serializable
+) : Serializable{
+
+}

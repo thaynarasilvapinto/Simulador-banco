@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull
 @Table(name = "conta")
 data class Conta(
         @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         var id: Int = -1,
         @NotNull
         @Min(0)

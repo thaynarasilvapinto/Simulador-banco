@@ -11,6 +11,7 @@ data class Operacao(
         var idOperacao: Int = -1,
         var valorOperacao: Double,
         var dataHoraOperacao: LocalDateTime = LocalDateTime.now(),
+        @Enumerated(EnumType.STRING)
         var tipoOperacao: TipoOperacao,
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "conta_id_origem")

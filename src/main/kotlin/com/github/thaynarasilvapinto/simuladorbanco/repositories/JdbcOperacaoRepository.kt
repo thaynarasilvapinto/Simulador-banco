@@ -1,6 +1,5 @@
 package com.github.thaynarasilvapinto.simuladorbanco.repositories
 
-import com.github.thaynarasilvapinto.simuladorbanco.domain.Conta
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Operacao
 import com.github.thaynarasilvapinto.simuladorbanco.domain.repository.OperacaoRepository
 import com.github.thaynarasilvapinto.simuladorbanco.repositories.extractor.OperacaoRowMapper
@@ -12,11 +11,10 @@ import java.util.*
 @Repository
 open class JdbcOperacaoRepository @Autowired constructor(private val jdbcTemplate: JdbcTemplate) : OperacaoRepository {
 
-    var id = 0
 
     companion object {
         const val TABLE_NAME = "operacao"
-        const val ID_COLUMN = "id"
+        const val ID_COLUMN = "id_operacao"
         const val VALOR_OPERACAO_COLUMN = "valor_operacao"
         const val DATA_HORA_OPERACAO_COLUMN = "data_hora_operacao"
         const val TIPO_OPERACAO_COLUMN = "tipo_operacao"
@@ -27,47 +25,40 @@ open class JdbcOperacaoRepository @Autowired constructor(private val jdbcTemplat
     override fun save(operacao: Operacao): Int {
         val sql = """
             insert into $TABLE_NAME ($ID_COLUMN, $VALOR_OPERACAO_COLUMN, $DATA_HORA_OPERACAO_COLUMN, $TIPO_OPERACAO_COLUMN, $CONTA_ORIGEM_CONLUMN, $CONTA_DESTINO_CONLUMN)
-                values (id,?,?,?,?,?)
+                values (?,?,?,?,?,?)
                 """
 
-        id++
-
         return jdbcTemplate.update(
-                sql,
-                operacao.idOperacao,
-                operacao.valorOperacao,
-                operacao.dataHoraOperacao,
-                operacao.tipoOperacao,
-                operacao.contaOrigem,
-                operacao.contaDestino
+            sql,
+            operacao.idOperacao,
+            operacao.valorOperacao,
+            operacao.dataHoraOperacao,
+            operacao.tipoOperacao.name,
+            operacao.contaOrigem.id,
+            operacao.contaDestino.id
         )
     }
 
     override fun findById(operacaoId: Int): Optional<Operacao> {
         val sql = """
-            select * from $TABLE_NAME where $ID_COLUMN = ?
+            SELECT
+                operacao.*,
+                origem.data_hora AS origem_data_hora,
+                origem.saldo AS origem_saldo,
+                   destino.data_hora AS destino_data_hora,
+                   destino.saldo AS destino_saldo
+            FROM
+                 operacao
+                 INNER JOIN conta origem ON operacao.conta_id_origem = origem.id
+                 INNER JOIN conta destino ON operacao.conta_id_destino = destino.id
+            WHERE
+                operacao.id_operacao = ?
             """
-        var operacao: Optional<Operacao> = Optional.ofNullable(jdbcTemplate.queryForObject(sql, OperacaoRowMapper(), operacaoId))
+        var operacao: Optional<Operacao> =
+            Optional.ofNullable(jdbcTemplate.queryForObject(sql, OperacaoRowMapper(), operacaoId))
         return operacao
     }
 
-    override fun update(operacao: Operacao): Int {
-        val sql = """
-            update $TABLE_NAME set $ID_COLUMN = ?, $VALOR_OPERACAO_COLUMN = ?,
-                   $DATA_HORA_OPERACAO_COLUMN = ?, $TIPO_OPERACAO_COLUMN = ?,
-                   $CONTA_ORIGEM_CONLUMN = ?, $CONTA_DESTINO_CONLUMN = ?
-                where $ID_COLUMN = ?
-            """
-        return jdbcTemplate.update(
-                sql,
-                operacao.idOperacao,
-                operacao.valorOperacao,
-                operacao.dataHoraOperacao,
-                operacao.tipoOperacao,
-                operacao.contaOrigem,
-                operacao.contaDestino
-        )
-    }
 
     override fun deleteById(id: Int): Int {
         val sql = """
@@ -76,22 +67,45 @@ open class JdbcOperacaoRepository @Autowired constructor(private val jdbcTemplat
         return jdbcTemplate.update(sql, id)
     }
 
-    override fun findAllByContaOrigem(conta: Conta): List<Operacao> {
+    override fun findAllByContaOrigem(id: Int): List<Operacao> {
         val sql = """
-            select * from $TABLE_NAME where $CONTA_ORIGEM_CONLUMN = ?
+            SELECT
+                operacao.*,
+                origem.data_hora AS origem_data_hora,
+                origem.saldo AS origem_saldo,
+                   destino.data_hora AS destino_data_hora,
+                   destino.saldo AS destino_saldo
+            FROM
+                 operacao
+                 INNER JOIN conta origem ON operacao.conta_id_origem = origem.id
+                 INNER JOIN conta destino ON operacao.conta_id_destino = destino.id
+            WHERE
+                operacao.conta_id_origem = ?
             """
 
-        var contas = sql.map { jdbcTemplate.queryForObject(sql, OperacaoRowMapper(), conta.id) }
+        var contas = sql.map { jdbcTemplate.queryForObject(sql, OperacaoRowMapper(), id) }
 
         return contas
     }
 
-    override fun findAllByContaDestinoAndTipoOperacao(conta: Conta, operacao: Operacao.TipoOperacao): List<Operacao> {
+    override fun findAllByContaDestinoAndTipoOperacao(id: Int, operacao: String): List<Operacao> {
         val sql = """
-            select * from $TABLE_NAME where $CONTA_ORIGEM_CONLUMN = ? and $TIPO_OPERACAO_COLUMN = ?
+            SELECT
+                operacao.*,
+                origem.data_hora AS origem_data_hora,
+                origem.saldo AS origem_saldo,
+                   destino.data_hora AS destino_data_hora,
+                   destino.saldo AS destino_saldo
+            FROM
+                 operacao
+                 INNER JOIN conta origem ON operacao.conta_id_origem = origem.id
+                 INNER JOIN conta destino ON operacao.conta_id_destino = destino.id
+            WHERE
+                operacao.conta_id_destino = ? AND
+                operacao.tipo_operacao = ?
             """
 
-        var listaOperacaoes = sql.map { jdbcTemplate.queryForObject(sql, OperacaoRowMapper(), conta.id) }
+        var listaOperacaoes = sql.map { jdbcTemplate.queryForObject(sql, OperacaoRowMapper(), id,operacao) }
         return listaOperacaoes
     }
 }
