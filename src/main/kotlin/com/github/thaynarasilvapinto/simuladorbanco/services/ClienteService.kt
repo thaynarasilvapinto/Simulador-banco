@@ -2,7 +2,7 @@ package com.github.thaynarasilvapinto.simuladorbanco.services
 
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Cliente
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Conta
-import com.github.thaynarasilvapinto.simuladorbanco.repositories.ClienteRepository
+import com.github.thaynarasilvapinto.simuladorbanco.domain.repository.ClienteRepository
 import com.github.thaynarasilvapinto.simuladorbanco.services.exception.AccountIsValidException
 import com.github.thaynarasilvapinto.simuladorbanco.services.exception.CpfIsValidException
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,18 +20,22 @@ open class ClienteService {
     @Autowired
     private lateinit var serviceConta: ContaService
 
-    fun find(id: Int): Optional<Cliente> {
+    fun find(id: String): Optional<Cliente> {
         return repo.findById(id)
     }
 
-    fun insert(obj: Cliente) = repo.save(obj)
+    fun insert(cliente: Cliente): Cliente{
+        repo.save(cliente)
+        return repo.findById(cliente.id).get()
+    }
 
     fun update(cliente: Cliente): Cliente {
         find(cliente.id)
-        return repo.save(cliente)
+        repo.update(cliente)
+        return repo.findById(cliente.id).get()
     }
 
-    fun delete(id: Int) {
+    fun delete(id: String) {
         find(id)
         repo.deleteById(id)
     }
@@ -52,7 +56,7 @@ open class ClienteService {
         }
     }
 
-    fun cliente(id: Int): Cliente {
+    fun cliente(id: String): Cliente {
         val cliente = find(id)
 
         if (cliente.isPresent) {

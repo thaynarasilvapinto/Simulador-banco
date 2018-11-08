@@ -51,46 +51,59 @@ class OperacaoControllerTest {
         this.gson = Gson()
 
         this.operacaoDepositoJoao = Operacao(
-                contaOrigem = joaoConta,
-                contaDestino = joaoConta,
-                valorOperacao = 200.00,
-                tipoOperacao = Operacao.TipoOperacao.DEPOSITO)
+            contaOrigem = joaoConta,
+            contaDestino = joaoConta,
+            valorOperacao = 200.00,
+            tipoOperacao = Operacao.TipoOperacao.DEPOSITO
+        )
         this.operacaoSaqueJoao = Operacao(
-                contaOrigem = joaoConta,
-                contaDestino = joaoConta,
-                valorOperacao = 100.00,
-                tipoOperacao = Operacao.TipoOperacao.SAQUE)
+            contaOrigem = joaoConta,
+            contaDestino = joaoConta,
+            valorOperacao = 100.00,
+            tipoOperacao = Operacao.TipoOperacao.SAQUE
+        )
         this.operacaoTransferencia = Operacao(
-                contaOrigem = joaoConta,
-                contaDestino = mariaConta,
-                valorOperacao = 100.00,
-                tipoOperacao = Operacao.TipoOperacao.TRANSFERENCIA)
+            contaOrigem = joaoConta,
+            contaDestino = mariaConta,
+            valorOperacao = 100.00,
+            tipoOperacao = Operacao.TipoOperacao.TRANSFERENCIA
+        )
     }
 
     private fun createClient() {
-        joao = clienteService.criarCliente(Cliente(
+        joao = clienteService.criarCliente(
+            Cliente(
                 nome = "Cliente Test ClienteController",
                 cpf = "055.059.396-94",
-                conta = Conta(saldo = 0.00)))
-        maria = clienteService.criarCliente(Cliente(
+                conta = Conta(saldo = 0.00)
+            )
+        )
+        maria = clienteService.criarCliente(
+            Cliente(
                 nome = "Cliente Test ClienteController",
                 cpf = "177.082.896-67",
-                conta = Conta(saldo = 0.00)))
+                conta = Conta(saldo = 0.00)
+            )
+        )
         joaoConta = joao.conta
         mariaConta = maria.conta
     }
 
     @After
-    fun delete() {
+    fun tearDown() {
         clienteService.delete(joao.id)
         clienteService.delete(maria.id)
         var extrato = operacaoService.findAllContaOrigem(joaoConta)
-        for (i in extrato.indices) {
-            operacaoService.delete(extrato[i].idOperacao)
+        if (extrato != null) {
+            for (i in extrato!!.indices) {
+                operacaoService.delete(extrato[i].idOperacao)
+            }
         }
         extrato = operacaoService.findAllContaOrigem(mariaConta)
-        for (i in extrato.indices) {
-            operacaoService.delete(extrato[i].idOperacao)
+        if (extrato != null) {
+            for (i in extrato!!.indices) {
+                operacaoService.delete(extrato[i].idOperacao)
+            }
         }
         contaService.delete(joaoConta.id)
         contaService.delete(mariaConta.id)
@@ -100,22 +113,26 @@ class OperacaoControllerTest {
     fun `deve fazer deposito`() {
         val operacaoDepositoRequest = OperacaoRequest(valorOperacao = 500.00, contaDestino = null)
         val content = gson.toJson(operacaoDepositoRequest)
-        this.mvc.perform(post("/conta/{id}/deposito", joaoConta.id)
+        this.mvc.perform(
+            post("/conta/{id}/deposito", joaoConta.id)
                 .content(content)
-                .contentType(APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk)
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.idOperacao", notNullValue()))
+                .contentType(APPLICATION_JSON_UTF8)
+        )
+            .andExpect(status().isOk)
+            .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+            .andExpect(jsonPath("$.idOperacao", notNullValue()))
     }
 
     @Test
     fun `Nao deve depositar em uma conta que nao existe`() {
         val operacaoDepositoRequest = OperacaoRequest(valorOperacao = 500.00, contaDestino = null)
         val content = gson.toJson(operacaoDepositoRequest)
-        this.mvc.perform(post("/conta/{id}/deposito", -1)
+        this.mvc.perform(
+            post("/conta/{id}/deposito", "-1")
                 .content(content)
-                .contentType(APPLICATION_JSON_UTF8))
-                .andExpect(status().isUnprocessableEntity)
+                .contentType(APPLICATION_JSON_UTF8)
+        )
+            .andExpect(status().isUnprocessableEntity)
     }
 
     @Test
@@ -126,22 +143,26 @@ class OperacaoControllerTest {
 
         val operacaoSaqueRequest = OperacaoRequest(valorOperacao = 200.00, contaDestino = null)
         val content = gson.toJson(operacaoSaqueRequest)
-        this.mvc.perform(post("/conta/{id}/saque", joaoConta.id)
+        this.mvc.perform(
+            post("/conta/{id}/saque", joaoConta.id)
                 .content(content)
-                .contentType(APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk)
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.idOperacao", notNullValue()))
+                .contentType(APPLICATION_JSON_UTF8)
+        )
+            .andExpect(status().isOk)
+            .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+            .andExpect(jsonPath("$.idOperacao", notNullValue()))
     }
 
     @Test
     fun `Nao deve realizar saque de conta que nao existe`() {
         val operacaoSaqueRequest = OperacaoRequest(valorOperacao = 200.00, contaDestino = null)
         val content = gson.toJson(operacaoSaqueRequest)
-        this.mvc.perform(post("/conta/{id}/saque", -1)
+        this.mvc.perform(
+            post("/conta/{id}/saque", "-1")
                 .content(content)
-                .contentType(APPLICATION_JSON_UTF8))
-                .andExpect(status().isUnprocessableEntity)
+                .contentType(APPLICATION_JSON_UTF8)
+        )
+            .andExpect(status().isUnprocessableEntity)
     }
 
     @Test
@@ -153,32 +174,38 @@ class OperacaoControllerTest {
         val operacaoTransferenciaRequest = OperacaoRequest(valorOperacao = 100.00, contaDestino = mariaConta.id)
         val content = gson.toJson(operacaoTransferenciaRequest)
 
-        this.mvc.perform(post("/conta/{id}/transferencia", joaoConta.id)
+        this.mvc.perform(
+            post("/conta/{id}/transferencia", joaoConta.id)
                 .content(content)
-                .contentType(APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk)
-                .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.idOperacao", notNullValue()))
+                .contentType(APPLICATION_JSON_UTF8)
+        )
+            .andExpect(status().isOk)
+            .andExpect(content().contentType(APPLICATION_JSON_UTF8))
+            .andExpect(jsonPath("$.idOperacao", notNullValue()))
     }
 
     @Test
     fun `Nao deve realizar deposito abaixo de 1`() {
         val operacaoDepositoRequest = OperacaoRequest(valorOperacao = -500.00, contaDestino = null)
         val content = gson.toJson(operacaoDepositoRequest)
-        this.mvc.perform(post("/conta/{id}/deposito", joaoConta.id)
+        this.mvc.perform(
+            post("/conta/{id}/deposito", joaoConta.id)
                 .content(content)
-                .contentType(APPLICATION_JSON_UTF8))
-                .andExpect(status().isBadRequest)
+                .contentType(APPLICATION_JSON_UTF8)
+        )
+            .andExpect(status().isBadRequest)
     }
 
     @Test
     fun `Nao deve realizar uma saque negativo`() {
         val operacaoSaqueRequest = OperacaoRequest(valorOperacao = -200.00, contaDestino = null)
         val content = gson.toJson(operacaoSaqueRequest)
-        this.mvc.perform(post("/conta/{id}/saque", joaoConta.id)
+        this.mvc.perform(
+            post("/conta/{id}/saque", joaoConta.id)
                 .content(content)
-                .contentType(APPLICATION_JSON_UTF8))
-                .andExpect(status().isBadRequest)
+                .contentType(APPLICATION_JSON_UTF8)
+        )
+            .andExpect(status().isBadRequest)
     }
 
     @Test
@@ -186,10 +213,12 @@ class OperacaoControllerTest {
         val operacaoTransferenciaRequest = OperacaoRequest(valorOperacao = -100.00, contaDestino = mariaConta.id)
         val content = gson.toJson(operacaoTransferenciaRequest)
 
-        this.mvc.perform(post("/conta/{id}/transferencia", joaoConta.id)
+        this.mvc.perform(
+            post("/conta/{id}/transferencia", joaoConta.id)
                 .content(content)
-                .contentType(APPLICATION_JSON_UTF8))
-                .andExpect(status().isBadRequest)
+                .contentType(APPLICATION_JSON_UTF8)
+        )
+            .andExpect(status().isBadRequest)
     }
 
     @Test
@@ -198,32 +227,38 @@ class OperacaoControllerTest {
         contaService.update(joaoConta)
         val operacaoTransferenciaRequest = OperacaoRequest(valorOperacao = 300.00, contaDestino = joaoConta.id)
         val content = gson.toJson(operacaoTransferenciaRequest)
-        this.mvc.perform(post("/conta/{id}/transferencia", joaoConta.id)
+        this.mvc.perform(
+            post("/conta/{id}/transferencia", joaoConta.id)
                 .content(content)
-                .contentType(APPLICATION_JSON_UTF8))
-                .andExpect(status().isUnprocessableEntity)
+                .contentType(APPLICATION_JSON_UTF8)
+        )
+            .andExpect(status().isUnprocessableEntity)
     }
 
     @Test
     fun `Nao deve transferir para uma conta invalida`() {
         joaoConta.saldo = 300.00
         contaService.update(joaoConta)
-        val operacaoTransferenciaRequest = OperacaoRequest(valorOperacao = 300.00, contaDestino = -1)
+        val operacaoTransferenciaRequest = OperacaoRequest(valorOperacao = 300.00, contaDestino = "-1")
         val content = gson.toJson(operacaoTransferenciaRequest)
-        this.mvc.perform(post("/conta/{id}/transferencia", joaoConta.id)
+        this.mvc.perform(
+            post("/conta/{id}/transferencia", joaoConta.id)
                 .content(content)
-                .contentType(APPLICATION_JSON_UTF8))
-                .andExpect(status().isUnprocessableEntity)
+                .contentType(APPLICATION_JSON_UTF8)
+        )
+            .andExpect(status().isUnprocessableEntity)
     }
 
     @Test
     fun `Nao deve transferir de uma conta que nao existe`() {
         val operacaoTransferenciaRequest = OperacaoRequest(valorOperacao = 300.00, contaDestino = mariaConta.id)
         val content = gson.toJson(operacaoTransferenciaRequest)
-        this.mvc.perform(post("/conta/{id}/transferencia", -1)
+        this.mvc.perform(
+            post("/conta/{id}/transferencia", "-1")
                 .content(content)
-                .contentType(APPLICATION_JSON_UTF8))
-                .andExpect(status().isUnprocessableEntity)
+                .contentType(APPLICATION_JSON_UTF8)
+        )
+            .andExpect(status().isUnprocessableEntity)
     }
 
 }

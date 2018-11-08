@@ -7,4 +7,4 @@ class OperacaoRequest(
         @get: NotNull
         @get: Min(1)
         val valorOperacao: Double?,
-        val contaDestino: Int?)
+        val contaDestino: String?)

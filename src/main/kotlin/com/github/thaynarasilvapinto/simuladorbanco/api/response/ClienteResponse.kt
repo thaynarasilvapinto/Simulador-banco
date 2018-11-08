@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 
 data class ClienteResponse(
         @NotNull
-        val id: Int,
+        val id: String,
         @NotNull
         val nome: String,
         @NotNull
@@ -13,5 +13,5 @@ data class ClienteResponse(
         @NotNull
         val dataHora: LocalDateTime,
         @NotNull
-        val conta: ContaResponse
+        val conta: String
 )

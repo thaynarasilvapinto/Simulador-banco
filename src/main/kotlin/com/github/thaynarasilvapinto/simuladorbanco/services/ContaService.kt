@@ -2,11 +2,13 @@ package com.github.thaynarasilvapinto.simuladorbanco.services
 
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Conta
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Operacao
-import com.github.thaynarasilvapinto.simuladorbanco.repositories.ContaRepository
+import com.github.thaynarasilvapinto.simuladorbanco.domain.repository.ContaRepository
 import com.github.thaynarasilvapinto.simuladorbanco.services.exception.AccountIsValidException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 import java.util.*
+import javax.xml.crypto.Data
 
 @Service
 open class ContaService {
@@ -20,44 +22,54 @@ open class ContaService {
     @Autowired
     private lateinit var serviceOperacao: OperacaoService
 
-    fun find(id: Int): Optional<Conta> {
+    fun find(id: String): Optional<Conta> {
         return repo.findById(id)
     }
 
-    fun insert(obj: Conta) = repo.save(obj)
-
-    fun update(obj: Conta): Conta {
-        find(obj.id)
-        return repo.save(obj)
+    fun insert(conta: Conta): Conta {
+        repo.save(conta)
+        return repo.findById(conta.id).get()
     }
 
-    fun delete(id: Int) {
+    fun update(conta: Conta): Conta {
+        find(conta.id)
+        repo.update(conta)
+        return repo.findById(conta.id).get()
+    }
+
+    fun delete(id: String) {
         find(id)
         repo.deleteById(id)
     }
 
 
-    fun extrato(id: Int): List<Operacao> {
+    fun extrato(id: String): List<Operacao> {
         val conta = serviceConta.find(id)
 
         if (conta.isPresent) {
 
             emptyList<Operacao>()
 
-            val recebimento = serviceOperacao.findAllByContaDestinoAndTipoOperacao(conta.get(), Operacao.TipoOperacao.RECEBIMENTO_TRANSFERENCIA)
-            val trasferencia = serviceOperacao.findAllByContaDestinoAndTipoOperacao(conta.get(), Operacao.TipoOperacao.TRANSFERENCIA)
-            val deposito = serviceOperacao.findAllByContaDestinoAndTipoOperacao(conta.get(), Operacao.TipoOperacao.DEPOSITO)
+            val recebimento = serviceOperacao.findAllByContaDestinoAndTipoOperacao(
+                conta.get(),
+                Operacao.TipoOperacao.RECEBIMENTO_TRANSFERENCIA
+            )
+            val trasferencia =
+                serviceOperacao.findAllByContaDestinoAndTipoOperacao(conta.get(), Operacao.TipoOperacao.TRANSFERENCIA)
+            val deposito =
+                serviceOperacao.findAllByContaDestinoAndTipoOperacao(conta.get(), Operacao.TipoOperacao.DEPOSITO)
             val saque = serviceOperacao.findAllByContaDestinoAndTipoOperacao(conta.get(), Operacao.TipoOperacao.SAQUE)
 
+
             var lista = recebimento + trasferencia + deposito + saque
-            fun selector(p: Operacao): Int = p.idOperacao
+            fun selector(p: Operacao): LocalDateTime = p.dataHoraOperacao
             lista = lista.sortedBy { selector(it) }
             return lista
         }
         throw AccountIsValidException(message = "A conta deve ser valida")
     }
 
-    fun saldo(id: Int): Conta {
+    fun saldo(id: String): Conta {
         val conta = serviceConta.find(id)
 
         if (conta.isPresent) {
@@ -66,7 +78,7 @@ open class ContaService {
         throw AccountIsValidException(message = "A conta deve ser valida")
     }
 
-    fun conta(id: Int): Conta {
+    fun conta(id: String): Conta {
         val conta = serviceConta.find(id)
 
         if (conta.isPresent) {

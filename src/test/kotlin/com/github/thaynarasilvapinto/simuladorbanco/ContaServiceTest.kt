@@ -57,8 +57,10 @@ class ContaServiceTest {
     fun tearDown() {
         clienteService.delete(joao.id)
         val extrato = operacaoService.findAllContaOrigem(joaoConta)
-        for (i in extrato.indices) {
-            operacaoService.delete(extrato[i].idOperacao)
+        if(extrato != null){
+            for (i in extrato!!.indices) {
+                operacaoService.delete(extrato[i].idOperacao)
+            }
         }
         contaService.delete(joaoConta.id)
     }
@@ -111,7 +113,7 @@ class ContaServiceTest {
         thrown.expect(AccountIsValidException::class.java)
         thrown.expectMessage("A conta deve ser valida")
 
-        contaService.extrato(-1)
+        contaService.extrato("-1")
     }
 
     @Test

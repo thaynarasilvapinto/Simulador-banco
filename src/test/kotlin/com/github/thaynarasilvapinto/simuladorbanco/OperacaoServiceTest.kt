@@ -42,16 +42,19 @@ class OperacaoServiceTest {
     fun setUp() {
         createClient()
         operacaoDepositoJoao = operacaoService.deposito(
-                id = joaoConta.id,
-                valor = 200.00)
+            id = joaoConta.id,
+            valor = 200.00
+        )
     }
 
     @After
     fun tearDown() {
         clienteService.delete(joao.id)
         val extrato = operacaoService.findAllContaOrigem(joaoConta)
-        for (i in extrato.indices) {
-            operacaoService.delete(extrato[i].idOperacao)
+        if (extrato != null) {
+            for (i in extrato!!.indices) {
+                operacaoService.delete(extrato[i].idOperacao)
+            }
         }
         contaService.delete(joaoConta.id)
     }
@@ -82,8 +85,9 @@ class OperacaoServiceTest {
         thrown.expectMessage("Saldo Insuficiente")
 
         operacaoService.saque(
-                id = joaoConta.id,
-                valor = 1000000.00)
+            id = joaoConta.id,
+            valor = 1000000.00
+        )
     }
 
     @Test
@@ -92,9 +96,10 @@ class OperacaoServiceTest {
         thrown.expectMessage("Saldo Insuficiente")
 
         operacaoService.transferencia(
-                id = joaoConta.id,
-                idDestino = contaMaria.id,
-                valor = 10000.00)
+            id = joaoConta.id,
+            idDestino = contaMaria.id,
+            valor = 10000.00
+        )
     }
 
     @Test
@@ -103,9 +108,10 @@ class OperacaoServiceTest {
         thrown.expectMessage("As contas devem ser validas")
 
         operacaoService.transferencia(
-                id = -1,
-                idDestino = -2,
-                valor = 10.00)
+            id = "-1",
+            idDestino = "-2",
+            valor = 10.00
+        )
     }
 
     @Test
@@ -114,9 +120,10 @@ class OperacaoServiceTest {
         thrown.expectMessage("As contas devem ser validas")
 
         operacaoService.transferencia(
-                id = -1,
-                idDestino = contaMaria.id,
-                valor = 10.00)
+            id = "-1",
+            idDestino = contaMaria.id,
+            valor = 10.00
+        )
     }
 
     @Test
@@ -125,9 +132,10 @@ class OperacaoServiceTest {
         thrown.expectMessage("As contas devem ser validas")
 
         operacaoService.transferencia(
-                id = joaoConta.id,
-                idDestino = -2,
-                valor = 100.00)
+            id = joaoConta.id,
+            idDestino = "-2",
+            valor = 100.00
+        )
     }
 
     @Test
@@ -136,9 +144,10 @@ class OperacaoServiceTest {
         thrown.expectMessage("Não pode efetuar uma transferencia para você mesmo")
 
         operacaoService.transferencia(
-                id = joaoConta.id,
-                idDestino = joaoConta.id,
-                valor = 100.00)
+            id = joaoConta.id,
+            idDestino = joaoConta.id,
+            valor = 100.00
+        )
     }
 
     @Test
@@ -147,8 +156,9 @@ class OperacaoServiceTest {
         thrown.expectMessage("A conta deve ser valida")
 
         operacaoService.deposito(
-                id = -1,
-                valor = 100.00)
+            id = "-1",
+            valor = 100.00
+        )
     }
 
     @Test
@@ -157,15 +167,17 @@ class OperacaoServiceTest {
         thrown.expectMessage("A conta deve ser valida")
 
         operacaoService.saque(
-                id = -1,
-                valor = 10.00)
+            id = "-1",
+            valor = 10.00
+        )
     }
 
     @Test
     fun `deve realizar deposito`() {
         val deposito = operacaoService.deposito(
-                id = joaoConta.id,
-                valor = 100.00)
+            id = joaoConta.id,
+            valor = 100.00
+        )
 
         val depositoNoBanco = operacaoService.find(deposito.idOperacao).get()
         assertNotNull(deposito)
@@ -175,8 +187,9 @@ class OperacaoServiceTest {
     @Test
     fun `deve realizar saque`() {
         val saque = operacaoService.saque(
-                id = joaoConta.id,
-                valor = 100.00)
+            id = joaoConta.id,
+            valor = 100.00
+        )
         val saqueNoBanco = operacaoService.find(saque.idOperacao).get()
         assertNotNull(saque)
         assertEquals(saqueNoBanco, saque)
@@ -185,9 +198,10 @@ class OperacaoServiceTest {
     @Test
     fun `deve realizar transferencia`() {
         val transferencia = operacaoService.transferencia(
-                id = joaoConta.id,
-                idDestino = contaMaria.id,
-                valor = 100.00)
+            id = joaoConta.id,
+            idDestino = contaMaria.id,
+            valor = 100.00
+        )
         val transferenciaNoBanco = operacaoService.find(transferencia.idOperacao).get()
         assertNotNull(transferencia)
         assertEquals(transferenciaNoBanco, transferencia)

@@ -1,19 +1,20 @@
 package com.github.thaynarasilvapinto.simuladorbanco.domain
 
-import java.io.Serializable
 import java.time.LocalDateTime
-import javax.persistence.*
+import java.util.*
+import javax.persistence.Entity
+import javax.persistence.Id
+import javax.persistence.Table
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotNull
 
 @Entity
 @Table(name = "conta")
 data class Conta(
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Int = -1,
-        @NotNull
-        @Min(0)
-        var saldo: Double,
-        var dataHora: LocalDateTime = LocalDateTime.now()
-) : Serializable
+    @Id
+    var id: String = UUID.randomUUID().toString(),
+    @NotNull
+    @Min(0)
+    var saldo: Double,
+    var dataHora: LocalDateTime = LocalDateTime.now()
+)

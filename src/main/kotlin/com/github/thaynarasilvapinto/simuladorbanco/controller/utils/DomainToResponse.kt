@@ -11,7 +11,7 @@ fun Cliente.toResponse(): ClienteResponse =
                 cpf = this.cpf,
                 nome = this.nome,
                 dataHora = this.dataHora,
-                conta = this.conta.toResponse()
+                conta = this.conta.id
         )
 
 fun Conta.toResponse(): ContaResponse =

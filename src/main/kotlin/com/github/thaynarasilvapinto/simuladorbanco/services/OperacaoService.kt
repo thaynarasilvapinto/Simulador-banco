@@ -2,13 +2,12 @@ package com.github.thaynarasilvapinto.simuladorbanco.services
 
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Conta
 import com.github.thaynarasilvapinto.simuladorbanco.domain.Operacao
-import com.github.thaynarasilvapinto.simuladorbanco.repositories.OperacaoRepository
+import com.github.thaynarasilvapinto.simuladorbanco.domain.repository.OperacaoRepository
 import com.github.thaynarasilvapinto.simuladorbanco.services.exception.AccountIsValidException
 import com.github.thaynarasilvapinto.simuladorbanco.services.exception.BalanceIsInsufficientException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
-import javax.swing.SwingUtilities
 
 @Service
 open class OperacaoService {
@@ -20,27 +19,27 @@ open class OperacaoService {
     private lateinit var serviceConta: ContaService
 
 
-    fun find(id: Int): Optional<Operacao> {
+    fun find(id: String): Optional<Operacao> {
         return repo.findById(id)
     }
 
-    fun insert(obj: Operacao) = repo.save(obj)
-
-    fun update(obj: Operacao): Operacao {
-        find(obj.idOperacao)
-        return repo.save(obj)
+    fun insert(obj: Operacao): Operacao {
+        repo.save(obj)
+        return repo.findById(obj.idOperacao).get()
     }
 
-    fun delete(id: Int) {
+
+    fun delete(id: String) {
         find(id)
         repo.deleteById(id)
     }
 
-    fun findAllContaOrigem(conta: Conta) = repo.findAllByContaOrigem(conta)
+    fun findAllContaOrigem(conta: Conta) = repo.findAllByContaOrigem(conta.id)
 
-    fun findAllByContaDestinoAndTipoOperacao(conta: Conta, tipoOperacao: Operacao.TipoOperacao) = repo.findAllByContaDestinoAndTipoOperacao(conta, tipoOperacao)
+    fun findAllByContaDestinoAndTipoOperacao(conta: Conta, tipoOperacao: Operacao.TipoOperacao) =
+        repo.findAllByContaDestinoAndTipoOperacao(conta.id, tipoOperacao.name)
 
-    fun saque(valor: Double, id: Int): Operacao {
+    fun saque(valor: Double, id: String): Operacao {
 
         val conta = serviceConta.find(id)
 
@@ -48,10 +47,11 @@ open class OperacaoService {
             if (valor <= conta.get().saldo) {
 
                 var saque = Operacao(
-                        contaOrigem = conta.get(),
-                        contaDestino = conta.get(),
-                        valorOperacao = valor,
-                        tipoOperacao = Operacao.TipoOperacao.SAQUE)
+                    contaOrigem = conta.get(),
+                    contaDestino = conta.get(),
+                    valorOperacao = valor,
+                    tipoOperacao = Operacao.TipoOperacao.SAQUE
+                )
 
                 conta.get().saldo = conta.get().saldo - saque.valorOperacao
 
@@ -66,17 +66,18 @@ open class OperacaoService {
         throw AccountIsValidException(message = "A conta deve ser valida")
     }
 
-    fun deposito(valor: Double, id: Int): Operacao {
+    fun deposito(valor: Double, id: String): Operacao {
 
         val conta = serviceConta.find(id)
 
         if (conta.isPresent) {
 
             var deposito = Operacao(
-                    contaOrigem = conta.get(),
-                    contaDestino = conta.get(),
-                    valorOperacao = valor,
-                    tipoOperacao = Operacao.TipoOperacao.DEPOSITO)
+                contaOrigem = conta.get(),
+                contaDestino = conta.get(),
+                valorOperacao = valor,
+                tipoOperacao = Operacao.TipoOperacao.DEPOSITO
+            )
 
             conta.get().saldo = conta.get().saldo + deposito.valorOperacao
 
@@ -89,7 +90,7 @@ open class OperacaoService {
         throw AccountIsValidException(message = "A conta deve ser valida")
     }
 
-    fun transferencia(valor: Double, id: Int, idDestino: Int): Operacao {
+    fun transferencia(valor: Double, id: String, idDestino: String): Operacao {
 
         val contaOrigem = serviceConta.find(id)
         val contaDestino = serviceConta.find(idDestino)
@@ -99,15 +100,17 @@ open class OperacaoService {
                 if (valor <= contaOrigem.get().saldo) {
 
                     var recebimentoTransferencia = Operacao(
-                            contaOrigem = contaOrigem.get(),
-                            contaDestino = contaDestino.get(),
-                            valorOperacao = valor,
-                            tipoOperacao = Operacao.TipoOperacao.RECEBIMENTO_TRANSFERENCIA)
+                        contaOrigem = contaOrigem.get(),
+                        contaDestino = contaDestino.get(),
+                        valorOperacao = valor,
+                        tipoOperacao = Operacao.TipoOperacao.RECEBIMENTO_TRANSFERENCIA
+                    )
                     var efetuarTrasferencia = Operacao(
-                            contaOrigem = contaOrigem.get(),
-                            contaDestino = contaDestino.get(),
-                            valorOperacao = valor,
-                            tipoOperacao = Operacao.TipoOperacao.TRANSFERENCIA)
+                        contaOrigem = contaOrigem.get(),
+                        contaDestino = contaDestino.get(),
+                        valorOperacao = valor,
+                        tipoOperacao = Operacao.TipoOperacao.TRANSFERENCIA
+                    )
 
 
                     contaOrigem.get().saldo = contaOrigem.get().saldo - efetuarTrasferencia.valorOperacao
