@@ -4,6 +4,7 @@ import com.github.thaynarasilvapinto.simuladorbanco.domain.Cliente
 import com.github.thaynarasilvapinto.simuladorbanco.domain.repository.ClienteRepository
 import com.github.thaynarasilvapinto.simuladorbanco.repositories.extractor.ClienteRowMapper
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Repository
 import java.util.*
@@ -53,7 +54,11 @@ open class JdbcClienteRepository @Autowired constructor(
                     cliente.id = ?
                 """
 
-        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, ClienteRowMapper(), clienteId))
+        return try{
+            Optional.ofNullable(jdbcTemplate.queryForObject(sql, ClienteRowMapper(), clienteId))
+        }catch(e: EmptyResultDataAccessException) {
+            Optional.ofNullable(null)
+        }
     }
 
     override fun update(cliente: Cliente): Int {
@@ -93,6 +98,11 @@ open class JdbcClienteRepository @Autowired constructor(
                     cliente.conta_id = conta.id AND
                     cliente.cpf = ?
             """
-        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, ClienteRowMapper(), cpf))
+
+        return try{
+            Optional.ofNullable(jdbcTemplate.queryForObject(sql, ClienteRowMapper(), cpf))
+        }catch(e: EmptyResultDataAccessException) {
+            Optional.ofNullable(null)
+        }
     }
 }

@@ -28,11 +28,6 @@ open class OperacaoService {
         return repo.findById(obj.idOperacao).get()
     }
 
-/*    fun update(obj: Operacao): Operacao {
-        find(obj.idOperacao)
-        repo.(obj)
-        return repo.findById(obj.idOperacao).get()
-    }*/
 
     fun delete(id: String) {
         find(id)

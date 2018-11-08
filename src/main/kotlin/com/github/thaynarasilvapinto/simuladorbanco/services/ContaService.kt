@@ -6,7 +6,9 @@ import com.github.thaynarasilvapinto.simuladorbanco.domain.repository.ContaRepos
 import com.github.thaynarasilvapinto.simuladorbanco.services.exception.AccountIsValidException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 import java.util.*
+import javax.xml.crypto.Data
 
 @Service
 open class ContaService {
@@ -24,7 +26,7 @@ open class ContaService {
         return repo.findById(id)
     }
 
-    fun insert(conta: Conta) : Conta{
+    fun insert(conta: Conta): Conta {
         repo.save(conta)
         return repo.findById(conta.id).get()
     }
@@ -48,13 +50,19 @@ open class ContaService {
 
             emptyList<Operacao>()
 
-            val recebimento = serviceOperacao.findAllByContaDestinoAndTipoOperacao(conta.get(), Operacao.TipoOperacao.RECEBIMENTO_TRANSFERENCIA)
-            val trasferencia = serviceOperacao.findAllByContaDestinoAndTipoOperacao(conta.get(), Operacao.TipoOperacao.TRANSFERENCIA)
-            val deposito = serviceOperacao.findAllByContaDestinoAndTipoOperacao(conta.get(), Operacao.TipoOperacao.DEPOSITO)
+            val recebimento = serviceOperacao.findAllByContaDestinoAndTipoOperacao(
+                conta.get(),
+                Operacao.TipoOperacao.RECEBIMENTO_TRANSFERENCIA
+            )
+            val trasferencia =
+                serviceOperacao.findAllByContaDestinoAndTipoOperacao(conta.get(), Operacao.TipoOperacao.TRANSFERENCIA)
+            val deposito =
+                serviceOperacao.findAllByContaDestinoAndTipoOperacao(conta.get(), Operacao.TipoOperacao.DEPOSITO)
             val saque = serviceOperacao.findAllByContaDestinoAndTipoOperacao(conta.get(), Operacao.TipoOperacao.SAQUE)
 
+
             var lista = recebimento + trasferencia + deposito + saque
-            fun selector(p: Operacao): String = p.idOperacao
+            fun selector(p: Operacao): LocalDateTime = p.dataHoraOperacao
             lista = lista.sortedBy { selector(it) }
             return lista
         }

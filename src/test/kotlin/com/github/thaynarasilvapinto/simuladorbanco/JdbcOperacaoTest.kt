@@ -110,7 +110,7 @@ class JdbcOperacaoTest {
 
         val operacaoListOrigem = repositoryOperacao.findAllByContaOrigem(operacao.get().contaOrigem.id)
         assertNotNull(operacaoListOrigem)
-        assertEquals(operacao.get().idOperacao, operacaoListOrigem[0].idOperacao)
+        assertEquals(operacao.get().idOperacao, operacaoListOrigem!![0].idOperacao)
     }
 
     @Test
@@ -122,6 +122,6 @@ class JdbcOperacaoTest {
             id = operacao.get().contaDestino.id,
             operacao = operacao.get().tipoOperacao.name)
         assertNotNull(operacaoListOrigem)
-        assertEquals(operacao.get().idOperacao, operacaoListOrigem[0].idOperacao)
+        assertEquals(operacao.get().idOperacao, operacaoListOrigem!![0].idOperacao)
     }
 }

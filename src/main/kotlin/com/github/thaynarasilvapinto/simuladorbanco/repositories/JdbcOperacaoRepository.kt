@@ -4,6 +4,7 @@ import com.github.thaynarasilvapinto.simuladorbanco.domain.Operacao
 import com.github.thaynarasilvapinto.simuladorbanco.domain.repository.OperacaoRepository
 import com.github.thaynarasilvapinto.simuladorbanco.repositories.extractor.OperacaoRowMapper
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Repository
 import java.util.*
@@ -54,9 +55,13 @@ open class JdbcOperacaoRepository @Autowired constructor(private val jdbcTemplat
             WHERE
                 operacao.id_operacao = ?
             """
-        var operacao: Optional<Operacao> =
+
+        return try{
             Optional.ofNullable(jdbcTemplate.queryForObject(sql, OperacaoRowMapper(), operacaoId))
-        return operacao
+        }catch(e: EmptyResultDataAccessException) {
+            Optional.ofNullable(null)
+        }
+
     }
 
 
@@ -83,9 +88,7 @@ open class JdbcOperacaoRepository @Autowired constructor(private val jdbcTemplat
                 operacao.conta_id_origem = ?
             """
 
-        var contas = sql.map { jdbcTemplate.queryForObject(sql, OperacaoRowMapper(), id) }
-
-        return contas
+        return jdbcTemplate.query(sql, OperacaoRowMapper(), id)
     }
 
     override fun findAllByContaDestinoAndTipoOperacao(id: String, operacao: String): List<Operacao> {
@@ -105,7 +108,6 @@ open class JdbcOperacaoRepository @Autowired constructor(private val jdbcTemplat
                 operacao.tipo_operacao = ?
             """
 
-        var listaOperacaoes = sql.map { jdbcTemplate.queryForObject(sql, OperacaoRowMapper(), id,operacao) }
-        return listaOperacaoes
+        return  jdbcTemplate.query(sql, OperacaoRowMapper(), id,operacao)
     }
 }

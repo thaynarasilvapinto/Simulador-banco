@@ -36,10 +36,13 @@ class ClienteServiceTest {
     }
 
     private fun createClient() {
-        joaoConta = Conta(saldo = 0.00)
-        joaoConta = contaService.insert(joaoConta)
-        this.joao = Cliente(nome = "Cliente Test ClienteController", cpf = "151.425.426-75", conta = joaoConta)
-        joao = clienteService.insert(joao)
+        joao = clienteService.criarCliente(Cliente(
+            nome = "Cliente Test Conta Controller",
+            cpf = "055.059.396-94",
+            conta = Conta(saldo = 0.00)))
+
+        joaoConta = contaService.find(joao.conta.id).get()
+
     }
 
     @After
@@ -51,7 +54,7 @@ class ClienteServiceTest {
     @Test
     fun `deve buscar um cliente`() {
         val clienteBuscado = clienteService.find(joao.id)
-        assertEquals(joao.id.toLong(), clienteBuscado.get().id.toLong())
+        assertEquals(joao.id, clienteBuscado.get().id)
     }
 
     @Test
@@ -82,7 +85,7 @@ class ClienteServiceTest {
         thrown.expect(CpfIsValidException::class.java)
         thrown.expectMessage("O CPF já existe")
 
-        clienteService.criarCliente(Cliente(nome = "teste", cpf = "151.425.426-75", conta = Conta(saldo = 0.00)))
+        clienteService.criarCliente(Cliente(nome = "teste", cpf = "055.059.396-94", conta = Conta(saldo = 0.00)))
     }
 
 }

@@ -4,6 +4,7 @@ import com.github.thaynarasilvapinto.simuladorbanco.domain.Conta
 import com.github.thaynarasilvapinto.simuladorbanco.domain.repository.ContaRepository
 import com.github.thaynarasilvapinto.simuladorbanco.repositories.extractor.ContaRowMapper
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Repository
 import java.util.*
@@ -42,7 +43,11 @@ open class JdbcContaRepository @Autowired constructor(private val jdbcTemplate: 
         val sql = """
             select * from $TABLE_NAME where $ID_COLUMN = ?
             """
-        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, ContaRowMapper(), contaId))
+        return try{
+            Optional.ofNullable(jdbcTemplate.queryForObject(sql, ContaRowMapper(), contaId))
+        }catch(e: EmptyResultDataAccessException) {
+            Optional.ofNullable(null)
+        }
     }
 
     override fun update(conta: Conta): Int {
