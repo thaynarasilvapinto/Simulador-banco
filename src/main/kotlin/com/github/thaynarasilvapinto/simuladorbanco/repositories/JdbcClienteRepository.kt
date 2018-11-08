@@ -39,7 +39,7 @@ open class JdbcClienteRepository @Autowired constructor(
         )
     }
 
-    override fun findById(clienteId: Int): Optional<Cliente> {
+    override fun findById(clienteId: String): Optional<Cliente> {
         val sql = """
                 SELECT
                        cliente.*,
@@ -73,7 +73,7 @@ open class JdbcClienteRepository @Autowired constructor(
         )
     }
 
-    override fun deleteById(id: Int): Int {
+    override fun deleteById(id: String): Int {
         val sql = """
             delete from $TABLE_NAME where $ID_COLUMN = ?
             """

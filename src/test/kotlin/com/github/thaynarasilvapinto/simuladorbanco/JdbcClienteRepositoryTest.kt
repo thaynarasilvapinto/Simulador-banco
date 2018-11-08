@@ -22,8 +22,8 @@ class JdbcClienteRepositoryTest {
     @Autowired
     private lateinit var repositoryConta: ContaRepository
 
-    private var clienteID: Int = -1
-    private var accountId: Int = -1
+    private var clienteID: String = "-1"
+    private var accountId: String = "-1"
 
     @Before
     fun setup() {
@@ -37,14 +37,12 @@ class JdbcClienteRepositoryTest {
         repositoryConta.deleteById(accountId)
     }
 
-    private fun saveACliente(): Int {
+    private fun saveACliente(): String {
 
         val account = Conta(
-            id = 1,
             saldo = 0.00
         )
         val client = Cliente(
-            id = 1,
             nome = "Maitê Priscila Raimunda Moreira",
             cpf = "479.711.743-57", conta = account
         )
@@ -64,11 +62,9 @@ class JdbcClienteRepositoryTest {
     @Test
     fun `deve criar um cliente`() {
         val account = Conta(
-            id = 2,
             saldo = 0.00
         )
         val client = Cliente(
-            id = 2,
             nome = "Sérgio Joaquim Silva",
             cpf = "134.191.446-10", conta = account
         )
@@ -94,11 +90,9 @@ class JdbcClienteRepositoryTest {
     fun `deve deletar em um cliente ja criado`() {
 
         val account = Conta(
-            id = 2,
             saldo = 0.00
         )
         val client = Cliente(
-            id = 2,
             nome = "Sérgio Joaquim Silva",
             cpf = "134.191.446-10", conta = account
         )

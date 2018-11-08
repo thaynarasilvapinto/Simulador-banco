@@ -111,7 +111,7 @@ class ContaServiceTest {
         thrown.expect(AccountIsValidException::class.java)
         thrown.expectMessage("A conta deve ser valida")
 
-        contaService.extrato(-1)
+        contaService.extrato("-1")
     }
 
     @Test

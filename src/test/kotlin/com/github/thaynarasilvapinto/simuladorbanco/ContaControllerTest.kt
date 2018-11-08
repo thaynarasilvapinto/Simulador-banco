@@ -74,7 +74,7 @@ class ContaControllerTest {
 
     @Test
     fun `Nao deve retornar uma conta que nao existe no banco`() {
-        this.mvc.perform(get("/conta/{id}", -1))
+        this.mvc.perform(get("/conta/{id}", "-1"))
                 .andExpect(status().isUnprocessableEntity)
 
     }
@@ -89,7 +89,7 @@ class ContaControllerTest {
 
     @Test
     fun `Nao deve retornar o saldo de uma conta que nao existe no banco`() {
-        this.mvc.perform(get("/conta/{id}/saldo", -1))
+        this.mvc.perform(get("/conta/{id}/saldo", "-1"))
                 .andExpect(status().isUnprocessableEntity)
     }
 
@@ -117,7 +117,7 @@ class ContaControllerTest {
 
     @Test
     fun `Nao deve retornar o extrato de um cliente que nao existe no banco`() {
-        this.mvc.perform(get("/conta/{id}/extrato", -1))
+        this.mvc.perform(get("/conta/{id}/extrato", "-1"))
                 .andExpect(status().isUnprocessableEntity)
     }
 }

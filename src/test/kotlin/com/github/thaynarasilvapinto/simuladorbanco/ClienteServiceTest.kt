@@ -68,7 +68,7 @@ class ClienteServiceTest {
         var cliente = clienteService.criarCliente(Cliente(
                 nome = "teste",
                 cpf = "611.018.420-91",
-                conta = Conta(-1, 0.00)))
+                conta = Conta("-1", 0.00)))
         val clienteEsperado = clienteService.find(cliente.id).get()
         assertNotNull(cliente.id)
         assertEquals(clienteEsperado, cliente)
@@ -82,7 +82,7 @@ class ClienteServiceTest {
         thrown.expect(CpfIsValidException::class.java)
         thrown.expectMessage("O CPF já existe")
 
-        clienteService.criarCliente(Cliente(nome = "teste", cpf = "151.425.426-75", conta = Conta(-1, 0.00)))
+        clienteService.criarCliente(Cliente(nome = "teste", cpf = "151.425.426-75", conta = Conta(saldo = 0.00)))
     }
 
 }

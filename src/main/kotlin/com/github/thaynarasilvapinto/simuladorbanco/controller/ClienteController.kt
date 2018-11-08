@@ -21,7 +21,7 @@ open class ClienteController {
 
 
     @GetMapping(value = ["/cliente/{id}"])
-    fun mostrarCliente(@PathVariable id: Int): ResponseEntity<ClienteResponse> {
+    fun mostrarCliente(@PathVariable id: String): ResponseEntity<ClienteResponse> {
         val cliente = serviceCliente.cliente(id)
         return ResponseEntity.ok().body(cliente.toResponse())
 

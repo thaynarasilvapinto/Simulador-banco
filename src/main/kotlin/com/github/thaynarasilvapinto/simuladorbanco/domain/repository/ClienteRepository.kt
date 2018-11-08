@@ -6,11 +6,11 @@ import java.util.*
 interface ClienteRepository {
     fun save(cliente: Cliente): Int
 
-    fun findById(clienteId: Int): Optional<Cliente>
+    fun findById(clienteId: String): Optional<Cliente>
 
     fun update(cliente: Cliente): Int
 
-    fun deleteById(id: Int): Int
+    fun deleteById(id: String): Int
 
     fun findByCpfEquals(CPF: String): Optional<Cliente>
 }

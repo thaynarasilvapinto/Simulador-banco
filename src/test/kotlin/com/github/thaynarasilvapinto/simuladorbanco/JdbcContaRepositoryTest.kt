@@ -19,7 +19,7 @@ class JdbcContaRepositoryTest {
     @Autowired
     private lateinit var repositoryConta: ContaRepository
 
-    private var accountId: Int = -1
+    private var accountId: String = "-1"
 
     @Before
     fun setup() {
@@ -31,10 +31,9 @@ class JdbcContaRepositoryTest {
         repositoryConta.deleteById(accountId)
     }
 
-    private fun saveAAccount(): Int {
+    private fun saveAAccount(): String {
 
         val account = Conta(
-            id = 1,
             saldo = 0.00
         )
         assertEquals(1, repositoryConta.save(account))
@@ -52,7 +51,6 @@ class JdbcContaRepositoryTest {
     @Test
     fun `deve criar uma conta`() {
         val account = Conta(
-            id = 2,
             saldo = 0.00
         )
         assertEquals(1, repositoryConta.save(account))
@@ -75,7 +73,6 @@ class JdbcContaRepositoryTest {
     fun `deve deletar em uma conta ja criado`() {
 
         val account = Conta(
-            id = 2,
             saldo = 0.00
         )
         repositoryConta.save(account)

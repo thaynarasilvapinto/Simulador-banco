@@ -103,8 +103,8 @@ class OperacaoServiceTest {
         thrown.expectMessage("As contas devem ser validas")
 
         operacaoService.transferencia(
-                id = -1,
-                idDestino = -2,
+                id = "-1",
+                idDestino = "-2",
                 valor = 10.00)
     }
 
@@ -114,7 +114,7 @@ class OperacaoServiceTest {
         thrown.expectMessage("As contas devem ser validas")
 
         operacaoService.transferencia(
-                id = -1,
+                id = "-1",
                 idDestino = contaMaria.id,
                 valor = 10.00)
     }
@@ -126,7 +126,7 @@ class OperacaoServiceTest {
 
         operacaoService.transferencia(
                 id = joaoConta.id,
-                idDestino = -2,
+                idDestino = "-2",
                 valor = 100.00)
     }
 
@@ -147,7 +147,7 @@ class OperacaoServiceTest {
         thrown.expectMessage("A conta deve ser valida")
 
         operacaoService.deposito(
-                id = -1,
+                id = "-1",
                 valor = 100.00)
     }
 
@@ -157,7 +157,7 @@ class OperacaoServiceTest {
         thrown.expectMessage("A conta deve ser valida")
 
         operacaoService.saque(
-                id = -1,
+                id = "-1",
                 valor = 10.00)
     }
 

@@ -21,19 +21,19 @@ open class ContaController {
     private lateinit var serviceConta: ContaService
 
     @GetMapping(value = ["/{id}"])
-    fun find(@PathVariable id: Int): ResponseEntity<ContaResponse> {
+    fun find(@PathVariable id: String): ResponseEntity<ContaResponse> {
         val conta = serviceConta.conta(id)
         return ResponseEntity.ok().body(conta.toResponse())
     }
 
     @GetMapping(value = ["/{id}/saldo"])
-    fun saldo(@PathVariable id: Int): ResponseEntity<SaldoResponse> {
+    fun saldo(@PathVariable id: String): ResponseEntity<SaldoResponse> {
         val saldo = serviceConta.saldo(id)
         return ResponseEntity.ok().body(saldo.toResponseSaldo())
     }
 
     @GetMapping(value = ["/{id}/extrato"])
-    fun extrato(@PathVariable id: Int): ResponseEntity<List<ExtratoResponse>>? {
+    fun extrato(@PathVariable id: String): ResponseEntity<List<ExtratoResponse>>? {
         val lista = serviceConta.extrato(id)
         val extrato = lista.map {
             ExtratoResponse(

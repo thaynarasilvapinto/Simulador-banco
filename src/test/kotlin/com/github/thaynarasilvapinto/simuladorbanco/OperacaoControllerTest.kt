@@ -112,7 +112,7 @@ class OperacaoControllerTest {
     fun `Nao deve depositar em uma conta que nao existe`() {
         val operacaoDepositoRequest = OperacaoRequest(valorOperacao = 500.00, contaDestino = null)
         val content = gson.toJson(operacaoDepositoRequest)
-        this.mvc.perform(post("/conta/{id}/deposito", -1)
+        this.mvc.perform(post("/conta/{id}/deposito", "-1")
                 .content(content)
                 .contentType(APPLICATION_JSON_UTF8))
                 .andExpect(status().isUnprocessableEntity)
@@ -138,7 +138,7 @@ class OperacaoControllerTest {
     fun `Nao deve realizar saque de conta que nao existe`() {
         val operacaoSaqueRequest = OperacaoRequest(valorOperacao = 200.00, contaDestino = null)
         val content = gson.toJson(operacaoSaqueRequest)
-        this.mvc.perform(post("/conta/{id}/saque", -1)
+        this.mvc.perform(post("/conta/{id}/saque", "-1")
                 .content(content)
                 .contentType(APPLICATION_JSON_UTF8))
                 .andExpect(status().isUnprocessableEntity)
@@ -208,7 +208,7 @@ class OperacaoControllerTest {
     fun `Nao deve transferir para uma conta invalida`() {
         joaoConta.saldo = 300.00
         contaService.update(joaoConta)
-        val operacaoTransferenciaRequest = OperacaoRequest(valorOperacao = 300.00, contaDestino = -1)
+        val operacaoTransferenciaRequest = OperacaoRequest(valorOperacao = 300.00, contaDestino = "-1")
         val content = gson.toJson(operacaoTransferenciaRequest)
         this.mvc.perform(post("/conta/{id}/transferencia", joaoConta.id)
                 .content(content)
@@ -220,7 +220,7 @@ class OperacaoControllerTest {
     fun `Nao deve transferir de uma conta que nao existe`() {
         val operacaoTransferenciaRequest = OperacaoRequest(valorOperacao = 300.00, contaDestino = mariaConta.id)
         val content = gson.toJson(operacaoTransferenciaRequest)
-        this.mvc.perform(post("/conta/{id}/transferencia", -1)
+        this.mvc.perform(post("/conta/{id}/transferencia", "-1")
                 .content(content)
                 .contentType(APPLICATION_JSON_UTF8))
                 .andExpect(status().isUnprocessableEntity)

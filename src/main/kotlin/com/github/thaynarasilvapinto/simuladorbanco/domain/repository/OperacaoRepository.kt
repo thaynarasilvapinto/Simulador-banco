@@ -6,11 +6,11 @@ import java.util.*
 interface OperacaoRepository {
     fun save(operacao: Operacao): Int
 
-    fun findById(operacaoId: Int): Optional<Operacao>
+    fun findById(operacaoId: String): Optional<Operacao>
 
-    fun deleteById(id: Int): Int
+    fun deleteById(id: String): Int
 
-    fun findAllByContaOrigem(id: Int): List<Operacao>
+    fun findAllByContaOrigem(id: String): List<Operacao>
 
-    fun findAllByContaDestinoAndTipoOperacao(id: Int, operacao: String): List<Operacao>
+    fun findAllByContaDestinoAndTipoOperacao(id: String, operacao: String): List<Operacao>
 }

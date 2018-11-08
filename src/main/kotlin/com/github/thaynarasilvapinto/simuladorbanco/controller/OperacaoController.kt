@@ -23,20 +23,20 @@ open class OperacaoController {
 
 
     @PostMapping(value = ["/conta/{id}/saque"])
-    fun saque(@PathVariable id: Int, @Valid @RequestBody operacao: OperacaoRequest): ResponseEntity<SaqueResponse> {
+    fun saque(@PathVariable id: String, @Valid @RequestBody operacao: OperacaoRequest): ResponseEntity<SaqueResponse> {
         val saque = serviceOperacao.saque(operacao.valorOperacao!!, id)
         return ResponseEntity.ok().body(saque.toResponseSaque())
 
     }
 
     @PostMapping(value = ["/conta/{id}/deposito"])
-    fun deposito(@PathVariable id: Int, @Valid @RequestBody operacao: OperacaoRequest): ResponseEntity<DepositoResponse> {
+    fun deposito(@PathVariable id: String, @Valid @RequestBody operacao: OperacaoRequest): ResponseEntity<DepositoResponse> {
         val deposito = serviceOperacao.deposito(operacao.valorOperacao!!, id)
         return ResponseEntity.ok().body(deposito.toResponseDeposito())
     }
 
     @PostMapping(value = ["/conta/{id}/transferencia"])
-    fun transferencia(@PathVariable id: Int, @Valid @RequestBody operacaoTransferenciaRequest: OperacaoRequest): ResponseEntity<TransferenciaResponse> {
+    fun transferencia(@PathVariable id: String, @Valid @RequestBody operacaoTransferenciaRequest: OperacaoRequest): ResponseEntity<TransferenciaResponse> {
         val transferecia = serviceOperacao.transferencia(valor = operacaoTransferenciaRequest.valorOperacao!!, id = id, idDestino = operacaoTransferenciaRequest.contaDestino!!)
         return ResponseEntity.ok().body(transferecia.toResponseTransferencia())
     }

@@ -39,7 +39,7 @@ open class JdbcOperacaoRepository @Autowired constructor(private val jdbcTemplat
         )
     }
 
-    override fun findById(operacaoId: Int): Optional<Operacao> {
+    override fun findById(operacaoId: String): Optional<Operacao> {
         val sql = """
             SELECT
                 operacao.*,
@@ -60,14 +60,14 @@ open class JdbcOperacaoRepository @Autowired constructor(private val jdbcTemplat
     }
 
 
-    override fun deleteById(id: Int): Int {
+    override fun deleteById(id: String): Int {
         val sql = """
             delete from $TABLE_NAME where $ID_COLUMN = ?
             """
         return jdbcTemplate.update(sql, id)
     }
 
-    override fun findAllByContaOrigem(id: Int): List<Operacao> {
+    override fun findAllByContaOrigem(id: String): List<Operacao> {
         val sql = """
             SELECT
                 operacao.*,
@@ -88,7 +88,7 @@ open class JdbcOperacaoRepository @Autowired constructor(private val jdbcTemplat
         return contas
     }
 
-    override fun findAllByContaDestinoAndTipoOperacao(id: Int, operacao: String): List<Operacao> {
+    override fun findAllByContaDestinoAndTipoOperacao(id: String, operacao: String): List<Operacao> {
         val sql = """
             SELECT
                 operacao.*,

@@ -20,19 +20,22 @@ open class ClienteService {
     @Autowired
     private lateinit var serviceConta: ContaService
 
-    fun find(id: Int): Optional<Cliente> {
+    fun find(id: String): Optional<Cliente> {
         return repo.findById(id)
     }
 
-    fun insert(obj: Cliente) = repo.findById(repo.save(obj)).get()
+    fun insert(cliente: Cliente): Cliente{
+        repo.save(cliente)
+        return repo.findById(cliente.id).get()
+    }
 
     fun update(cliente: Cliente): Cliente {
         find(cliente.id)
-
-        return repo.findById(repo.save(cliente)).get()
+        repo.update(cliente)
+        return repo.findById(cliente.id).get()
     }
 
-    fun delete(id: Int) {
+    fun delete(id: String) {
         find(id)
         repo.deleteById(id)
     }
@@ -53,7 +56,7 @@ open class ClienteService {
         }
     }
 
-    fun cliente(id: Int): Cliente {
+    fun cliente(id: String): Cliente {
         val cliente = find(id)
 
         if (cliente.isPresent) {

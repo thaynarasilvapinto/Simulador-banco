@@ -6,9 +6,9 @@ import java.util.*
 interface ContaRepository {
     fun save(conta: Conta): Int
 
-    fun findById(contaId: Int): Optional<Conta>
+    fun findById(contaId: String): Optional<Conta>
 
     fun update(conta: Conta): Int
 
-    fun deleteById(id: Int): Int
+    fun deleteById(id: String): Int
 }

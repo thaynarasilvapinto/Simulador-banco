@@ -20,24 +20,28 @@ open class ContaService {
     @Autowired
     private lateinit var serviceOperacao: OperacaoService
 
-    fun find(id: Int): Optional<Conta> {
+    fun find(id: String): Optional<Conta> {
         return repo.findById(id)
     }
 
-    fun insert(obj: Conta) = repo.findById(repo.save(obj)).get()
-
-    fun update(obj: Conta): Conta {
-        find(obj.id)
-        return repo.findById(repo.save(obj)).get()
+    fun insert(conta: Conta) : Conta{
+        repo.save(conta)
+        return repo.findById(conta.id).get()
     }
 
-    fun delete(id: Int) {
+    fun update(conta: Conta): Conta {
+        find(conta.id)
+        repo.update(conta)
+        return repo.findById(conta.id).get()
+    }
+
+    fun delete(id: String) {
         find(id)
         repo.deleteById(id)
     }
 
 
-    fun extrato(id: Int): List<Operacao> {
+    fun extrato(id: String): List<Operacao> {
         val conta = serviceConta.find(id)
 
         if (conta.isPresent) {
@@ -50,14 +54,14 @@ open class ContaService {
             val saque = serviceOperacao.findAllByContaDestinoAndTipoOperacao(conta.get(), Operacao.TipoOperacao.SAQUE)
 
             var lista = recebimento + trasferencia + deposito + saque
-            fun selector(p: Operacao): Int = p.idOperacao
+            fun selector(p: Operacao): String = p.idOperacao
             lista = lista.sortedBy { selector(it) }
             return lista
         }
         throw AccountIsValidException(message = "A conta deve ser valida")
     }
 
-    fun saldo(id: Int): Conta {
+    fun saldo(id: String): Conta {
         val conta = serviceConta.find(id)
 
         if (conta.isPresent) {
@@ -66,7 +70,7 @@ open class ContaService {
         throw AccountIsValidException(message = "A conta deve ser valida")
     }
 
-    fun conta(id: Int): Conta {
+    fun conta(id: String): Conta {
         val conta = serviceConta.find(id)
 
         if (conta.isPresent) {

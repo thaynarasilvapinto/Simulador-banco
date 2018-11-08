@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 
 data class ContaResponse(
         @NotNull
-        val id: Int,
+        val id: String,
         @NotNull
         val saldo: Double,
         @NotNull

@@ -38,7 +38,7 @@ open class JdbcContaRepository @Autowired constructor(private val jdbcTemplate: 
         )
     }
 
-    override fun findById(contaId: Int): Optional<Conta> {
+    override fun findById(contaId: String): Optional<Conta> {
         val sql = """
             select * from $TABLE_NAME where $ID_COLUMN = ?
             """
@@ -57,7 +57,7 @@ open class JdbcContaRepository @Autowired constructor(private val jdbcTemplate: 
         )
     }
 
-    override fun deleteById(id: Int): Int {
+    override fun deleteById(id: String): Int {
         val sql = """
             delete from $TABLE_NAME where $ID_COLUMN = ?
             """

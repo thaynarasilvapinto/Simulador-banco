@@ -22,8 +22,8 @@ class JdbcOperacaoTest {
     @Autowired
     private lateinit var repositoryOperacao: OperacaoRepository
 
-    private var accountId: Int = -1
-    private var operacaoId: Int = -1
+    private var accountId: String = "-1"
+    private var operacaoId: String = "-1"
 
     @Before
     fun setup() {
@@ -37,15 +37,13 @@ class JdbcOperacaoTest {
         repositoryConta.deleteById(accountId)
     }
 
-    private fun saveACliente(): Int {
+    private fun saveACliente(): String {
 
         val accountJoao = Conta(
-            id = 1,
             saldo = 0.00
         )
 
         val operacaoDeposito = Operacao(
-            idOperacao = 1,
             valorOperacao = 100.00,
             tipoOperacao = Operacao.TipoOperacao.DEPOSITO,
             contaOrigem = accountJoao,
@@ -68,11 +66,9 @@ class JdbcOperacaoTest {
     @Test
     fun `deve criar uma operacao`() {
         val account = Conta(
-            id = 2,
             saldo = 0.00
         )
         val operacaoDeposito = Operacao(
-            idOperacao = 2,
             valorOperacao = 100.00,
             tipoOperacao = Operacao.TipoOperacao.DEPOSITO,
             contaOrigem = account,
@@ -90,11 +86,9 @@ class JdbcOperacaoTest {
     fun `deve deletar em uma operacao ja criada`() {
 
         val account = Conta(
-            id = 2,
             saldo = 0.00
         )
         val operacaoDeposito = Operacao(
-            idOperacao = 2,
             valorOperacao = 100.00,
             tipoOperacao = Operacao.TipoOperacao.DEPOSITO,
             contaOrigem = account,
