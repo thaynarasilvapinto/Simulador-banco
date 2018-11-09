@@ -55,10 +55,12 @@ open class ContaService {
                 Operacao.TipoOperacao.RECEBIMENTO_TRANSFERENCIA
             )
             val trasferencia =
-                serviceOperacao.findAllByContaDestinoAndTipoOperacao(conta.get(), Operacao.TipoOperacao.TRANSFERENCIA)
+                serviceOperacao.findAllContaOrigemAndTipoOperacao(conta.get(), Operacao.TipoOperacao.TRANSFERENCIA)
             val deposito =
-                serviceOperacao.findAllByContaDestinoAndTipoOperacao(conta.get(), Operacao.TipoOperacao.DEPOSITO)
-            val saque = serviceOperacao.findAllByContaDestinoAndTipoOperacao(conta.get(), Operacao.TipoOperacao.SAQUE)
+                serviceOperacao.findAllContaOrigemAndTipoOperacao(conta.get(), Operacao.TipoOperacao.DEPOSITO)
+            val saque =
+                serviceOperacao.findAllContaOrigemAndTipoOperacao(conta.get(), Operacao.TipoOperacao.SAQUE)
+
 
 
             var lista = recebimento + trasferencia + deposito + saque

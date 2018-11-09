@@ -110,4 +110,23 @@ open class JdbcOperacaoRepository @Autowired constructor(private val jdbcTemplat
 
         return  jdbcTemplate.query(sql, OperacaoRowMapper(), id,operacao)
     }
+    override fun findAllByContaOrigemAndTipoOperacao(id: String, operacao: String): List<Operacao> {
+        val sql = """
+            SELECT
+                operacao.*,
+                origem.data_hora AS origem_data_hora,
+                origem.saldo AS origem_saldo,
+                   destino.data_hora AS destino_data_hora,
+                   destino.saldo AS destino_saldo
+            FROM
+                 operacao
+                 INNER JOIN conta origem ON operacao.conta_id_origem = origem.id
+                 INNER JOIN conta destino ON operacao.conta_id_destino = destino.id
+            WHERE
+                operacao.conta_id_origem = ? AND
+                operacao.tipo_operacao = ?
+            """
+
+        return  jdbcTemplate.query(sql, OperacaoRowMapper(), id,operacao)
+    }
 }

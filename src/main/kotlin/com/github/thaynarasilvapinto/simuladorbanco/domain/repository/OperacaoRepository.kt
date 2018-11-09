@@ -13,4 +13,6 @@ interface OperacaoRepository {
     fun findAllByContaOrigem(id: String): List<Operacao>
 
     fun findAllByContaDestinoAndTipoOperacao(id: String, operacao: String): List<Operacao>
+
+    fun findAllByContaOrigemAndTipoOperacao(id: String, operacao: String): List<Operacao>
 }

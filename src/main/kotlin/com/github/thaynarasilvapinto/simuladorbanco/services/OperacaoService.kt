@@ -39,6 +39,9 @@ open class OperacaoService {
     fun findAllByContaDestinoAndTipoOperacao(conta: Conta, tipoOperacao: Operacao.TipoOperacao) =
         repo.findAllByContaDestinoAndTipoOperacao(conta.id, tipoOperacao.name)
 
+    fun findAllContaOrigemAndTipoOperacao(conta: Conta, tipoOperacao: Operacao.TipoOperacao) =
+        repo.findAllByContaOrigemAndTipoOperacao(conta.id, tipoOperacao.name)
+
     fun saque(valor: Double, id: String): Operacao {
 
         val conta = serviceConta.find(id)

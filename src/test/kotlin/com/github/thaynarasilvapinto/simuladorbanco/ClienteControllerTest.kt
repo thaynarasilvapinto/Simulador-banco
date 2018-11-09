@@ -56,7 +56,7 @@ class ClienteControllerTest {
 
     private fun createClient() {
         joao = clienteService.criarCliente(Cliente(
-                nome = "Cliente Test ClienteController",
+                nome = "Cliente Test Cliente Controller",
                 cpf = "055.059.396-94",
                 conta = Conta(saldo = 0.00)))
     }
