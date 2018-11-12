@@ -4,7 +4,6 @@ import com.github.thaynarasilvapinto.api.response.*
 import com.github.thaynarasilvapinto.model.Cliente
 import com.github.thaynarasilvapinto.model.Conta
 import com.github.thaynarasilvapinto.model.Operacao
-import com.github.thaynarasilvapinto.simuladorbanco.api.response.*
 
 fun Cliente.toResponse(): ClienteResponse =
     ClienteResponse(

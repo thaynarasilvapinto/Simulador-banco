@@ -12,12 +12,9 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.ExpectedException
-import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.junit4.SpringRunner
 
-class ContaServiceTest: ServiceBaseTest() {
+class ContaServiceTest : ServiceBaseTest() {
 
     @get:Rule
     var thrown = ExpectedException.none()
@@ -60,19 +57,16 @@ class ContaServiceTest: ServiceBaseTest() {
     fun tearDown() {
         clienteService.delete(joao.id)
         val extrato = operacaoService.findAllContaOrigem(joaoConta)
-        if (extrato != null) {
-            for (i in extrato.indices) {
-                operacaoService.delete(extrato[i].idOperacao)
-            }
+        for (i in extrato.indices) {
+            operacaoService.delete(extrato[i].idOperacao)
         }
+
         contaService.delete(joaoConta.id)
 
         clienteService.delete(maria.id)
         val extratoMaria = operacaoService.findAllContaOrigem(contaMaria)
-        if (extratoMaria != null) {
-            for (i in extrato.indices) {
-                operacaoService.delete(extrato[i].idOperacao)
-            }
+        for (i in extratoMaria.indices) {
+            operacaoService.delete(extrato[i].idOperacao)
         }
 
         contaService.delete(contaMaria.id)

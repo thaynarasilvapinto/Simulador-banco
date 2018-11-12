@@ -9,6 +9,5 @@ services:
      - POSTGRES_USER=thaynara.silva
      - POSTGRES_PASSWORD=12345678
      - MAX_CONNECTIONS=300
-
-    volumes:
+   volumes:
      - ./docker-compose-postgres.sql:/docker-entrypoint-initdb.d/setup.sql

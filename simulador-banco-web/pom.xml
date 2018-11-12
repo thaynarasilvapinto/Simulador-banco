@@ -19,6 +19,12 @@
             <groupId>com.github.thaynarasilvapinto</groupId>
             <artifactId>simulador-banco-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>2.9.6</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>

@@ -61,10 +61,8 @@ class ContaControllerTest {
     fun tearDown() {
         clienteService.delete(joao.id)
         val extrato = operacaoService.findAllContaOrigem(joaoConta)
-        if (extrato != null) {
-            for (i in extrato.indices) {
-                operacaoService.delete(extrato[i].idOperacao)
-            }
+        for (i in extrato.indices) {
+            operacaoService.delete(extrato[i].idOperacao)
         }
         contaService.delete(joaoConta.id)
     }
