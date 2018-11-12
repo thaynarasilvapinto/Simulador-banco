@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.0.5.RELEASE</version>
+        <version>1.5.9.RELEASE</version>
         <relativePath/>
     </parent>
 
@@ -192,25 +192,25 @@
                     </execution>
                 </executions>
             </plugin>
-<!--            <plugin>
-                <artifactId>kotlin-maven-plugin</artifactId>
-                <groupId>org.jetbrains.kotlin</groupId>
-                <version>${kotlin.version}</version>
+            <!--            <plugin>
+                            <artifactId>kotlin-maven-plugin</artifactId>
+                            <groupId>org.jetbrains.kotlin</groupId>
+                            <version>${kotlin.version}</version>
 
-                <configuration>
-                    <compilerPlugins>
-                        <plugin>jpa</plugin>
-                    </compilerPlugins>
-                </configuration>
+                            <configuration>
+                                <compilerPlugins>
+                                    <plugin>jpa</plugin>
+                                </compilerPlugins>
+                            </configuration>
 
-                <dependencies>
-                    <dependency>
-                        <groupId>org.jetbrains.kotlin</groupId>
-                        <artifactId>kotlin-maven-noarg</artifactId>
-                        <version>${kotlin.version}</version>
-                    </dependency>
-                </dependencies>
-            </plugin>-->
+                            <dependencies>
+                                <dependency>
+                                    <groupId>org.jetbrains.kotlin</groupId>
+                                    <artifactId>kotlin-maven-noarg</artifactId>
+                                    <version>${kotlin.version}</version>
+                                </dependency>
+                            </dependencies>
+                        </plugin>-->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>

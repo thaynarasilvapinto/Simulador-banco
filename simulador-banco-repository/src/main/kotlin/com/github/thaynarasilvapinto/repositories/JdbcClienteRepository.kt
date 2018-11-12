@@ -88,15 +88,15 @@ open class JdbcClienteRepository @Autowired constructor(
     override fun findByCpfEquals(cpf: String): Optional<Cliente> {
         val sql = """
                 SELECT
-                       cliente.*,
-                       conta.data_hora,
-                       conta.saldo
+                     cliente.*,
+                     conta.data_hora,
+                     conta.saldo
                 FROM
                      cliente,
                      conta
                 WHERE
-                    cliente.conta_id = conta.id AND
-                    cliente.cpf = ?
+                     cliente.conta_id = conta.id AND
+                     cliente.cpf = ?
             """
 
         return try {
