@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.*
-import javax.xml.crypto.Data
 
 @Service
 open class ContaService {
@@ -55,12 +54,20 @@ open class ContaService {
                 Operacao.TipoOperacao.RECEBIMENTO_TRANSFERENCIA
             )
             val trasferencia =
-                serviceOperacao.findAllContaOrigemAndTipoOperacao(conta.get(), Operacao.TipoOperacao.TRANSFERENCIA)
+                serviceOperacao.findAllContaOrigemAndTipoOperacao(
+                    conta.get(),
+                    Operacao.TipoOperacao.TRANSFERENCIA
+                )
             val deposito =
-                serviceOperacao.findAllContaOrigemAndTipoOperacao(conta.get(), Operacao.TipoOperacao.DEPOSITO)
+                serviceOperacao.findAllContaOrigemAndTipoOperacao(
+                    conta.get(),
+                    Operacao.TipoOperacao.DEPOSITO
+                )
             val saque =
-                serviceOperacao.findAllContaOrigemAndTipoOperacao(conta.get(), Operacao.TipoOperacao.SAQUE)
-
+                serviceOperacao.findAllContaOrigemAndTipoOperacao(
+                    conta.get(),
+                    Operacao.TipoOperacao.SAQUE
+                )
 
 
             var lista = recebimento + trasferencia + deposito + saque

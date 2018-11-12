@@ -12,5 +12,5 @@ interface ClienteRepository {
 
     fun deleteById(id: String): Int
 
-    fun findByCpfEquals(CPF: String): Optional<Cliente>
+    fun findByCpfEquals(cpf: String): Optional<Cliente>
 }

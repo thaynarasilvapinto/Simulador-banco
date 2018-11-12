@@ -52,35 +52,40 @@ class OperacaoServiceTest {
         clienteService.delete(joao.id)
 
         val extrato = operacaoService.findAllContaOrigem(joaoConta)
-        if (extrato != null) {
-            for (i in extrato!!.indices) {
-                operacaoService.delete(extrato[i].idOperacao)
-            }
+        for (i in extrato.indices) {
+            operacaoService.delete(extrato[i].idOperacao)
+
         }
 
         contaService.delete(joaoConta.id)
 
         clienteService.delete(maria.id)
         val extratoMaria = operacaoService.findAllContaOrigem(contaMaria)
-        if (extratoMaria != null) {
-            for (i in extrato!!.indices) {
-                operacaoService.delete(extrato[i].idOperacao)
-            }
+
+        for (i in extratoMaria.indices) {
+            operacaoService.delete(extratoMaria[i].idOperacao)
+
         }
 
         contaService.delete(contaMaria.id)
     }
 
     private fun createClient() {
-        joao = clienteService.criarCliente(Cliente(
-            nome = "Conta Test Joao Service",
-            cpf = "151.425.426-75",
-            conta = Conta(saldo = 0.00)))
+        joao = clienteService.criarCliente(
+            Cliente(
+                nome = "Conta Test Joao Service",
+                cpf = "151.425.426-75",
+                conta = Conta(saldo = 0.00)
+            )
+        )
         joaoConta = joao.conta
-        maria = clienteService.criarCliente(Cliente(
-            nome = "Conta Test Maria Service",
-            cpf = "086.385.420-62",
-            conta = Conta(saldo = 0.00)))
+        maria = clienteService.criarCliente(
+            Cliente(
+                nome = "Conta Test Maria Service",
+                cpf = "086.385.420-62",
+                conta = Conta(saldo = 0.00)
+            )
+        )
         contaMaria = maria.conta
     }
 

@@ -1,5 +1,6 @@
 package com.github.thaynarasilvapinto.simuladorbanco.controller
 
+import com.github.thaynarasilvapinto.simuladorbanco.api.OperacaoApi
 import com.github.thaynarasilvapinto.simuladorbanco.api.request.OperacaoRequest
 import com.github.thaynarasilvapinto.simuladorbanco.api.response.DepositoResponse
 import com.github.thaynarasilvapinto.simuladorbanco.api.response.SaqueResponse
@@ -8,36 +9,35 @@ import com.github.thaynarasilvapinto.simuladorbanco.controller.utils.toResponseD
 import com.github.thaynarasilvapinto.simuladorbanco.controller.utils.toResponseSaque
 import com.github.thaynarasilvapinto.simuladorbanco.controller.utils.toResponseTransferencia
 import com.github.thaynarasilvapinto.simuladorbanco.services.OperacaoService
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RestController
 import javax.validation.Valid
 
 
 @RestController
-@RequestMapping
-open class OperacaoController {
+open class OperacaoController(
+    private var serviceOperacao: OperacaoService
+) : OperacaoApi {
 
-    @Autowired
-    private lateinit var serviceOperacao: OperacaoService
-
-
-    @PostMapping(value = ["/conta/{id}/saque"])
-    fun saque(@PathVariable id: String, @Valid @RequestBody operacao: OperacaoRequest): ResponseEntity<SaqueResponse> {
+    override fun saque(@PathVariable id: String, @Valid @RequestBody operacao: OperacaoRequest): ResponseEntity<SaqueResponse> {
         val saque = serviceOperacao.saque(operacao.valorOperacao!!, id)
         return ResponseEntity.ok().body(saque.toResponseSaque())
 
     }
 
-    @PostMapping(value = ["/conta/{id}/deposito"])
-    fun deposito(@PathVariable id: String, @Valid @RequestBody operacao: OperacaoRequest): ResponseEntity<DepositoResponse> {
+    override fun deposito(@PathVariable id: String, @Valid @RequestBody operacao: OperacaoRequest): ResponseEntity<DepositoResponse> {
         val deposito = serviceOperacao.deposito(operacao.valorOperacao!!, id)
         return ResponseEntity.ok().body(deposito.toResponseDeposito())
     }
 
-    @PostMapping(value = ["/conta/{id}/transferencia"])
-    fun transferencia(@PathVariable id: String, @Valid @RequestBody operacaoTransferenciaRequest: OperacaoRequest): ResponseEntity<TransferenciaResponse> {
-        val transferecia = serviceOperacao.transferencia(valor = operacaoTransferenciaRequest.valorOperacao!!, id = id, idDestino = operacaoTransferenciaRequest.contaDestino!!)
+    override fun transferencia(@PathVariable id: String, @Valid @RequestBody operacaoTransferenciaRequest: OperacaoRequest): ResponseEntity<TransferenciaResponse> {
+        val transferecia = serviceOperacao.transferencia(
+            valor = operacaoTransferenciaRequest.valorOperacao!!,
+            id = id,
+            idDestino = operacaoTransferenciaRequest.contaDestino!!
+        )
         return ResponseEntity.ok().body(transferecia.toResponseTransferencia())
     }
 }

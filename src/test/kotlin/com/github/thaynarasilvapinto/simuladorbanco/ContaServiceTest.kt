@@ -42,15 +42,21 @@ class ContaServiceTest {
     }
 
     private fun createClient() {
-        joao = clienteService.criarCliente(Cliente(
-            nome = "Conta Test Joao Service",
-            cpf = "151.425.426-75",
-            conta = Conta(saldo = 0.00)))
+        joao = clienteService.criarCliente(
+            Cliente(
+                nome = "Conta Test Joao Service",
+                cpf = "151.425.426-75",
+                conta = Conta(saldo = 0.00)
+            )
+        )
         joaoConta = joao.conta
-        maria = clienteService.criarCliente(Cliente(
-            nome = "Conta Test Maria Service",
-            cpf = "086.385.420-62",
-            conta = Conta(saldo = 0.00)))
+        maria = clienteService.criarCliente(
+            Cliente(
+                nome = "Conta Test Maria Service",
+                cpf = "086.385.420-62",
+                conta = Conta(saldo = 0.00)
+            )
+        )
         contaMaria = maria.conta
     }
 
@@ -58,19 +64,17 @@ class ContaServiceTest {
     fun tearDown() {
         clienteService.delete(joao.id)
         val extrato = operacaoService.findAllContaOrigem(joaoConta)
-        if(extrato != null){
-            for (i in extrato!!.indices) {
-                operacaoService.delete(extrato[i].idOperacao)
-            }
+        for (i in extrato.indices) {
+            operacaoService.delete(extrato[i].idOperacao)
+
         }
         contaService.delete(joaoConta.id)
 
         clienteService.delete(maria.id)
         val extratoMaria = operacaoService.findAllContaOrigem(contaMaria)
-        if (extratoMaria != null) {
-            for (i in extrato!!.indices) {
-                operacaoService.delete(extrato[i].idOperacao)
-            }
+        for (i in extratoMaria.indices) {
+            operacaoService.delete(extratoMaria[i].idOperacao)
+
         }
 
         contaService.delete(contaMaria.id)
@@ -104,14 +108,17 @@ class ContaServiceTest {
     fun `Ao solicitar um extrato, devera constar toda movimentacao da conta`() {
 
         operacaoService.deposito(
-                id = joaoConta.id,
-                valor = 200.00)
+            id = joaoConta.id,
+            valor = 200.00
+        )
         operacaoService.saque(
-                id = joaoConta.id,
-                valor = 100.00)
+            id = joaoConta.id,
+            valor = 100.00
+        )
         operacaoService.deposito(
-                id = joaoConta.id,
-                valor = 400.00)
+            id = joaoConta.id,
+            valor = 400.00
+        )
 
         val extratoJoao = contaService.extrato(joaoConta.id)
         assertEquals(Operacao.TipoOperacao.DEPOSITO, extratoJoao[0].tipoOperacao)
@@ -132,25 +139,30 @@ class ContaServiceTest {
         thrown.expect(BalanceIsInsufficientException::class.java)
         thrown.expectMessage("Saldo Insuficiente")
         operacaoService.deposito(
-                id = joaoConta.id,
-                valor = 10.00)
+            id = joaoConta.id,
+            valor = 10.00
+        )
         operacaoService.saque(
-                id = joaoConta.id,
-                valor = 100.00)
+            id = joaoConta.id,
+            valor = 100.00
+        )
 
     }
 
     @Test
     fun `deve devolver saldo`() {
         operacaoService.deposito(
-                id = joaoConta.id,
-                valor = 200.00)
+            id = joaoConta.id,
+            valor = 200.00
+        )
         operacaoService.saque(
-                id = joaoConta.id,
-                valor = 100.00)
+            id = joaoConta.id,
+            valor = 100.00
+        )
         operacaoService.deposito(
-                id = joaoConta.id,
-                valor = 400.00)
+            id = joaoConta.id,
+            valor = 400.00
+        )
 
         val saldo = contaService.saldo(joaoConta.id)
 

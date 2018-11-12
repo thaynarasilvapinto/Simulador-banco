@@ -94,16 +94,13 @@ class OperacaoControllerTest {
         clienteService.delete(joao.id)
         clienteService.delete(maria.id)
         var extrato = operacaoService.findAllContaOrigem(joaoConta)
-        if (extrato != null) {
-            for (i in extrato!!.indices) {
-                operacaoService.delete(extrato[i].idOperacao)
-            }
+        for (i in extrato.indices) {
+            operacaoService.delete(extrato[i].idOperacao)
+
         }
-        extrato = operacaoService.findAllContaOrigem(mariaConta)
-        if (extrato != null) {
-            for (i in extrato!!.indices) {
-                operacaoService.delete(extrato[i].idOperacao)
-            }
+        var extratoMaria = operacaoService.findAllContaOrigem(mariaConta)
+        for (i in extratoMaria.indices) {
+            operacaoService.delete(extratoMaria[i].idOperacao)
         }
         contaService.delete(joaoConta.id)
         contaService.delete(mariaConta.id)
