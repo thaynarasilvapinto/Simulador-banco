@@ -7,6 +7,7 @@ import com.github.thaynarasilvapinto.model.Cliente
 import com.github.thaynarasilvapinto.model.Conta
 import com.github.thaynarasilvapinto.service.ClienteService
 import com.github.thaynarasilvapinto.web.utils.toResponse
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 import javax.validation.Valid
 
 @RestController
-open class ClienteController(
+open class ClienteController @Autowired constructor(
     private val serviceCliente: ClienteService
 ) : ClienteApi {
 

@@ -9,8 +9,9 @@ import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.*
 
+
 @Service
-open class ContaService{
+open class ContaService {
 
     @Autowired
     private lateinit var repo: ContaRepository

@@ -1,4 +1,4 @@
-package com.github.thaynarasilvapinto.simuladorbanco.controller
+package com.github.thaynarasilvapinto.web
 
 import com.github.thaynarasilvapinto.api.ContaApi
 import com.github.thaynarasilvapinto.service.ContaService

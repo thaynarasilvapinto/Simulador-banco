@@ -1,4 +1,4 @@
-package com.github.thaynarasilvapinto.simuladorbanco
+package com.github.thaynarasilvapinto.service.services
 
 import com.github.thaynarasilvapinto.model.Cliente
 import com.github.thaynarasilvapinto.model.Conta

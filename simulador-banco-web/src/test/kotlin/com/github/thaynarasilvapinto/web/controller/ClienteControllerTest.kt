@@ -1,4 +1,4 @@
-package com.github.thaynarasilvapinto.web
+package com.github.thaynarasilvapinto.web.controller
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -11,16 +11,13 @@ import com.github.thaynarasilvapinto.model.Cliente
 import com.github.thaynarasilvapinto.model.Conta
 import com.github.thaynarasilvapinto.service.ClienteService
 import com.github.thaynarasilvapinto.service.ContaService
+import com.github.thaynarasilvapinto.web.config.ControllerBaseTest
 import com.google.gson.Gson
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
-import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
@@ -28,10 +25,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import kotlin.test.assertEquals
 
-@RunWith(SpringRunner::class)
-@SpringBootTest
-@AutoConfigureMockMvc
-class ClienteControllerTest {
+class ClienteControllerTest : ControllerBaseTest() {
 
     @Autowired
     private lateinit var mvc: MockMvc
@@ -41,6 +35,7 @@ class ClienteControllerTest {
     private lateinit var contaService: ContaService
     private lateinit var joao: Cliente
     private lateinit var gson: Gson
+
     val mapper: ObjectMapper by lazy {
         ObjectMapper().registerModule(JavaTimeModule())
             .setSerializationInclusion(JsonInclude.Include.NON_NULL)

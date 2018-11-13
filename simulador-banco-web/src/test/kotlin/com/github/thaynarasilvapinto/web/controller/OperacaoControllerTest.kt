@@ -1,4 +1,4 @@
-package com.github.thaynarasilvapinto.web
+package com.github.thaynarasilvapinto.web.controller
 
 import com.github.thaynarasilvapinto.api.request.OperacaoRequest
 import com.github.thaynarasilvapinto.model.Cliente
@@ -7,29 +7,23 @@ import com.github.thaynarasilvapinto.model.Operacao
 import com.github.thaynarasilvapinto.service.ClienteService
 import com.github.thaynarasilvapinto.service.ContaService
 import com.github.thaynarasilvapinto.service.OperacaoService
+import com.github.thaynarasilvapinto.web.config.ControllerBaseTest
 import com.google.gson.Gson
 import org.hamcrest.CoreMatchers.notNullValue
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType.APPLICATION_JSON_UTF8
-import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
-@RunWith(SpringRunner::class)
-@SpringBootTest
-@AutoConfigureMockMvc
-class OperacaoControllerTest {
+class OperacaoControllerTest : ControllerBaseTest() {
     @Autowired
     private lateinit var mvc: MockMvc
     @Autowired
-    private lateinit var clienteService: ClienteService
+    private lateinit var lienteService: ClienteService
     @Autowired
     private lateinit var contaService: ContaService
     @Autowired
@@ -163,7 +157,6 @@ class OperacaoControllerTest {
     }
 
     @Test
-    @Throws(Exception::class)
     fun `deve realizar transferencia`() {
         joaoConta.saldo = 300.00
         contaService.update(joaoConta)
@@ -219,7 +212,7 @@ class OperacaoControllerTest {
     }
 
     @Test
-    fun `Nao deve realizar transferencia para a mesma conta`() {
+    private fun `Nao deve realizar transferencia para a mesma conta`() {
         joaoConta.saldo = 300.00
         contaService.update(joaoConta)
         val operacaoTransferenciaRequest = OperacaoRequest(valorOperacao = 300.00, contaDestino = joaoConta.id)

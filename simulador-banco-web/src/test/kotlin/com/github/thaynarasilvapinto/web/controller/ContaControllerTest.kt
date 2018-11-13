@@ -1,4 +1,4 @@
-package com.github.thaynarasilvapinto.web
+package com.github.thaynarasilvapinto.web.controller
 
 
 import com.github.thaynarasilvapinto.model.Cliente
@@ -7,27 +7,21 @@ import com.github.thaynarasilvapinto.model.Operacao
 import com.github.thaynarasilvapinto.service.ClienteService
 import com.github.thaynarasilvapinto.service.ContaService
 import com.github.thaynarasilvapinto.service.OperacaoService
+import com.github.thaynarasilvapinto.web.config.ControllerBaseTest
 import com.github.thaynarasilvapinto.web.utils.toResponseSaldo
 import com.google.gson.Gson
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
-import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 
-@RunWith(SpringRunner::class)
-@SpringBootTest
-@AutoConfigureMockMvc
-class ContaControllerTest {
+class ContaControllerTest : ControllerBaseTest() {
     @Autowired
     private lateinit var mvc: MockMvc
     @Autowired
@@ -99,13 +93,13 @@ class ContaControllerTest {
     @Test
     fun `Deve retornar o extrato de um cliente`() {
 
-        var operacaoDeposito = Operacao(
+        val operacaoDeposito = Operacao(
             contaOrigem = joaoConta,
             contaDestino = joaoConta,
             valorOperacao = 200.00,
             tipoOperacao = Operacao.TipoOperacao.DEPOSITO
         )
-        var operacaoSaque = Operacao(
+        val operacaoSaque = Operacao(
             contaOrigem = joaoConta,
             contaDestino = joaoConta,
             valorOperacao = 100.00,

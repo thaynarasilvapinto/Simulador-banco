@@ -15,6 +15,10 @@
             <groupId>com.github.thaynarasilvapinto</groupId>
             <artifactId>simulador-banco-model</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

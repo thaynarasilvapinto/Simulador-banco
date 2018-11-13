@@ -1,8 +1,11 @@
-package com.github.thaynarasilvapinto.service
+package com.github.thaynarasilvapinto.service.services
 
 import com.github.thaynarasilvapinto.model.Cliente
 import com.github.thaynarasilvapinto.model.Conta
 import com.github.thaynarasilvapinto.model.Operacao
+import com.github.thaynarasilvapinto.service.ClienteService
+import com.github.thaynarasilvapinto.service.ContaService
+import com.github.thaynarasilvapinto.service.OperacaoService
 import com.github.thaynarasilvapinto.service.config.ServiceBaseTest
 import com.github.thaynarasilvapinto.simuladorbanco.services.exception.AccountIsValidException
 import com.github.thaynarasilvapinto.simuladorbanco.services.exception.BalanceIsInsufficientException

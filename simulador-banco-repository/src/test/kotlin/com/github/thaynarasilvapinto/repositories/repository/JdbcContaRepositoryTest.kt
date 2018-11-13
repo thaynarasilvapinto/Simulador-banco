@@ -1,4 +1,4 @@
-package com.github.thaynarasilvapinto.repositories
+package com.github.thaynarasilvapinto.repositories.repository
 
 import com.github.thaynarasilvapinto.model.Conta
 import com.github.thaynarasilvapinto.model.repository.ContaRepository
