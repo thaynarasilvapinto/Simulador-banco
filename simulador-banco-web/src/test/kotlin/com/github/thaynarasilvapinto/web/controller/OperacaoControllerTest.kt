@@ -23,7 +23,7 @@ class OperacaoControllerTest : ControllerBaseTest() {
     @Autowired
     private lateinit var mvc: MockMvc
     @Autowired
-    private lateinit var lienteService: ClienteService
+    private lateinit var clienteService: ClienteService
     @Autowired
     private lateinit var contaService: ContaService
     @Autowired
