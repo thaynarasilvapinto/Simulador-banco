@@ -13,6 +13,7 @@ import com.google.gson.Gson
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import org.mockito.InjectMocks
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
@@ -24,11 +25,11 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 class ContaControllerTest : ControllerBaseTest() {
     @Autowired
     private lateinit var mvc: MockMvc
-    @Autowired
+    @InjectMocks
     private lateinit var clienteService: ClienteService
-    @Autowired
+    @InjectMocks
     private lateinit var contaService: ContaService
-    @Autowired
+    @InjectMocks
     private lateinit var operacaoService: OperacaoService
     private lateinit var joao: Cliente
     private lateinit var joaoConta: Conta

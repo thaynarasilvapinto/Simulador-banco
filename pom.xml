@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.thaynarasilvapinto</groupId>
-    <artifactId>SimuladorBanco</artifactId>
+    <artifactId>simulador-banco</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <modules>
         <module>simulador-banco-api</module>

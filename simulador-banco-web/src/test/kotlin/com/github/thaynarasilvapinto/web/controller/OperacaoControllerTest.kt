@@ -13,6 +13,7 @@ import org.hamcrest.CoreMatchers.notNullValue
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import org.mockito.InjectMocks
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType.APPLICATION_JSON_UTF8
 import org.springframework.test.web.servlet.MockMvc
@@ -22,11 +23,11 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 class OperacaoControllerTest : ControllerBaseTest() {
     @Autowired
     private lateinit var mvc: MockMvc
-    @Autowired
+    @InjectMocks
     private lateinit var clienteService: ClienteService
-    @Autowired
+    @InjectMocks
     private lateinit var contaService: ContaService
-    @Autowired
+    @InjectMocks
     private lateinit var operacaoService: OperacaoService
     private lateinit var gson: Gson
     private lateinit var joao: Cliente

@@ -16,6 +16,7 @@ import com.google.gson.Gson
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import org.mockito.InjectMocks
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
@@ -29,9 +30,9 @@ class ClienteControllerTest : ControllerBaseTest() {
 
     @Autowired
     private lateinit var mvc: MockMvc
-    @Autowired
+    @InjectMocks
     private lateinit var clienteService: ClienteService
-    @Autowired
+    @InjectMocks
     private lateinit var contaService: ContaService
     private lateinit var joao: Cliente
     private lateinit var gson: Gson
