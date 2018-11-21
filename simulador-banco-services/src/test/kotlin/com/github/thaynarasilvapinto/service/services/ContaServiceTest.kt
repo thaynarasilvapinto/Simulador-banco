@@ -15,18 +15,17 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.ExpectedException
-import org.mockito.InjectMocks
 import org.springframework.beans.factory.annotation.Autowired
 
 class ContaServiceTest : ServiceBaseTest() {
 
     @get:Rule
     var thrown = ExpectedException.none()
-    @InjectMocks
+    @Autowired
     private lateinit var clienteService: ClienteService
-    @InjectMocks
+    @Autowired
     private lateinit var contaService: ContaService
-    @InjectMocks
+    @Autowired
     private lateinit var operacaoService: OperacaoService
     private lateinit var joao: Cliente
     private lateinit var joaoConta: Conta
