@@ -1,3 +1,3 @@
-package com.github.thaynarasilvapinto.simuladorbanco.services.exception
+package com.github.thaynarasilvapinto.web.services.exception
 
 open class BalanceIsInsufficientException(message: String) : RuntimeException(message)

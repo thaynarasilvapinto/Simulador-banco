@@ -4,30 +4,26 @@ import com.github.thaynarasilvapinto.api.request.OperacaoRequest
 import com.github.thaynarasilvapinto.model.Cliente
 import com.github.thaynarasilvapinto.model.Conta
 import com.github.thaynarasilvapinto.model.Operacao
-import com.github.thaynarasilvapinto.service.ClienteService
-import com.github.thaynarasilvapinto.service.ContaService
-import com.github.thaynarasilvapinto.service.OperacaoService
 import com.github.thaynarasilvapinto.web.config.ControllerBaseTest
+import com.github.thaynarasilvapinto.web.services.ClienteService
+import com.github.thaynarasilvapinto.web.services.ContaService
+import com.github.thaynarasilvapinto.web.services.OperacaoService
 import com.google.gson.Gson
 import org.hamcrest.CoreMatchers.notNullValue
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.mockito.InjectMocks
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType.APPLICATION_JSON_UTF8
-import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 class OperacaoControllerTest : ControllerBaseTest() {
     @Autowired
-    private lateinit var mvc: MockMvc
-    @InjectMocks
     private lateinit var clienteService: ClienteService
-    @InjectMocks
+    @Autowired
     private lateinit var contaService: ContaService
-    @InjectMocks
+    @Autowired
     private lateinit var operacaoService: OperacaoService
     private lateinit var gson: Gson
     private lateinit var joao: Cliente
@@ -41,7 +37,7 @@ class OperacaoControllerTest : ControllerBaseTest() {
     private lateinit var operacaoTransferencia: Operacao
 
     @Before
-    fun setUp() {
+    fun setup() {
         createClient()
         this.gson = Gson()
 

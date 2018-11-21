@@ -1,11 +1,9 @@
-package com.github.thaynarasilvapinto.service.services
+package com.github.thaynarasilvapinto.web.services
 
 import com.github.thaynarasilvapinto.model.Cliente
 import com.github.thaynarasilvapinto.model.Conta
-import com.github.thaynarasilvapinto.service.ClienteService
-import com.github.thaynarasilvapinto.service.ContaService
-import com.github.thaynarasilvapinto.service.config.ServiceBaseTest
-import com.github.thaynarasilvapinto.simuladorbanco.services.exception.CpfIsValidException
+import com.github.thaynarasilvapinto.web.config.ControllerBaseTest
+import com.github.thaynarasilvapinto.web.services.exception.CpfIsValidException
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -13,22 +11,21 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.ExpectedException
-import org.mockito.InjectMocks
 import org.springframework.beans.factory.annotation.Autowired
 
-class ClienteServiceTest : ServiceBaseTest(){
+class ClienteServiceTest : ControllerBaseTest() {
 
     @get:Rule
     var thrown = ExpectedException.none()
-    @InjectMocks
+    @Autowired
     private lateinit var clienteService: ClienteService
-    @InjectMocks
+    @Autowired
     private lateinit var contaService: ContaService
     private lateinit var joao: Cliente
     private lateinit var joaoConta: Conta
 
     @Before
-    fun setUp() {
+    fun setup() {
         createClient()
     }
 

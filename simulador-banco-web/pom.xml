@@ -13,11 +13,23 @@
     <dependencies>
         <dependency>
             <groupId>com.github.thaynarasilvapinto</groupId>
-            <artifactId>simulador-banco-services</artifactId>
+            <artifactId>simulador-banco-api</artifactId>
         </dependency>
         <dependency>
             <groupId>com.github.thaynarasilvapinto</groupId>
-            <artifactId>simulador-banco-api</artifactId>
+            <artifactId>simulador-banco-repository</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.thaynarasilvapinto</groupId>
+            <artifactId>simulador-banco-model</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
@@ -31,14 +43,12 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>6.0.11.Final</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
         </dependency>
     </dependencies>
 
@@ -55,15 +65,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.asciidoctor</groupId>
-                <artifactId>asciidoctor-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.jetbrains.dokka</groupId>
-                <artifactId>dokka-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

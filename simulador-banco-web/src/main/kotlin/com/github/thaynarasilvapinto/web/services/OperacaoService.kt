@@ -1,10 +1,10 @@
-package com.github.thaynarasilvapinto.service
+package com.github.thaynarasilvapinto.web.services
 
 import com.github.thaynarasilvapinto.model.Conta
 import com.github.thaynarasilvapinto.model.Operacao
 import com.github.thaynarasilvapinto.model.repository.OperacaoRepository
-import com.github.thaynarasilvapinto.simuladorbanco.services.exception.AccountIsValidException
-import com.github.thaynarasilvapinto.simuladorbanco.services.exception.BalanceIsInsufficientException
+import com.github.thaynarasilvapinto.web.services.exception.AccountIsValidException
+import com.github.thaynarasilvapinto.web.services.exception.BalanceIsInsufficientException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*

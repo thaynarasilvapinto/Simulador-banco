@@ -4,19 +4,17 @@ package com.github.thaynarasilvapinto.web.controller
 import com.github.thaynarasilvapinto.model.Cliente
 import com.github.thaynarasilvapinto.model.Conta
 import com.github.thaynarasilvapinto.model.Operacao
-import com.github.thaynarasilvapinto.service.ClienteService
-import com.github.thaynarasilvapinto.service.ContaService
-import com.github.thaynarasilvapinto.service.OperacaoService
 import com.github.thaynarasilvapinto.web.config.ControllerBaseTest
+import com.github.thaynarasilvapinto.web.services.ClienteService
+import com.github.thaynarasilvapinto.web.services.ContaService
+import com.github.thaynarasilvapinto.web.services.OperacaoService
 import com.github.thaynarasilvapinto.web.utils.toResponseSaldo
 import com.google.gson.Gson
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.mockito.InjectMocks
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
-import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
@@ -24,19 +22,17 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 class ContaControllerTest : ControllerBaseTest() {
     @Autowired
-    private lateinit var mvc: MockMvc
-    @InjectMocks
     private lateinit var clienteService: ClienteService
-    @InjectMocks
+    @Autowired
     private lateinit var contaService: ContaService
-    @InjectMocks
+    @Autowired
     private lateinit var operacaoService: OperacaoService
     private lateinit var joao: Cliente
     private lateinit var joaoConta: Conta
     private lateinit var gson: Gson
 
     @Before
-    fun setUp() {
+    fun setup() {
         createClient()
         this.gson = Gson()
     }

@@ -9,17 +9,15 @@ import com.github.thaynarasilvapinto.api.request.ClienteCriarRequest
 import com.github.thaynarasilvapinto.api.response.ClienteResponse
 import com.github.thaynarasilvapinto.model.Cliente
 import com.github.thaynarasilvapinto.model.Conta
-import com.github.thaynarasilvapinto.service.ClienteService
-import com.github.thaynarasilvapinto.service.ContaService
 import com.github.thaynarasilvapinto.web.config.ControllerBaseTest
+import com.github.thaynarasilvapinto.web.services.ClienteService
+import com.github.thaynarasilvapinto.web.services.ContaService
 import com.google.gson.Gson
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.mockito.InjectMocks
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
-import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
@@ -27,12 +25,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import kotlin.test.assertEquals
 
 class ClienteControllerTest : ControllerBaseTest() {
-
     @Autowired
-    private lateinit var mvc: MockMvc
-    @InjectMocks
     private lateinit var clienteService: ClienteService
-    @InjectMocks
+    @Autowired
     private lateinit var contaService: ContaService
     private lateinit var joao: Cliente
     private lateinit var gson: Gson
@@ -45,7 +40,7 @@ class ClienteControllerTest : ControllerBaseTest() {
     }
 
     @Before
-    fun setUp() {
+    fun setup() {
         createClient()
         this.gson = Gson()
     }

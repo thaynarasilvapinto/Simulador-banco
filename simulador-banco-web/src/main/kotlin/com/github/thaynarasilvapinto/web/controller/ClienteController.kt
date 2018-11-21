@@ -1,11 +1,11 @@
-package com.github.thaynarasilvapinto.web
+package com.github.thaynarasilvapinto.web.controller
 
 import com.github.thaynarasilvapinto.api.ClienteApi
 import com.github.thaynarasilvapinto.api.request.ClienteCriarRequest
 import com.github.thaynarasilvapinto.api.response.ClienteResponse
 import com.github.thaynarasilvapinto.model.Cliente
 import com.github.thaynarasilvapinto.model.Conta
-import com.github.thaynarasilvapinto.service.ClienteService
+import com.github.thaynarasilvapinto.web.services.ClienteService
 import com.github.thaynarasilvapinto.web.utils.toResponse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity

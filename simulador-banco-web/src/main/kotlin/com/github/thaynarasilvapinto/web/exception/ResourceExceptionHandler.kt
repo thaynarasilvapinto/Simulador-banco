@@ -1,9 +1,9 @@
 package com.github.thaynarasilvapinto.web.exception
 
-import com.github.thaynarasilvapinto.simuladorbanco.services.exception.AccountIsValidException
-import com.github.thaynarasilvapinto.simuladorbanco.services.exception.BalanceIsInsufficientException
-import com.github.thaynarasilvapinto.simuladorbanco.services.exception.ClientIsValidException
-import com.github.thaynarasilvapinto.simuladorbanco.services.exception.CpfIsValidException
+import com.github.thaynarasilvapinto.web.services.exception.AccountIsValidException
+import com.github.thaynarasilvapinto.web.services.exception.BalanceIsInsufficientException
+import com.github.thaynarasilvapinto.web.services.exception.ClientIsValidException
+import com.github.thaynarasilvapinto.web.services.exception.CpfIsValidException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.MethodArgumentNotValidException
