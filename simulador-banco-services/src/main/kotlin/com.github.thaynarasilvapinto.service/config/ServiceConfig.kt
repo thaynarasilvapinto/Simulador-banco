@@ -7,4 +7,4 @@ import org.springframework.transaction.annotation.EnableTransactionManagement
 @Configuration
 @EnableTransactionManagement
 @ComponentScan(basePackages = ["com.github.thaynarasilvapinto.service"])
-open class ServiceConfig
+open class ServiceConfigopen class ServiceConfig
