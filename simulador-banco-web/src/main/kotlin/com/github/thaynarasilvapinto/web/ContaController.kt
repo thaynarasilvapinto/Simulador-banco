@@ -4,7 +4,7 @@ import com.github.thaynarasilvapinto.api.ContaApi
 import com.github.thaynarasilvapinto.api.response.ContaResponse
 import com.github.thaynarasilvapinto.api.response.ExtratoResponse
 import com.github.thaynarasilvapinto.api.response.SaldoResponse
-import com.github.thaynarasilvapinto.web.services.ContaService
+import com.github.thaynarasilvapinto.service.ContaService
 import com.github.thaynarasilvapinto.web.utils.toResponse
 import com.github.thaynarasilvapinto.web.utils.toResponseSaldo
 import org.springframework.http.ResponseEntity

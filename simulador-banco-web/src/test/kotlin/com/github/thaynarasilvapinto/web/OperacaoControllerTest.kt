@@ -4,10 +4,10 @@ import com.github.thaynarasilvapinto.api.request.OperacaoRequest
 import com.github.thaynarasilvapinto.model.Cliente
 import com.github.thaynarasilvapinto.model.Conta
 import com.github.thaynarasilvapinto.model.Operacao
+import com.github.thaynarasilvapinto.service.ClienteService
+import com.github.thaynarasilvapinto.service.ContaService
+import com.github.thaynarasilvapinto.service.OperacaoService
 import com.github.thaynarasilvapinto.web.config.ControllerBaseTest
-import com.github.thaynarasilvapinto.web.services.ClienteService
-import com.github.thaynarasilvapinto.web.services.ContaService
-import com.github.thaynarasilvapinto.web.services.OperacaoService
 import com.google.gson.Gson
 import org.hamcrest.CoreMatchers.notNullValue
 import org.junit.After

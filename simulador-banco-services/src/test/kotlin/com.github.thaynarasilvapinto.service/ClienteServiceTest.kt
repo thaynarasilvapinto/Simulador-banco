@@ -2,8 +2,10 @@ package com.github.thaynarasilvapinto.service
 
 import com.github.thaynarasilvapinto.model.Cliente
 import com.github.thaynarasilvapinto.model.Conta
+import com.github.thaynarasilvapinto.model.repository.ClienteRepository
 import com.github.thaynarasilvapinto.service.config.ServiceBaseTest
 import com.github.thaynarasilvapinto.service.exception.CpfIsValidException
+import com.nhaarman.mockito_kotlin.mock
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -11,24 +13,36 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.ExpectedException
+import org.mockito.InjectMocks
+import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
+import java.util.*
 
-class ClienteServiceTest @Autowired constructor(
-    private var clienteService: ClienteService,
-    private var contaService: ContaService
-) : ServiceBaseTest() {
+class ClienteServiceTest : ServiceBaseTest() {
 
     @get:Rule
     var thrown = ExpectedException.none()
+
+
+    private val repository: ClienteRepository = mock()
+    private val serviceConta: ContaService = mock()
+
+
+    private lateinit var clienteService: ClienteService
+
+    @Autowired
+    private lateinit var contaService: ContaService
     private lateinit var joao: Cliente
     private lateinit var joaoConta: Conta
 
     @Before
     fun setup() {
         createClient()
+        clienteService = ClienteService(repository, serviceConta)
     }
 
     private fun createClient() {
+
         joao = clienteService.criarCliente(
             Cliente(
                 nome = "Cliente Test Conta Controller",
@@ -49,6 +63,7 @@ class ClienteServiceTest @Autowired constructor(
 
     @Test
     fun `deve buscar um cliente`() {
+        Mockito.`when`(repository.findById(joao.id)).thenReturn(Optional.of(joao))
         val clienteBuscado = clienteService.find(joao.id)
         assertEquals(joao.id, clienteBuscado.get().id)
     }

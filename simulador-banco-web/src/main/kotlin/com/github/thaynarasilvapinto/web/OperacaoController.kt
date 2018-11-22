@@ -5,7 +5,7 @@ import com.github.thaynarasilvapinto.api.request.OperacaoRequest
 import com.github.thaynarasilvapinto.api.response.DepositoResponse
 import com.github.thaynarasilvapinto.api.response.SaqueResponse
 import com.github.thaynarasilvapinto.api.response.TransferenciaResponse
-import com.github.thaynarasilvapinto.web.services.OperacaoService
+import com.github.thaynarasilvapinto.service.OperacaoService
 import com.github.thaynarasilvapinto.web.utils.toResponseDeposito
 import com.github.thaynarasilvapinto.web.utils.toResponseSaque
 import com.github.thaynarasilvapinto.web.utils.toResponseTransferencia

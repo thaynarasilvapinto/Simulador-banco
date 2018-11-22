@@ -4,10 +4,10 @@ package com.github.thaynarasilvapinto.web.controller
 import com.github.thaynarasilvapinto.model.Cliente
 import com.github.thaynarasilvapinto.model.Conta
 import com.github.thaynarasilvapinto.model.Operacao
+import com.github.thaynarasilvapinto.service.ClienteService
+import com.github.thaynarasilvapinto.service.ContaService
+import com.github.thaynarasilvapinto.service.OperacaoService
 import com.github.thaynarasilvapinto.web.config.ControllerBaseTest
-import com.github.thaynarasilvapinto.web.services.ClienteService
-import com.github.thaynarasilvapinto.web.services.ContaService
-import com.github.thaynarasilvapinto.web.services.OperacaoService
 import com.github.thaynarasilvapinto.web.utils.toResponseSaldo
 import com.google.gson.Gson
 import org.junit.After

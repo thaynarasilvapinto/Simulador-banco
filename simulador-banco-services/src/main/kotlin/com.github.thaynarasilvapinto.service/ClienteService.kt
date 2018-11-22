@@ -10,14 +10,9 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-open class ClienteService {
+open class ClienteService (private var repo: ClienteRepository,
+                           private var serviceConta: ContaService) {
 
-    @Autowired
-    private lateinit var repo: ClienteRepository
-
-
-    @Autowired
-    private lateinit var serviceConta: ContaService
 
     fun find(id: String): Optional<Cliente> {
         return repo.findById(id)

@@ -9,6 +9,5 @@ import org.springframework.test.context.ActiveProfiles
 @Configuration
 @EnableAutoConfiguration
 @Import(ServiceConfig::class)
-@ActiveProfiles(profiles = ["test", "postgresql"])
 @ComponentScan(basePackages = ["com.github.thaynarasilvapinto.service"])
 open class ServiceTestConfig
