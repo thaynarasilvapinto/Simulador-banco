@@ -1,12 +1,9 @@
 package com.github.thaynarasilvapinto.web.config
 
-import com.github.thaynarasilvapinto.web.SimuladorBancoApplication
+import com.github.thaynarasilvapinto.web.ApplicationConfig
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
 
 @Configuration
-/*@EnableAutoConfiguration*/
-@Import(SimuladorBancoApplication::class)
-/*@ActiveProfiles(profiles = ["test"])
-@ComponentScan(basePackages = ["com.github.thaynarasilvapinto.web"])*/
+@Import(ApplicationConfig::class)
 open class ControllerTestConfig

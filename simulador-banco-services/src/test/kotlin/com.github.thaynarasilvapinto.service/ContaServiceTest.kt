@@ -1,11 +1,11 @@
-package com.github.thaynarasilvapinto.web.services
+package com.github.thaynarasilvapinto.service
 
 import com.github.thaynarasilvapinto.model.Cliente
 import com.github.thaynarasilvapinto.model.Conta
 import com.github.thaynarasilvapinto.model.Operacao
-import com.github.thaynarasilvapinto.web.config.ControllerBaseTest
-import com.github.thaynarasilvapinto.web.services.exception.AccountIsValidException
-import com.github.thaynarasilvapinto.web.services.exception.BalanceIsInsufficientException
+import com.github.thaynarasilvapinto.service.config.ServiceBaseTest
+import com.github.thaynarasilvapinto.service.exception.AccountIsValidException
+import com.github.thaynarasilvapinto.service.exception.BalanceIsInsufficientException
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -14,7 +14,7 @@ import org.junit.Test
 import org.junit.rules.ExpectedException
 import org.springframework.beans.factory.annotation.Autowired
 
-class ContaServiceTest : ControllerBaseTest() {
+class ContaServiceTest : ServiceBaseTest() {
 
     @get:Rule
     var thrown = ExpectedException.none()
