@@ -9,7 +9,7 @@ import com.github.thaynarasilvapinto.api.request.ClienteCriarRequest
 import com.github.thaynarasilvapinto.api.response.ClienteResponse
 import com.github.thaynarasilvapinto.model.Cliente
 import com.github.thaynarasilvapinto.model.Conta
-import com.github.thaynarasilvapinto.web.config.ControllerBaseTest
+import com.github.thaynarasilvapinto.web.ControllerBaseTest
 import com.github.thaynarasilvapinto.web.services.ClienteService
 import com.github.thaynarasilvapinto.web.services.ContaService
 import com.google.gson.Gson

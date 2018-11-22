@@ -1,6 +1,6 @@
-package com.github.thaynarasilvapinto.web.config
+package com.github.thaynarasilvapinto.web
 
-import com.google.gson.Gson
+import com.github.thaynarasilvapinto.web.config.ControllerTestConfig
 import org.junit.Before
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired

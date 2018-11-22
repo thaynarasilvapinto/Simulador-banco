@@ -2,7 +2,7 @@ package com.github.thaynarasilvapinto.web.services
 
 import com.github.thaynarasilvapinto.model.Cliente
 import com.github.thaynarasilvapinto.model.Conta
-import com.github.thaynarasilvapinto.web.config.ControllerBaseTest
+import com.github.thaynarasilvapinto.web.ControllerBaseTest
 import com.github.thaynarasilvapinto.web.services.exception.CpfIsValidException
 import org.junit.After
 import org.junit.Assert.assertEquals

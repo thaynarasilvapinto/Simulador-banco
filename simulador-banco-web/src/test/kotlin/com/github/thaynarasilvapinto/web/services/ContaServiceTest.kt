@@ -3,7 +3,7 @@ package com.github.thaynarasilvapinto.web.services
 import com.github.thaynarasilvapinto.model.Cliente
 import com.github.thaynarasilvapinto.model.Conta
 import com.github.thaynarasilvapinto.model.Operacao
-import com.github.thaynarasilvapinto.web.config.ControllerBaseTest
+import com.github.thaynarasilvapinto.web.ControllerBaseTest
 import com.github.thaynarasilvapinto.web.services.exception.AccountIsValidException
 import com.github.thaynarasilvapinto.web.services.exception.BalanceIsInsufficientException
 import org.junit.After
