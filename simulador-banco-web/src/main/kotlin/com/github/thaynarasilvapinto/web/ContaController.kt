@@ -1,4 +1,4 @@
-package com.github.thaynarasilvapinto.web.controller
+package com.github.thaynarasilvapinto.web
 
 import com.github.thaynarasilvapinto.api.ContaApi
 import com.github.thaynarasilvapinto.api.response.ContaResponse

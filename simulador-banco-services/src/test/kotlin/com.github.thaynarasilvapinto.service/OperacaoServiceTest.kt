@@ -1,3 +1,4 @@
+/*
 package com.github.thaynarasilvapinto.service
 
 import com.github.thaynarasilvapinto.model.Cliente
@@ -214,3 +215,4 @@ class OperacaoServiceTest : ServiceBaseTest() {
         assertEquals(transferenciaNoBanco, transferencia)
     }
 }
+*/

@@ -1,4 +1,4 @@
-package com.github.thaynarasilvapinto.web.controller
+package com.github.thaynarasilvapinto.web
 
 import com.github.thaynarasilvapinto.api.request.OperacaoRequest
 import com.github.thaynarasilvapinto.model.Cliente
@@ -68,14 +68,14 @@ class OperacaoControllerTest : ControllerBaseTest() {
                 cpf = "055.059.396-94",
                 conta = Conta(saldo = 0.00)
             )
-        )
+        )!!
         maria = clienteService.criarCliente(
             Cliente(
                 nome = "Cliente Test ClienteController",
                 cpf = "177.082.896-67",
                 conta = Conta(saldo = 0.00)
             )
-        )
+        )!!
         joaoConta = joao.conta
         mariaConta = maria.conta
     }

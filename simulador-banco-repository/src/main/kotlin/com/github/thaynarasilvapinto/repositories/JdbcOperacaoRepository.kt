@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Repository
-import java.util.*
 
 @Repository
 open class JdbcOperacaoRepository @Autowired constructor(private val jdbcTemplate: JdbcTemplate) : OperacaoRepository {
@@ -40,7 +39,7 @@ open class JdbcOperacaoRepository @Autowired constructor(private val jdbcTemplat
         )
     }
 
-    override fun findById(operacaoId: String): Optional<Operacao> {
+    override fun findById(operacaoId: String): Operacao? {
         val sql = """
             SELECT
                 operacao.*,
@@ -57,9 +56,9 @@ open class JdbcOperacaoRepository @Autowired constructor(private val jdbcTemplat
             """
 
         return try {
-            Optional.ofNullable(jdbcTemplate.queryForObject(sql, OperacaoRowMapper(), operacaoId))
+            jdbcTemplate.queryForObject(sql, OperacaoRowMapper(), operacaoId)
         } catch (e: EmptyResultDataAccessException) {
-            Optional.ofNullable(null)
+            null
         }
 
     }

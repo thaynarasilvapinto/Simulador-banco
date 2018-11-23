@@ -40,7 +40,7 @@ open class JdbcClienteRepository @Autowired constructor(
         )
     }
 
-    override fun findById(clienteId: String): Optional<Cliente> {
+    override fun findById(clienteId: String): Cliente? {
         val sql = """
                 SELECT
                        cliente.*,
@@ -55,9 +55,9 @@ open class JdbcClienteRepository @Autowired constructor(
                 """
 
         return try {
-            Optional.ofNullable(jdbcTemplate.queryForObject(sql, ClienteRowMapper(), clienteId))
+            jdbcTemplate.queryForObject(sql, ClienteRowMapper(), clienteId)
         } catch (e: EmptyResultDataAccessException) {
-            Optional.ofNullable(null)
+            null
         }
     }
 
@@ -85,7 +85,7 @@ open class JdbcClienteRepository @Autowired constructor(
         return jdbcTemplate.update(sql, id)
     }
 
-    override fun findByCpfEquals(cpf: String): Optional<Cliente> {
+    override fun findByCpfEquals(cpf: String): Cliente? {
         val sql = """
                 SELECT
                      cliente.*,
@@ -100,9 +100,9 @@ open class JdbcClienteRepository @Autowired constructor(
             """
 
         return try {
-            Optional.ofNullable(jdbcTemplate.queryForObject(sql, ClienteRowMapper(), cpf))
+            jdbcTemplate.queryForObject(sql, ClienteRowMapper(), cpf)
         } catch (e: EmptyResultDataAccessException) {
-            Optional.ofNullable(null)
+            null
         }
     }
 }

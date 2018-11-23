@@ -3,27 +3,34 @@ package com.github.thaynarasilvapinto.service
 import com.github.thaynarasilvapinto.model.Cliente
 import com.github.thaynarasilvapinto.model.Conta
 import com.github.thaynarasilvapinto.model.Operacao
+import com.github.thaynarasilvapinto.model.repository.ContaRepository
+import com.github.thaynarasilvapinto.model.repository.OperacaoRepository
 import com.github.thaynarasilvapinto.service.config.ServiceBaseTest
 import com.github.thaynarasilvapinto.service.exception.AccountIsValidException
 import com.github.thaynarasilvapinto.service.exception.BalanceIsInsufficientException
-import org.junit.After
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.times
+import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockito_kotlin.whenever
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.ExpectedException
-import org.springframework.beans.factory.annotation.Autowired
+import java.util.*
 
 class ContaServiceTest : ServiceBaseTest() {
 
     @get:Rule
     var thrown = ExpectedException.none()
-    @Autowired
-    private lateinit var clienteService: ClienteService
-    @Autowired
+
+    private val repositoryConta: ContaRepository = mock()
+    private val repositoryOperacao: OperacaoRepository = mock()
+
     private lateinit var contaService: ContaService
-    @Autowired
     private lateinit var operacaoService: OperacaoService
+
+
     private lateinit var joao: Cliente
     private lateinit var joaoConta: Conta
     private lateinit var maria: Cliente
@@ -31,86 +38,96 @@ class ContaServiceTest : ServiceBaseTest() {
 
     @Before
     fun setup() {
+        contaService = ContaService(repositoryConta,repositoryOperacao)
+        operacaoService = OperacaoService(repositoryOperacao,repositoryConta)
         createClient()
     }
 
     private fun createClient() {
-        joao = clienteService.criarCliente(
-            Cliente(
-                nome = "Conta Test Joao Service",
-                cpf = "151.425.426-75",
-                conta = Conta(saldo = 0.00)
-            )
+        joaoConta = Conta(saldo = 0.00)
+        joao = Cliente(
+            nome = "Conta Test Joao Service",
+            cpf = "151.425.426-75",
+            conta = joaoConta
         )
-        joaoConta = joao.conta
-        maria = clienteService.criarCliente(
-            Cliente(
-                nome = "Conta Test Maria Service",
-                cpf = "086.385.420-62",
-                conta = Conta(saldo = 0.00)
-            )
+
+        contaMaria = Conta(saldo = 0.00)
+        maria = Cliente(
+            nome = "Conta Test Maria Service",
+            cpf = "086.385.420-62",
+            conta = contaMaria
         )
-        contaMaria = maria.conta
-    }
 
-    @After
-    fun tearDown() {
-        clienteService.delete(joao.id)
-        val extrato = operacaoService.findAllContaOrigem(joaoConta)
-        for (i in extrato.indices) {
-            operacaoService.delete(extrato[i].idOperacao)
-        }
-
-        contaService.delete(joaoConta.id)
-
-        clienteService.delete(maria.id)
-        val extratoMaria = operacaoService.findAllContaOrigem(contaMaria)
-        for (i in extratoMaria.indices) {
-            operacaoService.delete(extrato[i].idOperacao)
-        }
-
-        contaService.delete(contaMaria.id)
     }
 
     @Test
     fun `deve buscar a conta`() {
-        val conta = contaService.find(joaoConta.id)
-        val id = conta.get().id
-        assertEquals(joaoConta.id, id)
+        whenever(repositoryConta.findById(joaoConta.id)).thenReturn(joaoConta)
+        val contaBuscada = contaService.find(joaoConta.id)
+        assertEquals(joaoConta.id, contaBuscada!!.id)
+        verify(repositoryConta, times(1)).findById(joaoConta.id)
     }
 
     @Test
     fun update() {
+        whenever(repositoryConta.findById(joaoConta.id)).thenReturn(joaoConta)
         joaoConta.saldo = 100.00
+        whenever(repositoryConta.update(joaoConta)).thenReturn(1)
+        whenever(repositoryConta.findById(joaoConta.id)).thenReturn(joaoConta)
+
         contaService.update(joaoConta)
         val conta = contaService.find(joaoConta.id)
-        val saldo = conta.get().saldo
-        assertEquals(joaoConta.saldo, saldo, 0.00001)
+
+        assertEquals(joaoConta.saldo, conta!!.saldo, 0.00001)
     }
 
     @Test
     fun `deve buscar o saldo`() {
+        whenever(repositoryConta.findById(joaoConta.id)).thenReturn(joaoConta)
         val conta = contaService.find(joaoConta.id)
-        val saldo = conta.get().saldo
+        val saldo = conta!!.saldo
         assertEquals(joaoConta.saldo, saldo, 0.00001)
-
     }
 
     @Test
     fun `Ao solicitar um extrato, devera constar toda movimentacao da conta`() {
 
-        operacaoService.deposito(
-            id = joaoConta.id,
-            valor = 200.00
+        val deposito = Operacao(
+            valorOperacao = 200.00,
+            contaDestino = joaoConta,
+            contaOrigem = joaoConta,
+            tipoOperacao = Operacao.TipoOperacao.DEPOSITO
         )
-        operacaoService.saque(
-            id = joaoConta.id,
-            valor = 100.00
+        val saque = Operacao(
+            valorOperacao = 100.00,
+            contaDestino = joaoConta,
+            contaOrigem = joaoConta,
+            tipoOperacao = Operacao.TipoOperacao.SAQUE
         )
-        operacaoService.deposito(
-            id = joaoConta.id,
-            valor = 400.00
+        val deposito1 = Operacao(
+            valorOperacao = 400.00,
+            contaDestino = joaoConta,
+            contaOrigem = joaoConta,
+            tipoOperacao = Operacao.TipoOperacao.DEPOSITO
         )
+
+        whenever(repositoryConta.findById(joaoConta.id)).thenReturn(joaoConta)
+
+        whenever(repositoryOperacao
+            .findAllByContaDestinoAndTipoOperacao(joaoConta.id, Operacao.TipoOperacao.RECEBIMENTO_TRANSFERENCIA.name))
+            .thenReturn(listOfNotNull())
+        whenever(repositoryOperacao
+            .findAllByContaOrigemAndTipoOperacao(joaoConta.id, Operacao.TipoOperacao.TRANSFERENCIA.name))
+            .thenReturn(listOfNotNull())
+        whenever(repositoryOperacao
+            .findAllByContaOrigemAndTipoOperacao(joaoConta.id, Operacao.TipoOperacao.DEPOSITO.name))
+            .thenReturn(listOf(deposito))
+        whenever(repositoryOperacao
+            .findAllByContaOrigemAndTipoOperacao(joaoConta.id, Operacao.TipoOperacao.SAQUE.name))
+            .thenReturn(listOf(saque))
+        whenever(repositoryOperacao
+            .findAllByContaOrigemAndTipoOperacao(joaoConta.id, Operacao.TipoOperacao.DEPOSITO.name))
+            .thenReturn(listOf(deposito1))
 
         val extratoJoao = contaService.extrato(joaoConta.id)
         assertEquals(Operacao.TipoOperacao.DEPOSITO, extratoJoao[0].tipoOperacao)
@@ -120,6 +137,8 @@ class ContaServiceTest : ServiceBaseTest() {
 
     @Test
     fun `Ao solicitar um extrato de uma conta invalida, devera retornar uma excecao`() {
+        whenever(repositoryConta.findById(joaoConta.id)).thenReturn(null)
+
         thrown.expect(AccountIsValidException::class.java)
         thrown.expectMessage("A conta deve ser valida")
 
@@ -128,36 +147,25 @@ class ContaServiceTest : ServiceBaseTest() {
 
     @Test
     fun `O saldo da conta nunca podera ser negativo`() {
+        whenever(repositoryConta.findById(joaoConta.id)).thenReturn(joaoConta)
+
         thrown.expect(BalanceIsInsufficientException::class.java)
         thrown.expectMessage("Saldo Insuficiente")
-        operacaoService.deposito(
-            id = joaoConta.id,
-            valor = 10.00
-        )
+
         operacaoService.saque(
             id = joaoConta.id,
             valor = 100.00
         )
 
     }
-
     @Test
     fun `deve devolver saldo`() {
-        operacaoService.deposito(
-            id = joaoConta.id,
-            valor = 200.00
-        )
-        operacaoService.saque(
-            id = joaoConta.id,
-            valor = 100.00
-        )
-        operacaoService.deposito(
-            id = joaoConta.id,
-            valor = 400.00
-        )
+
+        joaoConta.saldo = 200.00
+
+        whenever(repositoryConta.findById(joaoConta.id)).thenReturn(joaoConta)
 
         val saldo = contaService.saldo(joaoConta.id)
-
-        assertEquals(500.00, saldo.saldo, 0.00001)
+        assertEquals(200.00, saldo.saldo, 0.00001)
     }
 }

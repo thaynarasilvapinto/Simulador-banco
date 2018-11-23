@@ -1,4 +1,4 @@
-package com.github.thaynarasilvapinto.web.controller
+package com.github.thaynarasilvapinto.web
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -52,7 +52,7 @@ class ClienteControllerTest : ControllerBaseTest() {
                 cpf = "055.059.396-94",
                 conta = Conta(saldo = 0.00)
             )
-        )
+        )!!
     }
 
     @After
@@ -95,8 +95,8 @@ class ClienteControllerTest : ControllerBaseTest() {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
 
         val cliente = clienteService.findCPF("182.562.790-87")
-        clienteService.delete(cliente.get().id)
-        contaService.delete(cliente.get().conta.id)
+        clienteService.delete(cliente!!.id)
+        contaService.delete(cliente.conta.id)
     }
 
     @Test

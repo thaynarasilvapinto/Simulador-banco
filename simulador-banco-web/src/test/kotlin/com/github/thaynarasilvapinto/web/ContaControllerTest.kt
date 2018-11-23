@@ -1,4 +1,4 @@
-package com.github.thaynarasilvapinto.web.controller
+package com.github.thaynarasilvapinto.web
 
 
 import com.github.thaynarasilvapinto.model.Cliente
@@ -44,7 +44,7 @@ class ContaControllerTest : ControllerBaseTest() {
                 cpf = "055.059.396-94",
                 conta = Conta(saldo = 0.00)
             )
-        )
+        )!!
         joaoConta = joao.conta
     }
 

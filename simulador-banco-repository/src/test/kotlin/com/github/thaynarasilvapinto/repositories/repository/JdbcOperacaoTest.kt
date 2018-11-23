@@ -24,7 +24,7 @@ class JdbcOperacaoTest : RepositoryBaseTest() {
     @Before
     fun setup() {
         operacaoId = saveACliente()
-        accountId = repositoryConta.findById(repositoryOperacao.findById(operacaoId).get().contaOrigem.id).get().id
+        accountId = repositoryConta.findById(repositoryOperacao.findById(operacaoId)!!.contaOrigem.id)!!.id
     }
 
     @After
@@ -56,7 +56,7 @@ class JdbcOperacaoTest : RepositoryBaseTest() {
     fun `deve encontrar uma operacao ja criado pelo id`() {
         val operacao = repositoryOperacao.findById(operacaoId)
         assertNotNull(operacao)
-        assertEquals(operacaoId, operacao.get().idOperacao)
+        assertEquals(operacaoId, operacao!!.idOperacao)
     }
 
     @Test
@@ -104,9 +104,9 @@ class JdbcOperacaoTest : RepositoryBaseTest() {
 
         var operacao = repositoryOperacao.findById(operacaoId)
 
-        val operacaoListOrigem = repositoryOperacao.findAllByContaOrigem(operacao.get().contaOrigem.id)
+        val operacaoListOrigem = repositoryOperacao.findAllByContaOrigem(operacao!!.contaOrigem.id)
         assertNotNull(operacaoListOrigem)
-        assertEquals(operacao.get().idOperacao, operacaoListOrigem[0].idOperacao)
+        assertEquals(operacao!!.idOperacao, operacaoListOrigem[0].idOperacao)
     }
 
     @Test
@@ -115,10 +115,10 @@ class JdbcOperacaoTest : RepositoryBaseTest() {
         var operacao = repositoryOperacao.findById(operacaoId)
 
         val operacaoListOrigem = repositoryOperacao.findAllByContaDestinoAndTipoOperacao(
-            id = operacao.get().contaDestino.id,
-            operacao = operacao.get().tipoOperacao.name
+            id = operacao!!.contaDestino.id,
+            operacao = operacao!!.tipoOperacao.name
         )
         assertNotNull(operacaoListOrigem)
-        assertEquals(operacao.get().idOperacao, operacaoListOrigem[0].idOperacao)
+        assertEquals(operacao!!.idOperacao, operacaoListOrigem[0].idOperacao)
     }
 }

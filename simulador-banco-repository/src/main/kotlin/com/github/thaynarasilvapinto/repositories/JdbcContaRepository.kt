@@ -39,14 +39,14 @@ open class JdbcContaRepository @Autowired constructor(private val jdbcTemplate: 
         )
     }
 
-    override fun findById(contaId: String): Optional<Conta> {
+    override fun findById(contaId: String): Conta? {
         val sql = """
             select * from $TABLE_NAME where $ID_COLUMN = ?
             """
         return try {
-            Optional.ofNullable(jdbcTemplate.queryForObject(sql, ContaRowMapper(), contaId))
+            jdbcTemplate.queryForObject(sql, ContaRowMapper(), contaId)
         } catch (e: EmptyResultDataAccessException) {
-            Optional.ofNullable(null)
+           null
         }
     }
 

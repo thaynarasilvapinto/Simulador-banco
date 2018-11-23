@@ -40,7 +40,7 @@ class JdbcContaRepositoryTest : RepositoryBaseTest() {
     fun `deve encontrar uma conta ja criada`() {
         val account = repositoryConta.findById(accountId)
         assertNotNull(account)
-        assertEquals(accountId, account.get().id)
+        assertEquals(accountId, account!!.id)
     }
 
     @Test
@@ -57,11 +57,11 @@ class JdbcContaRepositoryTest : RepositoryBaseTest() {
     fun `deve fazer um update em uma conta ja criada`() {
         var conta = repositoryConta.findById(accountId)
         var contaEsperado = conta
-        contaEsperado.get().saldo = 10.00
+        contaEsperado!!.saldo = 10.00
 
-        repositoryConta.update(contaEsperado.get())
+        repositoryConta.update(contaEsperado!!)
 
-        assertEquals(repositoryConta.findById(accountId).get().saldo, contaEsperado.get().saldo)
+        assertEquals(repositoryConta.findById(accountId)!!.saldo, contaEsperado!!.saldo)
     }
 
     @Test

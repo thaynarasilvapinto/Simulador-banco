@@ -1,4 +1,4 @@
-package com.github.thaynarasilvapinto.web.controller
+package com.github.thaynarasilvapinto.web
 
 import com.github.thaynarasilvapinto.api.OperacaoApi
 import com.github.thaynarasilvapinto.api.request.OperacaoRequest
@@ -23,7 +23,7 @@ open class OperacaoController(
 
     override fun saque(@PathVariable id: String, @Valid @RequestBody operacao: OperacaoRequest): ResponseEntity<SaqueResponse> {
         val saque = serviceOperacao.saque(operacao.valorOperacao!!, id)
-        return ResponseEntity.ok().body(saque.toResponseSaque())
+        return ResponseEntity.ok().body(saque!!.toResponseSaque())
 
     }
 

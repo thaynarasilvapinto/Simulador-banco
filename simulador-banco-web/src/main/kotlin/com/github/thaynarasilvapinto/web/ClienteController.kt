@@ -1,4 +1,4 @@
-package com.github.thaynarasilvapinto.web.controller
+package com.github.thaynarasilvapinto.web
 
 import com.github.thaynarasilvapinto.api.ClienteApi
 import com.github.thaynarasilvapinto.api.request.ClienteCriarRequest
@@ -21,7 +21,7 @@ open class ClienteController @Autowired constructor(
 
     override fun mostrarCliente(@PathVariable("id") id: String): ResponseEntity<ClienteResponse> {
         val cliente = serviceCliente.cliente(id)
-        return ResponseEntity.ok().body(cliente.toResponse())
+        return ResponseEntity.ok().body(cliente!!.toResponse())
 
     }
 
@@ -33,7 +33,7 @@ open class ClienteController @Autowired constructor(
                 conta = Conta(saldo = 0.00)
             )
         )
-        return ResponseEntity.ok().body(cliente.toResponse())
+        return ResponseEntity.ok().body(cliente!!.toResponse())
 
     }
 }

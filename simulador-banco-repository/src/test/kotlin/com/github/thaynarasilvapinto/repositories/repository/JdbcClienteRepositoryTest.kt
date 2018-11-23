@@ -25,7 +25,7 @@ class JdbcClienteRepositoryTest : RepositoryBaseTest() {
     @Before
     fun setup() {
         clienteID = saveACliente()
-        accountId = repositoryCliente.findById(clienteID).get().conta.id
+        accountId = repositoryCliente.findById(clienteID)!!.conta.id
     }
 
     @After
@@ -48,12 +48,11 @@ class JdbcClienteRepositoryTest : RepositoryBaseTest() {
         return client.id
     }
 
-
     @Test
     fun `deve encontrar um cliente ja criado`() {
         val cliente = repositoryCliente.findById(clienteID)
         assertNotNull(cliente)
-        assertEquals(clienteID, cliente.get().id)
+        assertEquals(clienteID, cliente!!.id)
     }
 
     @Test
@@ -76,11 +75,11 @@ class JdbcClienteRepositoryTest : RepositoryBaseTest() {
     fun `deve fazer um update em um cliente ja criado`() {
         var cliente = repositoryCliente.findById(clienteID)
         var clienteEsperado = cliente
-        clienteEsperado.get().nome = "Cristiane Daiane Costa"
+        clienteEsperado!!.nome = "Cristiane Daiane Costa"
 
-        repositoryCliente.update(clienteEsperado.get())
+        repositoryCliente.update(clienteEsperado!!)
 
-        assertEquals(repositoryCliente.findById(clienteID).get().nome, clienteEsperado.get().nome)
+        assertEquals(repositoryCliente.findById(clienteID)!!.nome, clienteEsperado!!.nome)
     }
 
     @Test
@@ -106,6 +105,6 @@ class JdbcClienteRepositoryTest : RepositoryBaseTest() {
     fun `deve encontrar um cliente ja criado pelo cpf`() {
         val account = repositoryCliente.findByCpfEquals("479.711.743-57")
         assertNotNull(account)
-        assertEquals(clienteID, account.get().id)
+        assertEquals(clienteID, account!!.id)
     }
 }

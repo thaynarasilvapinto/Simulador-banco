@@ -6,7 +6,7 @@ import java.util.*
 interface OperacaoRepository {
     fun save(operacao: Operacao): Int
 
-    fun findById(operacaoId: String): Optional<Operacao>
+    fun findById(operacaoId: String): Operacao?
 
     fun deleteById(id: String): Int
 
