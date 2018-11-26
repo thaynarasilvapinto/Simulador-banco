@@ -11,6 +11,7 @@ import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 class JdbcOperacaoTest : RepositoryBaseTest() {
     @Autowired
@@ -57,6 +58,11 @@ class JdbcOperacaoTest : RepositoryBaseTest() {
         val operacao = repositoryOperacao.findById(operacaoId)
         assertNotNull(operacao)
         assertEquals(operacaoId, operacao!!.idOperacao)
+    }
+    @Test
+    fun `nao deve encontrar uma operacao nao criada pelo id`() {
+        val operacao = repositoryOperacao.findById("-1")
+        assertNull(operacao)
     }
 
     @Test
@@ -106,7 +112,7 @@ class JdbcOperacaoTest : RepositoryBaseTest() {
 
         val operacaoListOrigem = repositoryOperacao.findAllByContaOrigem(operacao!!.contaOrigem.id)
         assertNotNull(operacaoListOrigem)
-        assertEquals(operacao!!.idOperacao, operacaoListOrigem[0].idOperacao)
+        assertEquals(operacao.idOperacao, operacaoListOrigem[0].idOperacao)
     }
 
     @Test
@@ -116,9 +122,9 @@ class JdbcOperacaoTest : RepositoryBaseTest() {
 
         val operacaoListOrigem = repositoryOperacao.findAllByContaDestinoAndTipoOperacao(
             id = operacao!!.contaDestino.id,
-            operacao = operacao!!.tipoOperacao.name
+            operacao = operacao.tipoOperacao.name
         )
         assertNotNull(operacaoListOrigem)
-        assertEquals(operacao!!.idOperacao, operacaoListOrigem[0].idOperacao)
+        assertEquals(operacao.idOperacao, operacaoListOrigem[0].idOperacao)
     }
 }

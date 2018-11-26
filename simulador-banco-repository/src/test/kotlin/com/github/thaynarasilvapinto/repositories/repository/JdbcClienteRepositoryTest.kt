@@ -11,6 +11,7 @@ import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 
 class JdbcClienteRepositoryTest : RepositoryBaseTest() {
@@ -54,6 +55,11 @@ class JdbcClienteRepositoryTest : RepositoryBaseTest() {
         assertNotNull(cliente)
         assertEquals(clienteID, cliente!!.id)
     }
+    @Test
+    fun `nao deve encontrar um cliente que nao existe no banco`() {
+        val cliente = repositoryCliente.findById("-1")
+        assertNull(cliente)
+    }
 
     @Test
     fun `deve criar um cliente`() {
@@ -79,7 +85,7 @@ class JdbcClienteRepositoryTest : RepositoryBaseTest() {
 
         repositoryCliente.update(clienteEsperado!!)
 
-        assertEquals(repositoryCliente.findById(clienteID)!!.nome, clienteEsperado!!.nome)
+        assertEquals(repositoryCliente.findById(clienteID)!!.nome, clienteEsperado.nome)
     }
 
     @Test

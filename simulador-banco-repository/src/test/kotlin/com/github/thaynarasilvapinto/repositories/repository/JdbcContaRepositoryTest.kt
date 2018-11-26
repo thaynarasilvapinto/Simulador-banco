@@ -9,6 +9,7 @@ import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 class JdbcContaRepositoryTest : RepositoryBaseTest() {
     @Autowired
@@ -42,6 +43,11 @@ class JdbcContaRepositoryTest : RepositoryBaseTest() {
         assertNotNull(account)
         assertEquals(accountId, account!!.id)
     }
+    @Test
+    fun `noa deve encontrar uma conta nao criada`() {
+        val account = repositoryConta.findById("-1")
+        assertNull(account)
+    }
 
     @Test
     fun `deve criar uma conta`() {
@@ -59,9 +65,9 @@ class JdbcContaRepositoryTest : RepositoryBaseTest() {
         var contaEsperado = conta
         contaEsperado!!.saldo = 10.00
 
-        repositoryConta.update(contaEsperado!!)
+        repositoryConta.update(contaEsperado)
 
-        assertEquals(repositoryConta.findById(accountId)!!.saldo, contaEsperado!!.saldo)
+        assertEquals(repositoryConta.findById(accountId)!!.saldo, contaEsperado.saldo)
     }
 
     @Test
