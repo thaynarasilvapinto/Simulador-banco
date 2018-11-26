@@ -113,4 +113,9 @@ class JdbcClienteRepositoryTest : RepositoryBaseTest() {
         assertNotNull(account)
         assertEquals(clienteID, account!!.id)
     }
+    @Test
+    fun `nao deve encontrar um cliente ja criado pelo cpf`() {
+        val account = repositoryCliente.findByCpfEquals("479.711.743-5")
+        assertNull(account)
+    }
 }
