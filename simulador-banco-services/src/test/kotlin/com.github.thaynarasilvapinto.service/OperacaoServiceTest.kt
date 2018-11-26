@@ -8,15 +8,13 @@ import com.github.thaynarasilvapinto.model.repository.OperacaoRepository
 import com.github.thaynarasilvapinto.service.config.ServiceBaseTest
 import com.github.thaynarasilvapinto.service.exception.AccountIsValidException
 import com.github.thaynarasilvapinto.service.exception.BalanceIsInsufficientException
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.times
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockito_kotlin.*
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.ExpectedException
+import org.mockito.Matchers.anyString
 import kotlin.test.assertNotNull
 
 class OperacaoServiceTest : ServiceBaseTest() {
@@ -53,7 +51,7 @@ class OperacaoServiceTest : ServiceBaseTest() {
     }
 
     private fun createClient() {
-        joaoConta = Conta(saldo = 0.00)
+        joaoConta = Conta(saldo = 200.00)
         joao = Cliente(
             nome = "Conta Test Joao Service",
             cpf = "151.425.426-75",
@@ -191,12 +189,14 @@ class OperacaoServiceTest : ServiceBaseTest() {
         )
     }
 
-    /*@Test
+    @Test
     fun `deve realizar deposito`() {
-        val deposito = Operacao(valorOperacao = 100.00,
+        val deposito = Operacao(
+            valorOperacao = 100.00,
             tipoOperacao = Operacao.TipoOperacao.DEPOSITO,
             contaDestino = joaoConta,
-            contaOrigem = joaoConta)
+            contaOrigem = joaoConta
+        )
 
         whenever(repositoryConta.findById(joaoConta.id)).thenReturn(joaoConta)
 
@@ -205,9 +205,8 @@ class OperacaoServiceTest : ServiceBaseTest() {
         whenever(repositoryConta.update(joaoConta)).thenReturn(1)
         whenever(repositoryConta.findById(joaoConta.id)).thenReturn(joaoConta)
 
-        whenever(repositoryOperacao.save(deposito)).thenReturn(1)
-        whenever(repositoryOperacao.findById(deposito.idOperacao)).thenReturn(deposito)
-        //whenever(repositoryOperacao.findById(deposito.idOperacao)).thenReturn(deposito)
+        whenever(repositoryOperacao.save(any())).thenReturn(1)
+        whenever(repositoryOperacao.findById(anyString())).thenReturn(deposito)
 
         val resultDeposito = operacaoService.deposito(
             id = joaoConta.id,
@@ -216,9 +215,9 @@ class OperacaoServiceTest : ServiceBaseTest() {
 
         assertNotNull(resultDeposito)
         assertEquals(deposito.idOperacao, resultDeposito.idOperacao)
-    }*/
+    }
 
-/*    @Test
+    @Test
     fun `deve realizar saque`() {
         val saque = Operacao(valorOperacao = 100.00,
             tipoOperacao = Operacao.TipoOperacao.SAQUE,
@@ -226,30 +225,54 @@ class OperacaoServiceTest : ServiceBaseTest() {
             contaOrigem = joaoConta)
 
         whenever(repositoryConta.findById(joaoConta.id)).thenReturn(joaoConta)
-        joaoConta.saldo = 100.00
+        joaoConta.saldo = joaoConta.saldo - 100.00
         whenever(repositoryConta.update(joaoConta)).thenReturn(1)
         whenever(repositoryConta.findById(joaoConta.id)).thenReturn(joaoConta)
 
-        whenever(repositoryOperacao.save(saque)).thenReturn(1)
-        whenever(repositoryOperacao.findById(saque.idOperacao)).thenReturn(saque)
+        whenever(repositoryOperacao.save(any())).thenReturn(1)
+        whenever(repositoryOperacao.findById(anyString())).thenReturn(saque)
 
         val resultSaque = operacaoService.saque(
             id = joaoConta.id,
             valor = 100.00
         )
         assertNotNull(saque)
-        assertEquals(resultSaque!!.valorOperacao, saque.valorOperacao)
+        assertEquals(saque.idOperacao, resultSaque!!.idOperacao)
     }
-
     @Test
     fun `deve realizar transferencia`() {
-        val transferencia = operacaoService.transferencia(
+        val transferencia = Operacao(valorOperacao = 100.00,
+            tipoOperacao = Operacao.TipoOperacao.TRANSFERENCIA,
+            contaDestino = contaMaria,
+            contaOrigem = joaoConta)
+        val transferenciaRecebimento = Operacao(valorOperacao = 100.00,
+            tipoOperacao = Operacao.TipoOperacao.RECEBIMENTO_TRANSFERENCIA,
+            contaDestino = contaMaria,
+            contaOrigem = joaoConta)
+
+        whenever(repositoryConta.findById(joaoConta.id)).thenReturn(joaoConta)
+        whenever(repositoryConta.findById(contaMaria.id)).thenReturn(contaMaria)
+
+        joaoConta.saldo = joaoConta.saldo - 100.00
+        whenever(repositoryConta.update(joaoConta)).thenReturn(1)
+        whenever(repositoryConta.findById(joaoConta.id)).thenReturn(joaoConta)
+
+        contaMaria.saldo = contaMaria.saldo + 100.00
+        whenever(repositoryConta.update(contaMaria)).thenReturn(1)
+        whenever(repositoryConta.findById(contaMaria.id)).thenReturn(contaMaria)
+
+        whenever(repositoryOperacao.save(any())).thenReturn(1)
+        whenever(repositoryOperacao.findById(anyString())).thenReturn(transferenciaRecebimento)
+
+        whenever(repositoryOperacao.save(any())).thenReturn(1)
+        whenever(repositoryOperacao.findById(anyString())).thenReturn(transferencia)
+
+        val resultTransferencia = operacaoService.transferencia(
             id = joaoConta.id,
             idDestino = contaMaria.id,
             valor = 100.00
         )
-        val transferenciaNoBanco = operacaoService.find(transferencia.idOperacao)
         assertNotNull(transferencia)
-        assertEquals(transferenciaNoBanco, transferencia)
-    }*/
+        assertEquals(transferencia.idOperacao, resultTransferencia.idOperacao)
+    }
 }

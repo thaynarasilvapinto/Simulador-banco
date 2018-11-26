@@ -8,7 +8,6 @@ import com.github.thaynarasilvapinto.service.exception.AccountIsValidException
 import com.github.thaynarasilvapinto.service.exception.BalanceIsInsufficientException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 open class OperacaoService @Autowired constructor(
@@ -21,7 +20,7 @@ open class OperacaoService @Autowired constructor(
         return repo.findById(id)
     }
 
-    fun insert(obj: Operacao): Operacao?{
+    fun insert(obj: Operacao): Operacao? {
         repo.save(obj)
         return repo.findById(obj.idOperacao)
     }
@@ -100,24 +99,23 @@ open class OperacaoService @Autowired constructor(
                         valorOperacao = valor,
                         tipoOperacao = Operacao.TipoOperacao.RECEBIMENTO_TRANSFERENCIA
                     )
-                    var efetuarTrasferencia = Operacao(
+                    var efetuarTransferencia = Operacao(
                         contaOrigem = contaOrigem,
                         contaDestino = contaDestino,
                         valorOperacao = valor,
                         tipoOperacao = Operacao.TipoOperacao.TRANSFERENCIA
                     )
 
-
-                    contaOrigem.saldo = contaOrigem.saldo - efetuarTrasferencia.valorOperacao
+                    contaOrigem.saldo = contaOrigem.saldo - efetuarTransferencia.valorOperacao
                     contaDestino.saldo = contaDestino.saldo + recebimentoTransferencia.valorOperacao
 
                     updateConta(contaOrigem)
                     updateConta(contaDestino)
 
-                    efetuarTrasferencia = insert(efetuarTrasferencia)!!
+                    efetuarTransferencia = insert(efetuarTransferencia)!!
                     insert(recebimentoTransferencia)
 
-                    return efetuarTrasferencia
+                    return efetuarTransferencia
 
                 } else
                     throw BalanceIsInsufficientException(message = "Saldo Insuficiente")
@@ -132,7 +130,7 @@ open class OperacaoService @Autowired constructor(
         return repoConta.findById(id)
     }
     fun updateConta(conta: Conta): Conta? {
-        repoConta.findById(conta.id)
+        find(conta.id)
         repoConta.update(conta)
         return repoConta.findById(conta.id)
     }
