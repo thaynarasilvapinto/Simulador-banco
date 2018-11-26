@@ -39,7 +39,7 @@ open class ContaService(
 
         if (conta != null) {
 
-            //emptyList<Operacao>()
+            emptyList<Operacao>()
 
             val recebimento = findAllByContaDestinoAndTipoOperacao(
                 conta,

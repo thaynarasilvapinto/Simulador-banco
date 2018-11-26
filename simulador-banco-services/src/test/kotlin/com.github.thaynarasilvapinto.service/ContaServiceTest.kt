@@ -17,7 +17,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.ExpectedException
-import java.util.*
 
 class ContaServiceTest : ServiceBaseTest() {
 
@@ -38,8 +37,8 @@ class ContaServiceTest : ServiceBaseTest() {
 
     @Before
     fun setup() {
-        contaService = ContaService(repositoryConta,repositoryOperacao)
-        operacaoService = OperacaoService(repositoryOperacao,repositoryConta)
+        contaService = ContaService(repositoryConta, repositoryOperacao)
+        operacaoService = OperacaoService(repositoryOperacao, repositoryConta)
         createClient()
     }
 
@@ -104,7 +103,7 @@ class ContaServiceTest : ServiceBaseTest() {
             contaOrigem = joaoConta,
             tipoOperacao = Operacao.TipoOperacao.SAQUE
         )
-        val deposito1 = Operacao(
+        val deposito2 = Operacao(
             valorOperacao = 400.00,
             contaDestino = joaoConta,
             contaOrigem = joaoConta,
@@ -113,26 +112,56 @@ class ContaServiceTest : ServiceBaseTest() {
 
         whenever(repositoryConta.findById(joaoConta.id)).thenReturn(joaoConta)
 
-        whenever(repositoryOperacao
-            .findAllByContaDestinoAndTipoOperacao(joaoConta.id, Operacao.TipoOperacao.RECEBIMENTO_TRANSFERENCIA.name))
+        whenever(
+            repositoryOperacao
+                .findAllByContaDestinoAndTipoOperacao(
+                    joaoConta.id,
+                    Operacao.TipoOperacao.RECEBIMENTO_TRANSFERENCIA.name
+                )
+        )
             .thenReturn(listOfNotNull())
-        whenever(repositoryOperacao
-            .findAllByContaOrigemAndTipoOperacao(joaoConta.id, Operacao.TipoOperacao.TRANSFERENCIA.name))
+        whenever(
+            repositoryOperacao
+                .findAllByContaOrigemAndTipoOperacao(joaoConta.id, Operacao.TipoOperacao.TRANSFERENCIA.name)
+        )
             .thenReturn(listOfNotNull())
-        whenever(repositoryOperacao
-            .findAllByContaOrigemAndTipoOperacao(joaoConta.id, Operacao.TipoOperacao.DEPOSITO.name))
-            .thenReturn(listOf(deposito))
-        whenever(repositoryOperacao
-            .findAllByContaOrigemAndTipoOperacao(joaoConta.id, Operacao.TipoOperacao.SAQUE.name))
+        whenever(
+            repositoryOperacao
+                .findAllByContaOrigemAndTipoOperacao(joaoConta.id, Operacao.TipoOperacao.DEPOSITO.name)
+        )
+            .thenReturn(listOf(deposito, deposito2))
+        whenever(
+            repositoryOperacao
+                .findAllByContaOrigemAndTipoOperacao(joaoConta.id, Operacao.TipoOperacao.SAQUE.name)
+        )
             .thenReturn(listOf(saque))
-        whenever(repositoryOperacao
-            .findAllByContaOrigemAndTipoOperacao(joaoConta.id, Operacao.TipoOperacao.DEPOSITO.name))
-            .thenReturn(listOf(deposito1))
-
         val extratoJoao = contaService.extrato(joaoConta.id)
+
+        verify(repositoryConta, times(1)).findById(joaoConta.id)
+        verify(repositoryOperacao, times(1)).findAllByContaDestinoAndTipoOperacao(
+            joaoConta.id,
+            Operacao.TipoOperacao.RECEBIMENTO_TRANSFERENCIA.name
+        )
+        verify(repositoryOperacao, times(1)).findAllByContaOrigemAndTipoOperacao(
+            joaoConta.id,
+            Operacao.TipoOperacao.TRANSFERENCIA.name
+        )
+        verify(repositoryOperacao, times(1)).findAllByContaOrigemAndTipoOperacao(
+            joaoConta.id,
+            Operacao.TipoOperacao.DEPOSITO.name
+        )
+        verify(repositoryOperacao, times(1)).findAllByContaOrigemAndTipoOperacao(
+            joaoConta.id,
+            Operacao.TipoOperacao.SAQUE.name
+        )
+        verify(repositoryOperacao, times(1)).findAllByContaOrigemAndTipoOperacao(
+            joaoConta.id,
+            Operacao.TipoOperacao.DEPOSITO.name
+        )
+
         assertEquals(Operacao.TipoOperacao.DEPOSITO, extratoJoao[0].tipoOperacao)
-        assertEquals(Operacao.TipoOperacao.SAQUE, extratoJoao[1].tipoOperacao)
-        assertEquals(Operacao.TipoOperacao.DEPOSITO, extratoJoao[2].tipoOperacao)
+        assertEquals(Operacao.TipoOperacao.DEPOSITO, extratoJoao[1].tipoOperacao)
+        assertEquals(Operacao.TipoOperacao.SAQUE, extratoJoao[2].tipoOperacao)
     }
 
     @Test
@@ -158,6 +187,7 @@ class ContaServiceTest : ServiceBaseTest() {
         )
 
     }
+
     @Test
     fun `deve devolver saldo`() {
 

@@ -21,7 +21,7 @@ open class OperacaoService @Autowired constructor(
         return repo.findById(id)
     }
 
-    fun insert(obj: Operacao): Operacao? {
+    fun insert(obj: Operacao): Operacao?{
         repo.save(obj)
         return repo.findById(obj.idOperacao)
     }
@@ -132,7 +132,7 @@ open class OperacaoService @Autowired constructor(
         return repoConta.findById(id)
     }
     fun updateConta(conta: Conta): Conta? {
-        find(conta.id)
+        repoConta.findById(conta.id)
         repoConta.update(conta)
         return repoConta.findById(conta.id)
     }

@@ -69,16 +69,10 @@ class ClienteServiceTest : ServiceBaseTest() {
         whenever(repositoryCliente.findById(joao.id)).thenReturn(joao)
 
 
-        var cliente = clienteService.criarCliente(
-            Cliente(
-                nome = "teste",
-                cpf = "611.018.420-91",
-                conta = Conta("-1", 0.00)
-            )
-        )
-        val clienteEsperado = clienteService.find(cliente!!.id)
-        assertNotNull(cliente.id)
-        assertEquals(clienteEsperado, cliente)
+        val cliente = clienteService.criarCliente(joao)
+
+        assertNotNull(cliente)
+        assertEquals(joao, cliente)
     }
 
     @Test
