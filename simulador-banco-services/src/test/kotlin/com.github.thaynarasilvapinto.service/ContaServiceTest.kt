@@ -83,9 +83,19 @@ class ContaServiceTest : ServiceBaseTest() {
     @Test
     fun `deve buscar o saldo`() {
         whenever(repositoryConta.findById(joaoConta.id)).thenReturn(joaoConta)
-        val conta = contaService.find(joaoConta.id)
-        val saldo = conta!!.saldo
+        val conta = contaService.saldo(joaoConta.id)
+        val saldo = conta.saldo
         assertEquals(joaoConta.saldo, saldo, 0.00001)
+    }
+
+    @Test
+    fun `ao solicitar um saldo de uma conta invalida deve retornar execao`() {
+        whenever(repositoryConta.findById("-1")).thenReturn(null)
+
+        thrown.expect(AccountIsValidException::class.java)
+        thrown.expectMessage("A conta deve ser valida")
+
+        contaService.saldo(joaoConta.id)
     }
 
     @Test

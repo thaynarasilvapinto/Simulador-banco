@@ -5,6 +5,7 @@ import com.github.thaynarasilvapinto.model.Conta
 import com.github.thaynarasilvapinto.model.repository.ClienteRepository
 import com.github.thaynarasilvapinto.model.repository.ContaRepository
 import com.github.thaynarasilvapinto.service.config.ServiceBaseTest
+import com.github.thaynarasilvapinto.service.exception.AccountIsValidException
 import com.github.thaynarasilvapinto.service.exception.CpfIsValidException
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.times
@@ -17,6 +18,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.ExpectedException
 import java.util.*
+import kotlin.test.assertNull
 
 class ClienteServiceTest : ServiceBaseTest() {
     @get:Rule
@@ -40,9 +42,19 @@ class ClienteServiceTest : ServiceBaseTest() {
     @Test
     fun `deve buscar um cliente`() {
         whenever(repositoryCliente.findById(joao.id)).thenReturn(joao)
-        val clienteBuscado = clienteService.find(joao.id)
+
+        val clienteBuscado = clienteService.cliente(joao.id)
         assertEquals(joao.id, clienteBuscado!!.id)
         verify(repositoryCliente, times(1)).findById(joao.id)
+    }
+    @Test
+    fun `nao deve buscar um cliente com conta invalida`() {
+        whenever(repositoryCliente.findById("-1")).thenReturn(null)
+
+        thrown.expect(AccountIsValidException::class.java)
+        thrown.expectMessage("A conta deve ser valida")
+
+        clienteService.cliente("-1")
     }
     @Test
     fun update() {
