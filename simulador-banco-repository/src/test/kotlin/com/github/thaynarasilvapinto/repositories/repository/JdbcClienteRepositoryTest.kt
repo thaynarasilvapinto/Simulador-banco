@@ -83,7 +83,7 @@ class JdbcClienteRepositoryTest : RepositoryBaseTest() {
         var clienteEsperado = cliente
         clienteEsperado!!.nome = "Cristiane Daiane Costa"
 
-        repositoryCliente.update(clienteEsperado!!)
+        repositoryCliente.update(clienteEsperado)
 
         assertEquals(repositoryCliente.findById(clienteID)!!.nome, clienteEsperado.nome)
     }
