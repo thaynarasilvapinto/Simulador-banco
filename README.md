@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/thaynarasilvapinto/SimuladorBanco.svg?branch=master)](https://travis-ci.org/thaynarasilvapinto/SimuladorBanco)
+[![Build Status](https://travis-ci.org/thaynarasilvapinto/SimuladorBanco.svg?branch=master)](https://travis-ci.org/thaynarasilvapinto/simuador-banco)
 [![codecov](https://codecov.io/gh/thaynarasilvapinto/SimuladorBanco/branch/master/graph/badge.svg)](https://codecov.io/gh/thaynarasilvapinto/SimuladorBanco)
 
 # Simulador de Operações Bancárias 
