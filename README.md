@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/thaynarasilvapinto/SimuladorBanco.svg?branch=master)](https://travis-ci.org/thaynarasilvapinto/simuador-banco)
-[![codecov](https://codecov.io/gh/thaynarasilvapinto/simulador-banco/branch/master/graph/badge.svg)](https://codecov.io/gh/thaynarasilvapinto/SimuladorBanco)
+[![Build Status](https://travis-ci.org/thaynarasilvapinto/simulador-banco.svg?branch=master)](https://travis-ci.org/thaynarasilvapinto/simulador-banco)
+[![codecov](https://codecov.io/gh/thaynarasilvapinto/simulador-banco/branch/master/graph/badge.svg)](https://codecov.io/gh/thaynarasilvapinto/simulador-banco)
 
 # Simulador de Operações Bancárias 
 Um projeto de treinamento para preparar o(a) estagiário(a) para que o mesmo consiga desenvolver features reais. 
