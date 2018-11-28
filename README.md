@@ -12,6 +12,8 @@ O que você precisa para instalar o software e instalá-lo
 * [Postman](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?hl=pt-BR)
 
 Os links dos referidos softwares ensinam como deve ser feita a instalação em casa caso particular.
+### Link dos testes no postman 
+* [Simulador Banco - postman](https://documenter.getpostman.com/view/5216262/RzfcMWyZ)
 
 ### Comandos auxiliares para o docker
 Após o docker e do docker-compose instalados, é preciso entrar no diretorio do projeto, e executar os seguintes comandos.
