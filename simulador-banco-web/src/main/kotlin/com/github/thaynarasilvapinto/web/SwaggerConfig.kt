@@ -17,7 +17,7 @@ open class SwaggerConfig {
     @Bean
     open fun api(): Docket = Docket(DocumentationType.SWAGGER_2)
         .select()
-        .apis(RequestHandlerSelectors.any())
+        .apis(RequestHandlerSelectors.basePackage("com.github.thaynarasilvapinto.web"))
         .paths(PathSelectors.any()).build()
         .apiInfo(apiInfo())
 
