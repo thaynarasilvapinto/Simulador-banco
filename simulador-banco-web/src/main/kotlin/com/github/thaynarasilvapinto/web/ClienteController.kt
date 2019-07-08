@@ -4,9 +4,8 @@ import com.github.thaynarasilvapinto.api.ClienteApi
 import com.github.thaynarasilvapinto.api.request.ClienteCriarRequest
 import com.github.thaynarasilvapinto.api.response.ClienteResponse
 import com.github.thaynarasilvapinto.model.Cliente
-import com.github.thaynarasilvapinto.model.Conta
+import com.github.thaynarasilvapinto.model.Account
 import com.github.thaynarasilvapinto.service.ClienteService
-import com.github.thaynarasilvapinto.web.utils.toResponse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PathVariable
@@ -30,7 +29,7 @@ open class ClienteController @Autowired constructor(
             Cliente(
                 nome = clienteCriarRequest.nome!!,
                 cpf = clienteCriarRequest.cpf!!,
-                conta = Conta(saldo = 0.00)
+                conta = Account(saldo = 0.00)
             )
         )
         return ResponseEntity.ok().body(cliente!!.toResponse())

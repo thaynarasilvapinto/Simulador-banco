@@ -49,7 +49,7 @@ O projeto tem como objetivo treinar e desenvolver os seguintes tópicos.
 ###### Objetivo:
 Criar um sistema que simule um Banco 
 ###### Descrição:
-O sistema deve permitir cadastrar cliente/conta. Após o cliente cadastrado
+O sistema deve permitir cadastrar cliente/account. Após o cliente cadastrado
 deve ser possível realizar as seguintes operações:
 * Depósito;
 * Saque;
@@ -57,19 +57,19 @@ deve ser possível realizar as seguintes operações:
 * Saldo;
 * Extrato.
 ###### Regras de négocio
-* O saldo da conta nunca poderá ser negativo;
-* Não pode ser possível realizar saque ou transferência quando o saldo na conta é
+* O saldo da account nunca poderá ser negativo;
+* Não pode ser possível realizar saque ou transferência quando o saldo na account é
 insuficiente;
-* A conta de destino deve ser válida;
-* O cliente só poderá ter uma conta (validar por CPF por exemplo);
-* Ao criar a conta na resposta de sucesso deverá constar o Id da conta para futuras
+* A account de destino deve ser válida;
+* O cliente só poderá ter uma account (validar por CPF por exemplo);
+* Ao criar a account na resposta de sucesso deverá constar o Id da account para futuras
 movimentações;
-* Ao solicitar um extrato, deverá constar toda movimentação da conta, como
+* Ao solicitar um extrato, deverá constar toda movimentação da account, como
 transferência, depósito e saque;
-* Ao solicitar transferência tanto a conta de destino quanto a de origem devem ser
+* Ao solicitar transferência tanto a account de destino quanto a de origem devem ser
 válidas;
-* Não pode ser possível realizar uma transferência para você mesmo, ou seja, conta
-de origem não pode ser igual a conta de destino;
+* Não pode ser possível realizar uma transferência para você mesmo, ou seja, account
+de origem não pode ser igual a account de destino;
 ###### Requisitos técnicos
 * Os serviços devem ser expostos via REST com as respostas em Json;
 * O gerenciamento das dependências do projeto deve ser feita utilizando Maven;

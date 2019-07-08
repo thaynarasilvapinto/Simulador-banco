@@ -1,9 +1,9 @@
 package com.github.thaynarasilvapinto.service
 
-import com.github.thaynarasilvapinto.model.Conta
-import com.github.thaynarasilvapinto.model.Operacao
-import com.github.thaynarasilvapinto.model.repository.ContaRepository
-import com.github.thaynarasilvapinto.model.repository.OperacaoRepository
+import com.github.thaynarasilvapinto.model.Account
+import com.github.thaynarasilvapinto.model.Transaction
+import com.github.thaynarasilvapinto.model.repository.AccountRepository
+import com.github.thaynarasilvapinto.model.repository.TransactionRepository
 import com.github.thaynarasilvapinto.service.exception.AccountIsValidException
 import com.github.thaynarasilvapinto.service.exception.BalanceIsInsufficientException
 import org.springframework.beans.factory.annotation.Autowired
@@ -11,16 +11,16 @@ import org.springframework.stereotype.Service
 
 @Service
 open class OperacaoService @Autowired constructor(
-    private var repo: OperacaoRepository,
-    private var repoConta: ContaRepository
+    private var repo: TransactionRepository,
+    private var repoAccount: AccountRepository
 ) {
 
 
-    fun find(id: String): Operacao? {
+    fun find(id: String): Transaction? {
         return repo.findById(id)
     }
 
-    fun insert(obj: Operacao): Operacao? {
+    fun insert(obj: Transaction): Transaction? {
         repo.save(obj)
         return repo.findById(obj.idOperacao)
     }
@@ -31,20 +31,20 @@ open class OperacaoService @Autowired constructor(
         repo.deleteById(id)
     }
 
-    fun findAllContaOrigem(conta: Conta) = repo.findAllByContaOrigem(conta.id)
+    fun findAllContaOrigem(account: Account) = repo.findAllByContaOrigem(account.id)
 
-    fun saque(valor: Double, id: String): Operacao? {
+    fun saque(valor: Double, id: String): Transaction? {
 
         val conta = findConta(id)
 
         if (conta != null) {
             if (valor <= conta.saldo) {
 
-                var saque = Operacao(
-                    contaOrigem = conta,
-                    contaDestino = conta,
+                var saque = Transaction(
+                    accountOrigem = conta,
+                    accountDestino = conta,
                     valorOperacao = valor,
-                    tipoOperacao = Operacao.TipoOperacao.SAQUE
+                    tipoOperacao = Transaction.TipoOperacao.SAQUE
                 )
 
                 conta.saldo = conta.saldo - saque.valorOperacao
@@ -60,17 +60,17 @@ open class OperacaoService @Autowired constructor(
         throw AccountIsValidException(message = "A conta deve ser valida")
     }
 
-    fun deposito(valor: Double, id: String): Operacao {
+    fun deposito(valor: Double, id: String): Transaction {
 
         val conta = findConta(id)
 
         if (conta != null) {
 
-            var deposito = Operacao(
-                contaOrigem = conta,
-                contaDestino = conta,
+            var deposito = Transaction(
+                accountOrigem = conta,
+                accountDestino = conta,
                 valorOperacao = valor,
-                tipoOperacao = Operacao.TipoOperacao.DEPOSITO
+                tipoOperacao = Transaction.TipoOperacao.DEPOSITO
             )
 
             conta.saldo = conta.saldo + deposito.valorOperacao
@@ -84,7 +84,7 @@ open class OperacaoService @Autowired constructor(
         throw AccountIsValidException(message = "A conta deve ser valida")
     }
 
-    fun transferencia(valor: Double, id: String, idDestino: String): Operacao {
+    fun transferencia(valor: Double, id: String, idDestino: String): Transaction {
 
         val contaOrigem = findConta(id)
         val contaDestino = findConta(idDestino)
@@ -93,17 +93,17 @@ open class OperacaoService @Autowired constructor(
             if (contaOrigem != null && contaDestino != null) {
                 if (valor <= contaOrigem.saldo) {
 
-                    var recebimentoTransferencia = Operacao(
-                        contaOrigem = contaOrigem,
-                        contaDestino = contaDestino,
+                    var recebimentoTransferencia = Transaction(
+                        accountOrigem = contaOrigem,
+                        accountDestino = contaDestino,
                         valorOperacao = valor,
-                        tipoOperacao = Operacao.TipoOperacao.RECEBIMENTO_TRANSFERENCIA
+                        tipoOperacao = Transaction.TipoOperacao.RECEBIMENTO_TRANSFERENCIA
                     )
-                    var efetuarTransferencia = Operacao(
-                        contaOrigem = contaOrigem,
-                        contaDestino = contaDestino,
+                    var efetuarTransferencia = Transaction(
+                        accountOrigem = contaOrigem,
+                        accountDestino = contaDestino,
                         valorOperacao = valor,
-                        tipoOperacao = Operacao.TipoOperacao.TRANSFERENCIA
+                        tipoOperacao = Transaction.TipoOperacao.TRANSFERENCIA
                     )
 
                     contaOrigem.saldo = contaOrigem.saldo - efetuarTransferencia.valorOperacao
@@ -126,12 +126,12 @@ open class OperacaoService @Autowired constructor(
     }
 
 
-    fun findConta(id: String): Conta? {
-        return repoConta.findById(id)
+    fun findConta(id: String): Account? {
+        return repoAccount.findById(id)
     }
-    fun updateConta(conta: Conta): Conta? {
-        find(conta.id)
-        repoConta.update(conta)
-        return repoConta.findById(conta.id)
+    fun updateConta(account: Account): Account? {
+        find(account.id)
+        repoAccount.update(account)
+        return repoAccount.findById(account.id)
     }
 }

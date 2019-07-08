@@ -8,7 +8,7 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.github.thaynarasilvapinto.api.request.ClienteCriarRequest
 import com.github.thaynarasilvapinto.api.response.ClienteResponse
 import com.github.thaynarasilvapinto.model.Cliente
-import com.github.thaynarasilvapinto.model.Conta
+import com.github.thaynarasilvapinto.model.Account
 import com.github.thaynarasilvapinto.service.ClienteService
 import com.github.thaynarasilvapinto.service.ContaService
 import com.github.thaynarasilvapinto.web.config.ControllerBaseTest
@@ -50,7 +50,7 @@ class ClienteControllerTest : ControllerBaseTest() {
             Cliente(
                 nome = "Cliente Test Cliente Controller",
                 cpf = "055.059.396-94",
-                conta = Conta(saldo = 0.00)
+                conta = Account(saldo = 0.00)
             )
         )!!
     }

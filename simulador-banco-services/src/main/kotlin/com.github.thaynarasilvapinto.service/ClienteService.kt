@@ -1,19 +1,17 @@
 package com.github.thaynarasilvapinto.service
 
 import com.github.thaynarasilvapinto.model.Cliente
-import com.github.thaynarasilvapinto.model.Conta
-import com.github.thaynarasilvapinto.model.repository.ClienteRepository
-import com.github.thaynarasilvapinto.model.repository.ContaRepository
+import com.github.thaynarasilvapinto.model.Account
+import com.github.thaynarasilvapinto.model.repository.CustomerRepository
+import com.github.thaynarasilvapinto.model.repository.AccountRepository
 import com.github.thaynarasilvapinto.service.exception.AccountIsValidException
 import com.github.thaynarasilvapinto.service.exception.CpfIsValidException
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 open class ClienteService (
-    private val repo: ClienteRepository,
-    private val repoConta: ContaRepository
+    private val repo: CustomerRepository,
+    private val repoAccount: AccountRepository
 ) {
 
 
@@ -62,8 +60,8 @@ open class ClienteService (
         throw AccountIsValidException(message = "A conta deve ser valida")
     }
 
-    fun insertToConta(conta: Conta): Conta? {
-        repoConta.save(conta)
-        return repoConta.findById(conta.id)
+    fun insertToConta(account: Account): Account? {
+        repoAccount.save(account)
+        return repoAccount.findById(account.id)
     }
 }

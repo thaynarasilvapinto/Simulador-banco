@@ -1,7 +1,7 @@
 package com.github.thaynarasilvapinto.repositories
 
-import com.github.thaynarasilvapinto.model.Operacao
-import com.github.thaynarasilvapinto.model.repository.OperacaoRepository
+import com.github.thaynarasilvapinto.model.Transaction
+import com.github.thaynarasilvapinto.model.repository.TransactionRepository
 import com.github.thaynarasilvapinto.repositories.extractor.OperacaoRowMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
@@ -9,7 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Repository
 
 @Repository
-open class JdbcOperacaoRepository @Autowired constructor(private val jdbcTemplate: JdbcTemplate) : OperacaoRepository {
+open class JdbcTransactionRepository @Autowired constructor(private val jdbcTemplate: JdbcTemplate) : TransactionRepository {
 
 
     companion object {
@@ -22,7 +22,7 @@ open class JdbcOperacaoRepository @Autowired constructor(private val jdbcTemplat
         const val CONTA_DESTINO_CONLUMN = "conta_id_destino"
     }
 
-    override fun save(operacao: Operacao): Int {
+    override fun save(transaction: Transaction): Int {
         val sql = """
             insert into $TABLE_NAME ($ID_COLUMN, $VALOR_OPERACAO_COLUMN, $DATA_HORA_OPERACAO_COLUMN, $TIPO_OPERACAO_COLUMN, $CONTA_ORIGEM_CONLUMN, $CONTA_DESTINO_CONLUMN)
                 values (?,?,?,?,?,?)
@@ -30,16 +30,16 @@ open class JdbcOperacaoRepository @Autowired constructor(private val jdbcTemplat
 
         return jdbcTemplate.update(
             sql,
-            operacao.idOperacao,
-            operacao.valorOperacao,
-            operacao.dataHoraOperacao,
-            operacao.tipoOperacao.name,
-            operacao.contaOrigem.id,
-            operacao.contaDestino.id
+            transaction.idOperacao,
+            transaction.valorOperacao,
+            transaction.dataHoraOperacao,
+            transaction.tipoOperacao.name,
+            transaction.accountOrigem.id,
+            transaction.accountDestino.id
         )
     }
 
-    override fun findById(operacaoId: String): Operacao? {
+    override fun findById(operacaoId: String): Transaction? {
         val sql = """
             SELECT
                 operacao.*,
@@ -71,7 +71,7 @@ open class JdbcOperacaoRepository @Autowired constructor(private val jdbcTemplat
         return jdbcTemplate.update(sql, id)
     }
 
-    override fun findAllByContaOrigem(id: String): List<Operacao> {
+    override fun findAllByContaOrigem(id: String): List<Transaction> {
         val sql = """
             SELECT
                 operacao.*,
@@ -90,7 +90,7 @@ open class JdbcOperacaoRepository @Autowired constructor(private val jdbcTemplat
         return jdbcTemplate.query(sql, OperacaoRowMapper(), id)
     }
 
-    override fun findAllByContaDestinoAndTipoOperacao(id: String, operacao: String): List<Operacao> {
+    override fun findAllByContaDestinoAndTipoOperacao(id: String, operacao: String): List<Transaction> {
         val sql = """
             SELECT
                 operacao.*,
@@ -110,7 +110,7 @@ open class JdbcOperacaoRepository @Autowired constructor(private val jdbcTemplat
         return jdbcTemplate.query(sql, OperacaoRowMapper(), id, operacao)
     }
 
-    override fun findAllByContaOrigemAndTipoOperacao(id: String, operacao: String): List<Operacao> {
+    override fun findAllByContaOrigemAndTipoOperacao(id: String, operacao: String): List<Transaction> {
         val sql = """
             SELECT
                 operacao.*,

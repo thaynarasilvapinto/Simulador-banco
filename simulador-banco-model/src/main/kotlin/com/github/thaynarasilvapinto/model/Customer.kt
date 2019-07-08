@@ -4,10 +4,9 @@ import java.time.LocalDateTime
 import java.util.*
 
 
-data class Cliente(
+data class Customer(
     var id: String = UUID.randomUUID().toString(),
-    var nome: String,
-    var cpf: String,
-    var dataHora: LocalDateTime = LocalDateTime.now(),
-    var conta: Conta
+    var name: String,
+    var createDate: LocalDateTime = LocalDateTime.now(),
+    var updateDate: LocalDateTime
 )

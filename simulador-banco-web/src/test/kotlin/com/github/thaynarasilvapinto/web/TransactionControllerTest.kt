@@ -2,8 +2,8 @@ package com.github.thaynarasilvapinto.web
 
 import com.github.thaynarasilvapinto.api.request.OperacaoRequest
 import com.github.thaynarasilvapinto.model.Cliente
-import com.github.thaynarasilvapinto.model.Conta
-import com.github.thaynarasilvapinto.model.Operacao
+import com.github.thaynarasilvapinto.model.Account
+import com.github.thaynarasilvapinto.model.Transaction
 import com.github.thaynarasilvapinto.service.ClienteService
 import com.github.thaynarasilvapinto.service.ContaService
 import com.github.thaynarasilvapinto.service.OperacaoService
@@ -18,7 +18,7 @@ import org.springframework.http.MediaType.APPLICATION_JSON_UTF8
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
-class OperacaoControllerTest : ControllerBaseTest() {
+class TransactionControllerTest : ControllerBaseTest() {
     @Autowired
     private lateinit var clienteService: ClienteService
     @Autowired
@@ -29,35 +29,35 @@ class OperacaoControllerTest : ControllerBaseTest() {
     private lateinit var joao: Cliente
     private lateinit var maria: Cliente
 
-    private lateinit var joaoConta: Conta
-    private lateinit var mariaConta: Conta
+    private lateinit var joaoAccount: Account
+    private lateinit var mariaAccount: Account
 
-    private lateinit var operacaoDepositoJoao: Operacao
-    private lateinit var operacaoSaqueJoao: Operacao
-    private lateinit var operacaoTransferencia: Operacao
+    private lateinit var transactionDepositoJoao: Transaction
+    private lateinit var transactionSaqueJoao: Transaction
+    private lateinit var transactionTransferencia: Transaction
 
     @Before
     fun setup() {
         createClient()
         this.gson = Gson()
 
-        this.operacaoDepositoJoao = Operacao(
-            contaOrigem = joaoConta,
-            contaDestino = joaoConta,
+        this.transactionDepositoJoao = Transaction(
+            accountOrigem = joaoAccount,
+            accountDestino = joaoAccount,
             valorOperacao = 200.00,
-            tipoOperacao = Operacao.TipoOperacao.DEPOSITO
+            tipoOperacao = Transaction.TipoOperacao.DEPOSITO
         )
-        this.operacaoSaqueJoao = Operacao(
-            contaOrigem = joaoConta,
-            contaDestino = joaoConta,
+        this.transactionSaqueJoao = Transaction(
+            accountOrigem = joaoAccount,
+            accountDestino = joaoAccount,
             valorOperacao = 100.00,
-            tipoOperacao = Operacao.TipoOperacao.SAQUE
+            tipoOperacao = Transaction.TipoOperacao.SAQUE
         )
-        this.operacaoTransferencia = Operacao(
-            contaOrigem = joaoConta,
-            contaDestino = mariaConta,
+        this.transactionTransferencia = Transaction(
+            accountOrigem = joaoAccount,
+            accountDestino = mariaAccount,
             valorOperacao = 100.00,
-            tipoOperacao = Operacao.TipoOperacao.TRANSFERENCIA
+            tipoOperacao = Transaction.TipoOperacao.TRANSFERENCIA
         )
     }
 
@@ -66,35 +66,35 @@ class OperacaoControllerTest : ControllerBaseTest() {
             Cliente(
                 nome = "Cliente Test ClienteController",
                 cpf = "055.059.396-94",
-                conta = Conta(saldo = 0.00)
+                conta = Account(saldo = 0.00)
             )
         )!!
         maria = clienteService.criarCliente(
             Cliente(
                 nome = "Cliente Test ClienteController",
                 cpf = "177.082.896-67",
-                conta = Conta(saldo = 0.00)
+                conta = Account(saldo = 0.00)
             )
         )!!
-        joaoConta = joao.conta
-        mariaConta = maria.conta
+        joaoAccount = joao.conta
+        mariaAccount = maria.conta
     }
 
     @After
     fun tearDown() {
         clienteService.delete(joao.id)
         clienteService.delete(maria.id)
-        var extrato = operacaoService.findAllContaOrigem(joaoConta)
+        var extrato = operacaoService.findAllContaOrigem(joaoAccount)
         for (i in extrato.indices) {
             operacaoService.delete(extrato[i].idOperacao)
         }
-        extrato = operacaoService.findAllContaOrigem(mariaConta)
+        extrato = operacaoService.findAllContaOrigem(mariaAccount)
         for (i in extrato.indices) {
             operacaoService.delete(extrato[i].idOperacao)
 
         }
-        contaService.delete(joaoConta.id)
-        contaService.delete(mariaConta.id)
+        contaService.delete(joaoAccount.id)
+        contaService.delete(mariaAccount.id)
     }
 
     @Test
@@ -102,7 +102,7 @@ class OperacaoControllerTest : ControllerBaseTest() {
         val operacaoDepositoRequest = OperacaoRequest(valorOperacao = 500.00, contaDestino = null)
         val content = gson.toJson(operacaoDepositoRequest)
         this.mvc.perform(
-            post("/conta/{id}/deposito", joaoConta.id)
+            post("/conta/{id}/deposito", joaoAccount.id)
                 .content(content)
                 .contentType(APPLICATION_JSON_UTF8)
         )
@@ -126,13 +126,13 @@ class OperacaoControllerTest : ControllerBaseTest() {
     @Test
     fun `Deve realizar saque`() {
 
-        joaoConta.saldo = 300.00
-        contaService.update(joaoConta)
+        joaoAccount.saldo = 300.00
+        contaService.update(joaoAccount)
 
         val operacaoSaqueRequest = OperacaoRequest(valorOperacao = 200.00, contaDestino = null)
         val content = gson.toJson(operacaoSaqueRequest)
         this.mvc.perform(
-            post("/conta/{id}/saque", joaoConta.id)
+            post("/conta/{id}/saque", joaoAccount.id)
                 .content(content)
                 .contentType(APPLICATION_JSON_UTF8)
         )
@@ -155,14 +155,14 @@ class OperacaoControllerTest : ControllerBaseTest() {
 
     @Test
     fun `deve realizar transferencia`() {
-        joaoConta.saldo = 300.00
-        contaService.update(joaoConta)
+        joaoAccount.saldo = 300.00
+        contaService.update(joaoAccount)
 
-        val operacaoTransferenciaRequest = OperacaoRequest(valorOperacao = 100.00, contaDestino = mariaConta.id)
+        val operacaoTransferenciaRequest = OperacaoRequest(valorOperacao = 100.00, contaDestino = mariaAccount.id)
         val content = gson.toJson(operacaoTransferenciaRequest)
 
         this.mvc.perform(
-            post("/conta/{id}/transferencia", joaoConta.id)
+            post("/conta/{id}/transferencia", joaoAccount.id)
                 .content(content)
                 .contentType(APPLICATION_JSON_UTF8)
         )
@@ -176,7 +176,7 @@ class OperacaoControllerTest : ControllerBaseTest() {
         val operacaoDepositoRequest = OperacaoRequest(valorOperacao = -500.00, contaDestino = null)
         val content = gson.toJson(operacaoDepositoRequest)
         this.mvc.perform(
-            post("/conta/{id}/deposito", joaoConta.id)
+            post("/conta/{id}/deposito", joaoAccount.id)
                 .content(content)
                 .contentType(APPLICATION_JSON_UTF8)
         )
@@ -188,7 +188,7 @@ class OperacaoControllerTest : ControllerBaseTest() {
         val operacaoSaqueRequest = OperacaoRequest(valorOperacao = -200.00, contaDestino = null)
         val content = gson.toJson(operacaoSaqueRequest)
         this.mvc.perform(
-            post("/conta/{id}/saque", joaoConta.id)
+            post("/conta/{id}/saque", joaoAccount.id)
                 .content(content)
                 .contentType(APPLICATION_JSON_UTF8)
         )
@@ -197,11 +197,11 @@ class OperacaoControllerTest : ControllerBaseTest() {
 
     @Test
     fun `Nao deve realizar transferencia negativa`() {
-        val operacaoTransferenciaRequest = OperacaoRequest(valorOperacao = -100.00, contaDestino = mariaConta.id)
+        val operacaoTransferenciaRequest = OperacaoRequest(valorOperacao = -100.00, contaDestino = mariaAccount.id)
         val content = gson.toJson(operacaoTransferenciaRequest)
 
         this.mvc.perform(
-            post("/conta/{id}/transferencia", joaoConta.id)
+            post("/conta/{id}/transferencia", joaoAccount.id)
                 .content(content)
                 .contentType(APPLICATION_JSON_UTF8)
         )
@@ -210,12 +210,12 @@ class OperacaoControllerTest : ControllerBaseTest() {
 
 /*    @Test
     private fun `Nao deve realizar transferencia para a mesma conta`() {
-        joaoConta.saldo = 300.00
-        contaService.update(joaoConta)
-        val operacaoTransferenciaRequest = OperacaoRequest(valorOperacao = 300.00, contaDestino = joaoConta.id)
+        joaoAccount.saldo = 300.00
+        contaService.update(joaoAccount)
+        val operacaoTransferenciaRequest = OperacaoRequest(valorOperacao = 300.00, accountDestino = joaoAccount.id)
         val content = gson.toJson(operacaoTransferenciaRequest)
         this.mvc.perform(
-            post("/conta/{id}/transferencia", joaoConta.id)
+            post("/conta/{id}/transferencia", joaoAccount.id)
                 .content(content)
                 .contentType(APPLICATION_JSON_UTF8)
         )
@@ -224,12 +224,12 @@ class OperacaoControllerTest : ControllerBaseTest() {
 
     @Test
     fun `Nao deve transferir para uma conta invalida`() {
-        joaoConta.saldo = 300.00
-        contaService.update(joaoConta)
+        joaoAccount.saldo = 300.00
+        contaService.update(joaoAccount)
         val operacaoTransferenciaRequest = OperacaoRequest(valorOperacao = 300.00, contaDestino = "-1")
         val content = gson.toJson(operacaoTransferenciaRequest)
         this.mvc.perform(
-            post("/conta/{id}/transferencia", joaoConta.id)
+            post("/conta/{id}/transferencia", joaoAccount.id)
                 .content(content)
                 .contentType(APPLICATION_JSON_UTF8)
         )
@@ -238,7 +238,7 @@ class OperacaoControllerTest : ControllerBaseTest() {
 
     @Test
     fun `Nao deve transferir de uma conta que nao existe`() {
-        val operacaoTransferenciaRequest = OperacaoRequest(valorOperacao = 300.00, contaDestino = mariaConta.id)
+        val operacaoTransferenciaRequest = OperacaoRequest(valorOperacao = 300.00, contaDestino = mariaAccount.id)
         val content = gson.toJson(operacaoTransferenciaRequest)
         this.mvc.perform(
             post("/conta/{id}/transferencia", "-1")

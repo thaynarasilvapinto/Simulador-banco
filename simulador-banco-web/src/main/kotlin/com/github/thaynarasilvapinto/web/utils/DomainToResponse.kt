@@ -2,8 +2,8 @@ package com.github.thaynarasilvapinto.web.utils
 
 import com.github.thaynarasilvapinto.api.response.*
 import com.github.thaynarasilvapinto.model.Cliente
-import com.github.thaynarasilvapinto.model.Conta
-import com.github.thaynarasilvapinto.model.Operacao
+import com.github.thaynarasilvapinto.model.Account
+import com.github.thaynarasilvapinto.model.Transaction
 
 fun Cliente.toResponse(): ClienteResponse =
     ClienteResponse(
@@ -14,14 +14,14 @@ fun Cliente.toResponse(): ClienteResponse =
         conta = this.conta.id
     )
 
-fun Conta.toResponse(): ContaResponse =
+fun Account.toResponse(): ContaResponse =
     ContaResponse(
         id = this.id,
         saldo = this.saldo,
         dataHora = this.dataHora
     )
 
-fun Operacao.toResponseDeposito(): DepositoResponse =
+fun Transaction.toResponseDeposito(): DepositoResponse =
     DepositoResponse(
         idOperacao = this.idOperacao,
         valorOperacao = this.valorOperacao,
@@ -29,7 +29,7 @@ fun Operacao.toResponseDeposito(): DepositoResponse =
         tipoOperacao = enumValueOf(this.tipoOperacao.name)
     )
 
-fun Operacao.toResponseSaque(): SaqueResponse =
+fun Transaction.toResponseSaque(): SaqueResponse =
     SaqueResponse(
         idOperacao = this.idOperacao,
         valorOperacao = this.valorOperacao,
@@ -37,16 +37,16 @@ fun Operacao.toResponseSaque(): SaqueResponse =
         tipoOperacao = enumValueOf(this.tipoOperacao.name)
     )
 
-fun Operacao.toResponseTransferencia(): TransferenciaResponse =
+fun Transaction.toResponseTransferencia(): TransferenciaResponse =
     TransferenciaResponse(
         idOperacao = this.idOperacao,
         valorOperacao = this.valorOperacao,
         dataHora = this.dataHoraOperacao,
         tipoOperacao = enumValueOf(this.tipoOperacao.name),
-        contaDestino = this.contaDestino.id
+        contaDestino = this.accountDestino.id
     )
 
-fun Conta.toResponseSaldo(): SaldoResponse =
+fun Account.toResponseSaldo(): SaldoResponse =
     SaldoResponse(
         saldo = this.saldo
     )
