@@ -31,6 +31,10 @@ docker-compose down
 ```
 Para sair do docker-compose up, é só dar Ctrl+c
 
+### Documentação 
+
+Para acessar a documentação suba a aplicação no `SimuladorBancoApplication` e acesse o [link](http://localhost:8080/swagger-ui.html#/).
+
 ### Motivação
 O projeto tem como objetivo treinar e desenvolver os seguintes tópicos.
 
