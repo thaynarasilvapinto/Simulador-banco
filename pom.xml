@@ -35,7 +35,7 @@
         <postgresql.version>9.4.1212</postgresql.version>
         <gson.version>2.6.2</gson.version>
         <hikari.cp.version>2.6.1</hikari.cp.version>
-        <swagger.version>2.6.1</swagger.version>
+        <swagger.version>2.9.2</swagger.version>
     </properties>
 
     <dependencies>
